@@ -1,0 +1,30 @@
+{
+  "name": "rete-qa",
+  "version": "1.0.0-beta.1",
+  "description": "",
+  "bin": {
+    "rete-qa": "./bin/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": [],
+  "author": "Vitaliy Stoliarov",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.31.0",
+    "@types/tinycolor2": "^1.4.3",
+    "nodemon": "^2.0.20",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "commander": "^10.0.0",
+    "execa": "^5.1.1",
+    "inquirer": "^8.2.5",
+    "playwright": "^1.31.0",
+    "rete-kit": "file:../rete-kit/rete-kit-1.0.0-beta.2.tgz",
+    "serve": "^14.2.0",
+    "tinycolor2": "^1.6.0"
+  }
+}

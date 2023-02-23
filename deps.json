@@ -1,0 +1,12 @@
+{
+  "rete": "../rete/dist/package.tgz",
+  "rete-area-plugin": "../area-plugin/dist/package.tgz",
+  "rete-connection-plugin": "../connection-plugin/dist/package.tgz",
+  "rete-engine": "../engine/dist/package.tgz",
+  "rete-readonly-plugin": "../readonly-plugin/dist/package.tgz",
+  "rete-angular-render-plugin": "../angular-render-plugin/dist/package.tgz",
+  "rete-vue-render-plugin": "../vue-render-plugin/dist/package.tgz",
+  "rete-react-render-plugin": "../react-render-plugin/dist/package.tgz",
+  "rete-render-utils": "../render-utils/dist/package.tgz",
+  "rete-auto-arrange-plugin": "../auto-arrange-plugin/dist/package.tgz"
+}
