@@ -3,4 +3,4 @@ node_modules/
 /playwright-report/
 /playwright/.cache/
 /.rete-qa
-/dist
+/src
