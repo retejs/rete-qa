@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"outDir": "bin",
+		"outDir": "dist",
 		"declaration": true,
 		"target": "ES2018",
 		"moduleResolution": "Node",

@@ -1,19 +1,22 @@
-import fs from 'fs';
 import { defineConfig, devices } from '@playwright/test';
 import { join } from 'path';
-import { appsCachePath }  from './src/consts'
+import { appsCachePath }  from './consts'
 
 const { APP, SERVE } = process.env
 
 if (!APP) throw new Error('process.env.APP is undefined')
 if (!SERVE) throw new Error('process.env.SERVE is undefined')
 
+const root = join(__dirname, '..')
+const cwd = process.cwd()
+
 const getServeCommand = () => {
-  return `./node_modules/.bin/serve ${join(appsCachePath, APP, SERVE)}`
+  return `${join(root, 'node_modules', '.bin', 'serve')} ${join(cwd, appsCachePath, APP, SERVE)}`
 }
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: join(__dirname, 'tests'),
+  testMatch: /.*(test|spec)\.(js|ts|mjs)/,
   timeout: 30 * 1000,
   expect: {
     timeout: 5000,
@@ -22,7 +25,8 @@ export default defineConfig({
       threshold: 0.1
     }
   },
-  snapshotPathTemplate: `snapshots/${APP}/{/projectName}/{testFilePath}/{arg}{ext}`,
+  snapshotPathTemplate: join(root, `snapshots/${APP}/{/projectName}/{arg}{ext}`),
+  updateSnapshots: 'none',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 1,
@@ -46,7 +50,7 @@ export default defineConfig({
       use: { ...devices['Desktop Safari'] },
     }
   ],
-  outputDir: join('test-results', APP),
+  outputDir: join(cwd, 'test-results', APP),
   webServer: {
     command: getServeCommand(),
     port: 3000

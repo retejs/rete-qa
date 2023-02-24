@@ -81,6 +81,7 @@ test.beforeEach(async ({ page }) => {
   await page.evaluate(() => {
     window.scrollTo(0, document.body.scrollHeight)
   })
+  await page.waitForTimeout(200)
 })
 
 test('has nodes', async ({}) => {
@@ -110,7 +111,6 @@ test('select node', async ({ page }) => {
 test('change input values', async ({ page }) => {
   const { findNodes } = await getGraphView(container)
 
-  const [addNode] = await findNodes('Add')
   const [numberNode1, numberNode2] = await findNodes('Number')
 
   await setInputValue(page, numberNode1, 'value', '3')

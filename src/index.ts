@@ -63,8 +63,9 @@ program
         console.log(chalk.green('Testing in', chalk.yellow(fixture.folder), '...'))
         const APP = fixture.folder
         const SERVE = App.builders[fixture.stack].getStaticPath(fixture.folder)
+        const playwrightFolder = dirname(require.resolve('playwright'))
 
-        await execa('./node_modules/.bin/playwright', ['test'], { env: { APP, SERVE }, stdio: 'inherit' })
+        await execa(`${playwrightFolder}/cli.js`, ['test', '--config', join(__dirname, './playwright.config.js')], { env: { APP, SERVE }, stdio: 'inherit' })
         console.log(chalk.green('Testing done for ', chalk.yellow(fixture.folder)))
       } catch (err) {
         console.log(chalk.red('Tests in', fixture.folder, 'failed.', err))
