@@ -1,6 +1,7 @@
 import fs from 'fs';
 import { defineConfig, devices } from '@playwright/test';
 import { join } from 'path';
+import { appsCachePath }  from './src/consts'
 
 const { APP, SERVE } = process.env
 
@@ -8,7 +9,7 @@ if (!APP) throw new Error('process.env.APP is undefined')
 if (!SERVE) throw new Error('process.env.SERVE is undefined')
 
 const getServeCommand = () => {
-  return `./node_modules/.bin/serve ${join('apps', APP, SERVE)}`
+  return `./node_modules/.bin/serve ${join(appsCachePath, APP, SERVE)}`
 }
 
 export default defineConfig({
