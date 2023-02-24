@@ -46,7 +46,7 @@ program
     for (const { folder, stack, version, features } of fixtures) {
       console.log(chalk.green('Start creating', chalk.yellow(stack, `v${version}`), 'application in ', folder));
 
-      await fs.promises.mkdir(join(appsCachePath, folder), { recursive: true })
+      await fs.promises.mkdir(join(cwd, appsCachePath, folder), { recursive: true })
 
       process.chdir(join(cwd, appsCachePath))
       await App.createApp(folder, stack, version, features.map(f => f && f.name).filter(Boolean) as string[], depsAlias)
