@@ -4,7 +4,7 @@ import { createCommand } from 'commander'
 import execa from 'execa'
 import chalk from 'chalk'
 import fs from 'fs'
-import { join, resolve } from 'path'
+import { join, dirname, resolve } from 'path'
 import { App } from 'rete-kit'
 import { appsCachePath } from './consts'
 
@@ -60,15 +60,15 @@ program
   .action(async () => {
     for (const fixture of fixtures) {
       try {
-        console.log(chalk.green('Testing in', chalk.yellow(fixture.folder), '...'))
+        console.log('\n', chalk.bgGreen(' START '), chalk.green('Testing in', chalk.yellow(fixture.folder), '...'))
         const APP = fixture.folder
         const SERVE = App.builders[fixture.stack].getStaticPath(fixture.folder)
         const playwrightFolder = dirname(require.resolve('playwright'))
 
         await execa(`${playwrightFolder}/cli.js`, ['test', '--config', join(__dirname, './playwright.config.js')], { env: { APP, SERVE }, stdio: 'inherit' })
-        console.log(chalk.green('Testing done for ', chalk.yellow(fixture.folder)))
+        console.log('\n', chalk.bgGreen(' DONE '), chalk.green('Testing for', chalk.yellow(fixture.folder), 'done'))
       } catch (err) {
-        console.log(chalk.red('Tests in', fixture.folder, 'failed.', err))
+        console.log('\n', chalk.black.bgRgb(220,50,50)(' FAIL '), chalk.red('Tests in', fixture.folder, 'failed.', err))
       }
     }
   })
