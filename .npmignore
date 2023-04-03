@@ -4,3 +4,6 @@ node_modules/
 /playwright/.cache/
 /.rete-qa
 /src
+.github
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
