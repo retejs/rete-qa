@@ -1,28 +1,24 @@
-Rete quality assurance
+Rete.js Quality Assurance
 ====
-#### Rete.js tool
+[![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://stand-with-ukraine.pp.ua)
+[![Discord](https://img.shields.io/discord/1081223198055604244?color=%237289da&label=Discord)](https://discord.gg/cxSFkPZdsV)
 
-Getting started
-----
+**Rete.js tool**
 
-Install Rete QA
+## Key features
 
-```bash
-npm i -g rete-qa
-```
+- **E2E testing**: enables comprehensive testing of the product from the user's point of view
+- **UI frameworks testing**: utilizes various versions of commonly used UI frameworks, such as Angular, Vue.js, and React.js
+- **Cross-browser testing**: conduct tests in three different browser types: Chromium, Firefox, WebKit
 
-Create `.rete-qa` folder with applications of different stacks needed for testing
+## Getting Started
 
-```bash
-rete-qa init --deps-alias dependencies.json
-```
+Please refer to the [Rete QA](https://retejs.org/docs/quality-assurance#rete-qa) guide
 
-where `dependencies.json` (optional) is file with mapping of `<package name>` to npm install `<argument>`
+## Contribution
 
-Run tests
-----
+Please refer to the [Contribution](https://retejs.org/docs/contribution) guide
 
-Run tests for provided stacks (react, vue, angular) and different browsers (chromium, firefox, webkit)
-```bash
-rete-qa test
-```
+## License
+
+[MIT](https://github.com/retejs/rete-cli/blob/master/LICENSE)
