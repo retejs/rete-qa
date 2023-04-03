@@ -9,9 +9,22 @@
     "build": "tsc",
     "dev": "tsc --watch"
   },
-  "keywords": [],
   "author": "Vitaliy Stoliarov",
   "license": "MIT",
+  "keywords": [
+    "tool",
+    "quality assurance",
+    "rete",
+    "Rete.js"
+  ],
+  "homepage": "https://retejs.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/retejs/rete-qa.git"
+  },
+  "bugs": {
+    "url": "https://github.com/retejs/rete-qa/issues"
+  },
   "devDependencies": {
     "@types/tinycolor2": "^1.4.3",
     "nodemon": "^2.0.20",
