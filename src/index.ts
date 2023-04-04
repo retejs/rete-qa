@@ -23,33 +23,54 @@ const fixtures = targets
   .map(({ stack, version, folder }) => ({
     stack,
     version,
-    folder,
-    features: [
-      stack === 'angular' && new App.Features.Angular(),
-      stack === 'react' && new App.Features.React(version),
-      stack === 'vue' && new App.Features.Vue(version as 2 | 3),
-      new App.Features.ZoomAt(),
-      new App.Features.OrderNodes(),
-      new App.Features.Dataflow(),
-      new App.Features.Selectable()
-    ]
+    folder
   }))
+
+function getFeatures({ stack, version }: (typeof fixtures)[0], next: boolean) {
+  return [
+    stack === 'angular' && new App.Features.Angular(version as 12 | 13 | 14 | 15, next),
+    stack === 'react' && new App.Features.React(version, next),
+    stack === 'vue' && new App.Features.Vue(version as 2 | 3, next),
+    new App.Features.ZoomAt(),
+    new App.Features.OrderNodes(),
+    new App.Features.Dataflow(next),
+    new App.Features.Selectable()
+  ]
+}
+
 
 program
   .command('init')
   .description(`Initialize testing tool`)
   .option('-d --deps-alias <deps-alias>')
-  .action(async (options: { depsAlias: string }) => {
+  .option('-n --next')
+  .action(async (options: { depsAlias: string, next?: boolean }) => {
+    if (!process.version.startsWith('v16')) console.info(chalk.yellow('---\nWe recommend using Node.js 16 to avoid any potential issues\n---'))
+    if (!options.next) {
+      console.error(chalk.red('--next option is required since v2 is still in Beta'))
+      process.exit(1)
+    }
+
+    const next = options.next || false
     const cwd = process.cwd()
     const depsAlias = options.depsAlias ? resolve(cwd, options.depsAlias) : undefined
+    for (const fixture of fixtures) {
+      const features = getFeatures(fixture, next)
+      const { folder, stack, version } = fixture
 
-    for (const { folder, stack, version, features } of fixtures) {
       console.log(chalk.green('Start creating', chalk.yellow(stack, `v${version}`), 'application in ', folder));
 
       await fs.promises.mkdir(join(cwd, appsCachePath, folder), { recursive: true })
 
       process.chdir(join(cwd, appsCachePath))
-      await App.createApp(folder, stack, version, features.map(f => f && f.name).filter(Boolean) as string[], depsAlias)
+      await App.createApp({
+        name: folder,
+        stack,
+        version,
+        features: features.map(f => f && f.name).filter(Boolean) as string[],
+        depsAlias,
+        next
+      })
       await execa('npm', ['run', 'build'], { cwd: join(cwd, appsCachePath, folder) })
     }
   })
