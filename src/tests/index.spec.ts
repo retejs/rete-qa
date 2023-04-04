@@ -77,11 +77,11 @@ test.beforeEach(async ({ page }) => {
 
   container = _container
 
-  await page.waitForTimeout(200)
+  await page.waitForTimeout(500)
   await page.evaluate(() => {
     window.scrollTo(0, document.body.scrollHeight)
   })
-  await page.waitForTimeout(200)
+  await page.waitForTimeout(500)
 })
 
 test('has nodes', async ({}) => {
@@ -164,6 +164,7 @@ test('disconnect', async ({ page }) => {
 
   await page.mouse.up()
 
+  await page.waitForTimeout(500)
   expect(await connections()).toHaveLength(1)
   expect(await page.screenshot()).toMatchSnapshot('disconnected.png')
 })
@@ -195,6 +196,7 @@ test('disconnect with clicks', async ({ page }) => {
   await page.mouse.down()
   await page.mouse.up()
 
+  await page.waitForTimeout(500)
   expect(await connections()).toHaveLength(1)
   expect(await page.screenshot()).toMatchSnapshot('disconnected.png')
 })
