@@ -29,7 +29,7 @@ const fixtures = targets
 function getFeatures({ stack, version }: (typeof fixtures)[0], next: boolean) {
   return [
     stack === 'angular' && new App.Features.Angular(version as 12 | 13 | 14 | 15, next),
-    stack === 'react' && new App.Features.React(version, next),
+    stack === 'react' && new App.Features.React(version, stack, next),
     stack === 'vue' && new App.Features.Vue(version as 2 | 3, next),
     new App.Features.ZoomAt(),
     new App.Features.OrderNodes(),
