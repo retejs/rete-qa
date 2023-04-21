@@ -15,3 +15,9 @@ Run tests for specific browser
 ```bash
 APP=react18 SERVE=build npx playwright test --config ./src/playwright.config.ts --project=chromium
 ```
+
+Update snapshots
+
+```bash
+rete-kit test -u
+```

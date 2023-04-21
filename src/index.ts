@@ -78,8 +78,9 @@ program
 
 program
   .command('test')
-  .description(`Test`)
-  .action(async () => {
+  .description(`Run tests for previously initialized apps`)
+  .option('-u --update-snapshots', 'Update snapshots')
+  .action(async (options: { updateSnapshots?: boolean }) => {
     for (const fixture of fixtures) {
       try {
         console.log('\n', chalk.bgGreen(' START '), chalk.green('Testing in', chalk.yellow(fixture.folder), '...'))
@@ -87,7 +88,11 @@ program
         const SERVE = App.builders[fixture.stack].getStaticPath(fixture.folder)
         const playwrightFolder = dirname(require.resolve('playwright'))
 
-        await execa(`${playwrightFolder}/cli.js`, ['test', '--config', join(__dirname, './playwright.config.js')], { env: { APP, SERVE }, stdio: 'inherit' })
+        await execa(`${playwrightFolder}/cli.js`, [
+          'test',
+          '--config', join(__dirname, './playwright.config.js'),
+          ...(options.updateSnapshots ? ['--update-snapshots'] : [])
+        ], { env: { APP, SERVE }, stdio: 'inherit' })
         console.log('\n', chalk.bgGreen(' DONE '), chalk.green('Testing for', chalk.yellow(fixture.folder), 'done'))
       } catch (err) {
         console.log('\n', chalk.black.bgRgb(220,50,50)(' FAIL '), chalk.red('Tests in', fixture.folder, 'failed.', err))
