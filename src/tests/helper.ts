@@ -69,7 +69,7 @@ export function takeBeforeEach(path: string, timeoutBefore: number, timeoutAfter
   test.beforeEach(async ({ page }) => {
     await page.goto(`http://localhost:3000/${path}`)
 
-    await page.waitForSelector('.rete')
+    await page.waitForSelector('.rete', { timeout: 6000 })
     const _container = await page.$('.rete')
 
     expect(_container).toBeTruthy()
