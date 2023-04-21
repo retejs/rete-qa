@@ -1,98 +1,18 @@
-import { test, expect, ElementHandle, Page } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 import tinycolor from 'tinycolor2'
+import { boundingBox, getBackgroundColor, getGraphView, setInputValue, takeBeforeEach } from './helper'
 
-type Node = ElementHandle<HTMLElement | SVGElement>
-type Connection = ElementHandle<HTMLElement | SVGElement>
-
-async function getGraphView(container: ElementHandle<HTMLElement | SVGElement>) {
-  const area = await container?.$('> div')
-
-  if (!area) throw 'area'
-
-  const nodes = (): Promise<Node[]> => area.$$(`[data-testid="node"]`)
-  const connections = (): Promise<Connection[]> => area.$$(`[data-testid="connection"]`)
-
-  return {
-    area,
-    nodes,
-    connections,
-    async findNodes(title: string) {
-      const list: Node[] = []
-
-      for (const node of await nodes()) {
-        const titleElement = await node.$(`[data-testid="title"]:text("${title}")`)
-
-        if (titleElement) list.push(node)
-      }
-
-      return list
-    }
-  }
-}
-
-async function getBackgroundColor(node: Node) {
-  const color = await node.evaluate((el) => {
-    const styles = window.getComputedStyle(el)
-    return styles.getPropertyValue('background-color')
-  })
-
-  if (!color) throw 'color'
-
-  return color
-}
-
-async function getInput(node: Node, controlKey: string) {
-  const el = await node.$(`[data-testid="control-${controlKey}"] input`)
-
-  if (!el) throw `cannot find control's "${controlKey}" input`
-
-  return el
-}
-
-async function setInputValue(page: Page, node: Node, controlKey: string, value: string) {
-  const el = await getInput(node, controlKey)
-
-  await el.fill(value)
-  await page.keyboard.press('Tab')
-}
-
-async function boundingBox(node: Node) {
-  const box = await node.boundingBox()
-
-  if (!box) throw 'box'
-
-  return box
-}
-
-let container!: ElementHandle<HTMLElement | SVGElement>
-
-test.beforeEach(async ({ page }) => {
-  await page.goto('http://localhost:3000/')
-
-  const _container = await page.$('.rete')
-
-  expect(_container).toBeTruthy()
-
-  if (!_container) throw 'cannot find .rete element'
-
-  container = _container
-
-  await page.waitForTimeout(500)
-  await page.evaluate(() => {
-    window.scrollTo(0, document.body.scrollHeight)
-  })
-  await page.waitForTimeout(500)
-})
+const { getContainer } = takeBeforeEach('', 500, 500)
 
 test('has nodes', async ({}) => {
-  const { findNodes } = await getGraphView(container)
+  const { findNodes } = await getGraphView(getContainer())
 
   expect(await findNodes('Add')).toHaveLength(1)
   expect(await findNodes('Number')).toHaveLength(2)
 })
 
 test('select node', async ({ page }) => {
-  const { findNodes } = await getGraphView(container)
+  const { findNodes } = await getGraphView(getContainer())
 
   const [addNode] = await findNodes('Add')
 
@@ -109,7 +29,7 @@ test('select node', async ({ page }) => {
 })
 
 test('change input values', async ({ page }) => {
-  const { findNodes } = await getGraphView(container)
+  const { findNodes } = await getGraphView(getContainer())
 
   const [numberNode1, numberNode2] = await findNodes('Number')
 
@@ -121,7 +41,7 @@ test('change input values', async ({ page }) => {
 })
 
 test('translate', async ({ page }) => {
-  const { findNodes } = await getGraphView(container)
+  const { findNodes } = await getGraphView(getContainer())
   const translateX = -100
   const translateY = -50
 
@@ -143,7 +63,7 @@ test('translate', async ({ page }) => {
 })
 
 test('disconnect', async ({ page }) => {
-  const { connections, findNodes } = await getGraphView(container)
+  const { connections, findNodes } = await getGraphView(getContainer())
   const [addNode] = await findNodes('Add')
 
   const el = await addNode.$('[data-testid="input-a"] [data-testid="input-socket"]')
@@ -170,7 +90,7 @@ test('disconnect', async ({ page }) => {
 })
 
 test('disconnect with clicks', async ({ page }) => {
-  const { connections, findNodes } = await getGraphView(container)
+  const { connections, findNodes } = await getGraphView(getContainer())
   const [addNode] = await findNodes('Add')
 
   const el = await addNode.$('[data-testid="input-a"] [data-testid="input-socket"]')
