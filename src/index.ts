@@ -54,13 +54,14 @@ program
     const next = options.next || false
     const cwd = process.cwd()
     const depsAlias = options.depsAlias ? resolve(cwd, options.depsAlias) : undefined
+
+    await fs.promises.mkdir(join(cwd, appsCachePath), { recursive: true })
+
     for (const fixture of fixtures) {
       const features = getFeatures(fixture, next)
       const { folder, stack, version } = fixture
 
       console.log(chalk.green('Start creating', chalk.yellow(stack, `v${version}`), 'application in ', folder));
-
-      await fs.promises.mkdir(join(cwd, appsCachePath, folder), { recursive: true })
 
       process.chdir(join(cwd, appsCachePath))
       await App.createApp({
