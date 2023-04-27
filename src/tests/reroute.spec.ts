@@ -59,6 +59,8 @@ test.describe('Reroute', () => {
   })
 
   test('move pin', async ({ page }) => {
+    test.skip(String(process.env.APP).startsWith('react16'), 'React.js v16 has problems with pin translation')
+
     const { connections } = await getGraphView(getContainer())
 
     const { bbox } = await getConnectionPath((await connections())[0])

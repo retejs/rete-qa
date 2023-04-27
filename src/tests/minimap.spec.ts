@@ -55,6 +55,8 @@ test.describe('Minimap', () => {
   })
 
   test('translate mini viewport', async ({ page }) => {
+    test.skip(String(process.env.APP).startsWith('react16'), 'React.js v16 has problems with minimap viewport translation')
+
     await page.waitForSelector('[data-testid="minimap-viewport"]')
 
     const viewport = await page.$('[data-testid="minimap-viewport"]')
