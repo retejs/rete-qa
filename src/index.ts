@@ -34,7 +34,9 @@ function getFeatures({ stack, version }: (typeof fixtures)[0], next: boolean) {
     new App.Features.ZoomAt(),
     new App.Features.OrderNodes(),
     new App.Features.Dataflow(next),
-    new App.Features.Selectable()
+    new App.Features.Selectable(),
+    new App.Features.Minimap(next),
+    new App.Features.Reroute(next)
   ]
 }
 
