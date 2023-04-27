@@ -91,3 +91,20 @@ export function takeBeforeEach(path: string, timeoutBefore: number, timeoutAfter
     }
   }
 }
+
+export async function move(page: Page, node: ElementHandle<HTMLElement | SVGElement>, dx: number, dy: number) {
+  const beforeBox = await boundingBox(node)
+
+  await page.mouse.move(beforeBox.x + 20, beforeBox.y + 20)
+  await page.mouse.down({ button: 'left' })
+  await page.mouse.move(beforeBox.x + 20 + dx, beforeBox.y + 20 + dy)
+  await page.mouse.up({ button: 'left' })
+
+  const afterBox = await boundingBox(node)
+
+  return {
+    before: beforeBox,
+    after: afterBox
+  }
+}
+

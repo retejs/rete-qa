@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import tinycolor from 'tinycolor2'
-import { boundingBox, getBackgroundColor, getGraphView, setInputValue, takeBeforeEach } from './helper'
+import { getBackgroundColor, getGraphView, move, setInputValue, takeBeforeEach } from './helper'
 
 const { getContainer } = takeBeforeEach('', 500, 500)
 
@@ -47,17 +47,10 @@ test('translate', async ({ page }) => {
 
   const [numberNode1] = await findNodes('Number')
 
-  const box = await boundingBox(numberNode1)
+  const { before, after } = await move(page, numberNode1, translateX, translateY)
 
-  await page.mouse.move(box.x + 20, box.y + 20)
-  await page.mouse.down({ button: 'left' })
-  await page.mouse.move(box.x + 20 + translateX, box.y + 20 + translateY)
-  await page.mouse.up({ button: 'left' })
-
-  const boxAfter = await boundingBox(numberNode1)
-
-  expect(boxAfter.x - box.x).toBeCloseTo(translateX, 1)
-  expect(boxAfter.y - box.y).toBeCloseTo(translateY, 1)
+  expect(after.x - before.x).toBeCloseTo(translateX, 1)
+  expect(after.y - before.y).toBeCloseTo(translateY, 1)
 
   expect(await page.screenshot()).toMatchSnapshot('translate.png')
 })
