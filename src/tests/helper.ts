@@ -92,12 +92,13 @@ export function takeBeforeEach(path: string, timeoutBefore: number, timeoutAfter
   }
 }
 
-export async function move(page: Page, node: ElementHandle<HTMLElement | SVGElement>, dx: number, dy: number) {
+export async function move(page: Page, node: ElementHandle<HTMLElement | SVGElement>, dx: number, dy: number, handlerPosition: 'corner' | 'center' = 'corner') {
   const beforeBox = await boundingBox(node)
+  const pickOffset = handlerPosition === 'corner' ? { x: 20, y: 20 } : { x: beforeBox.width / 2, y: beforeBox.height / 2 }
 
-  await page.mouse.move(beforeBox.x + 20, beforeBox.y + 20)
+  await page.mouse.move(beforeBox.x + pickOffset.x, beforeBox.y + pickOffset.y)
   await page.mouse.down({ button: 'left' })
-  await page.mouse.move(beforeBox.x + 20 + dx, beforeBox.y + 20 + dy)
+  await page.mouse.move(beforeBox.x + pickOffset.x + dx, beforeBox.y + pickOffset.y + dy)
   await page.mouse.up({ button: 'left' })
 
   const afterBox = await boundingBox(node)
@@ -108,3 +109,47 @@ export async function move(page: Page, node: ElementHandle<HTMLElement | SVGElem
   }
 }
 
+type Rect = {
+  left: number
+  right: number
+  top: number
+  bottom: number
+}
+
+export async function getPositions(page: Page, selector: string) {
+  const list = await page.$$(selector)
+  const positions = await Promise.all(list.map(boundingBox))
+
+  const left = Math.min(...positions.map(({ x }) => x))
+  const right = Math.max(...positions.map(({ x, width }) => x + width))
+  const top = Math.min(...positions.map(({ y }) => y))
+  const bottom = Math.max(...positions.map(({ y, height }) => y + height))
+
+  return {
+    positions,
+    left,
+    right,
+    top,
+    bottom,
+    width: right - left,
+    height: bottom - top
+  }
+}
+
+export function isInside(inner: Rect, outer: Rect) {
+  return (
+    inner.left >= outer.left &&
+    inner.top >= outer.top &&
+    inner.right <= outer.right &&
+    inner.bottom <= outer.bottom
+  );
+}
+
+export function isOutside(inner: Rect, outer: Rect) {
+  return (
+    inner.left >= outer.right ||
+    inner.top >= outer.bottom ||
+    inner.right <= outer.left ||
+    inner.bottom <= outer.top
+  );
+}
