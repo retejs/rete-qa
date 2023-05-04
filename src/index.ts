@@ -82,7 +82,8 @@ program
   .command('test')
   .description(`Run tests for previously initialized apps`)
   .option('-u --update-snapshots', 'Update snapshots')
-  .action(async (options: { updateSnapshots?: boolean }) => {
+  .option('-g --grep <regex>', 'Match tests by name')
+  .action(async (options: { updateSnapshots?: boolean, grep?: string }) => {
     for (const fixture of fixtures) {
       try {
         console.log('\n', chalk.bgGreen(' START '), chalk.green('Testing in', chalk.yellow(fixture.folder), '...'))
@@ -93,7 +94,8 @@ program
         await execa(`${playwrightFolder}/cli.js`, [
           'test',
           '--config', join(__dirname, './playwright.config.js'),
-          ...(options.updateSnapshots ? ['--update-snapshots'] : [])
+          ...(options.updateSnapshots ? ['--update-snapshots'] : []),
+          ...(options.grep ? ['--grep', options.grep] : [])
         ], { env: { APP, SERVE }, stdio: 'inherit' })
         console.log('\n', chalk.bgGreen(' DONE '), chalk.green('Testing for', chalk.yellow(fixture.folder), 'done'))
       } catch (err) {
