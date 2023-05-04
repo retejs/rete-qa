@@ -92,6 +92,14 @@ export function takeBeforeEach(path: string, timeoutBefore: number, timeoutAfter
   }
 }
 
+export async function pickNode(page: Page, node: ElementHandle<HTMLElement | SVGElement>) {
+  const beforeBox = await boundingBox(node)
+  const pickOffset = { x: 20, y: 20 }
+
+  await page.mouse.move(beforeBox.x + pickOffset.x, beforeBox.y + pickOffset.y)
+  await page.mouse.down({ button: 'left' })
+}
+
 export async function move(page: Page, node: ElementHandle<HTMLElement | SVGElement>, dx: number, dy: number, handlerPosition: 'corner' | 'center' = 'corner') {
   const beforeBox = await boundingBox(node)
   const pickOffset = handlerPosition === 'corner' ? { x: 20, y: 20 } : { x: beforeBox.width / 2, y: beforeBox.height / 2 }

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import tinycolor from 'tinycolor2'
-import { getBackgroundColor, getGraphView, move, setInputValue, takeBeforeEach } from './helper'
+import { getBackgroundColor, getGraphView, move, pickNode, setInputValue, takeBeforeEach } from './helper'
 
 const { getContainer } = takeBeforeEach('', 500, 500)
 
@@ -20,7 +20,7 @@ test('select node', async ({ page }) => {
 
   expect(tinycolor.readability(bg, 'blue') < 3).toBeTruthy()
 
-  await (await addNode.$('[data-testid="title"]'))?.click()
+  await pickNode(page, addNode)
 
   const selectedBg = await getBackgroundColor(addNode)
 
