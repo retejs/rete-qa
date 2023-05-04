@@ -98,6 +98,18 @@ export async function pickNode(page: Page, node: ElementHandle<HTMLElement | SVG
 
   await page.mouse.move(beforeBox.x + pickOffset.x, beforeBox.y + pickOffset.y)
   await page.mouse.down({ button: 'left' })
+  await page.mouse.up({ button: 'left' })
+}
+
+export async function clickCenter(page: Page, selector: ElementHandle<HTMLElement | SVGElement> | string, button: 'right' | 'left' = 'left') {
+  const element = typeof selector === 'string' ? await page.$(selector) : selector
+  if (!element) throw new Error('cannot find element')
+  const beforeBox = await boundingBox(element)
+  const pickOffset = { x: beforeBox.width / 2, y: beforeBox.height / 2 }
+
+  await page.mouse.move(beforeBox.x + pickOffset.x, beforeBox.y + pickOffset.y)
+  await page.mouse.down({ button })
+  await page.mouse.up({ button })
 }
 
 export async function move(page: Page, node: ElementHandle<HTMLElement | SVGElement>, dx: number, dy: number, handlerPosition: 'corner' | 'center' = 'corner') {

@@ -1,16 +1,12 @@
 import { test, expect, ElementHandle } from '@playwright/test'
-import { getGraphView, move, takeBeforeEach } from './helper'
-import { boundingBox } from './helper'
+import { getGraphView, move, clickCenter, takeBeforeEach } from './helper'
 
 async function getConnectionPath(connection: ElementHandle<HTMLElement | SVGElement>) {
   const path = await connection.$('path')
 
   if (!path) throw new Error('cannot find path')
 
-  return {
-    path,
-    bbox: await boundingBox(path)
-  }
+  return path
 }
 
 test.describe('Reroute', () => {
@@ -22,9 +18,9 @@ test.describe('Reroute', () => {
 
   test('add pin', async ({ page }) => {
     const { connections } = await getGraphView(getContainer())
-    const { bbox } = await getConnectionPath((await connections())[0])
+    const path = await getConnectionPath((await connections())[0])
 
-    await page.mouse.click(bbox.x + bbox.width * 0.5, bbox.y + bbox.height * 0.5)
+    await clickCenter(page, path)
 
     await expect(page.getByTestId('pin')).toHaveCount(1)
     expect(await page.screenshot()).toMatchSnapshot('added-pin.png')
@@ -34,10 +30,10 @@ test.describe('Reroute', () => {
   test('add pin and translate node', async ({ page }) => {
     const { nodes, connections } = await getGraphView(getContainer())
 
-    const { bbox } = await getConnectionPath((await connections())[0])
+    const path = await getConnectionPath((await connections())[0])
     const firstNode = (await nodes())[0]
 
-    await page.mouse.click(bbox.x + bbox.width * 0.5, bbox.y + bbox.height * 0.5)
+    await clickCenter(page, path)
     await move(page, firstNode, -200, 65)
 
     expect(await page.screenshot()).toMatchSnapshot('added-pin-node-translate.png')
@@ -45,14 +41,13 @@ test.describe('Reroute', () => {
 
   test('remove pin', async ({ page }) => {
     const { connections } = await getGraphView(getContainer())
+    const path = await getConnectionPath((await connections())[0])
 
-    const { bbox } = await getConnectionPath((await connections())[0])
-
-    await page.mouse.click(bbox.x + bbox.width * 0.5, bbox.y + bbox.height * 0.5)
+    await clickCenter(page, path)
 
     expect(await page.screenshot()).toMatchSnapshot('added-pin.png')
 
-    await page.getByTestId('pin').click({ button: 'right' })
+    await clickCenter(page, '[data-testid="pin"]', 'right')
 
     await expect(page.getByTestId('pin')).toHaveCount(0)
     expect(await page.screenshot()).toMatchSnapshot('removed-pin.png')
@@ -62,10 +57,9 @@ test.describe('Reroute', () => {
     test.skip(String(process.env.APP).startsWith('react16'), 'React.js v16 has problems with pin translation')
 
     const { connections } = await getGraphView(getContainer())
+    const path = await getConnectionPath((await connections())[0])
 
-    const { bbox } = await getConnectionPath((await connections())[0])
-
-    await page.mouse.click(bbox.x + bbox.width * 0.5, bbox.y + bbox.height * 0.5)
+    await clickCenter(page, path)
 
     expect(await page.screenshot()).toMatchSnapshot('added-pin.png')
 
