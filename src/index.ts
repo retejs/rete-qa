@@ -15,7 +15,7 @@ program.version(require('../package.json').version)
 const targets: { stack: App.AppStack, versions: number[] }[] = [
   { stack: 'react', versions: [16, 18] },
   { stack: 'vue', versions: [2, 3] },
-  { stack: 'angular', versions: [12, 15] }
+  { stack: 'angular', versions: [12, 14, 16] }
 ]
 const fixtures = targets
   .map(({ stack, versions }) => versions.map(version => ({ stack, version, folder:`${stack}${version}` as const })))
