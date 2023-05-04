@@ -7,6 +7,7 @@ import fs from 'fs'
 import { join, dirname, resolve } from 'path'
 import { App } from 'rete-kit'
 import { appsCachePath } from './consts'
+import { log } from './ui'
 
 const program = createCommand()
 
@@ -63,7 +64,7 @@ program
       const features = getFeatures(fixture, next)
       const { folder, stack, version } = fixture
 
-      console.log(chalk.green('Start creating', chalk.yellow(stack, `v${version}`), 'application in ', folder));
+      log('success')('Start creating', chalk.yellow(stack, `v${version}`), 'application in ', folder)
 
       process.chdir(join(cwd, appsCachePath))
       await App.createApp({
@@ -86,7 +87,7 @@ program
   .action(async (options: { updateSnapshots?: boolean, grep?: string }) => {
     for (const fixture of fixtures) {
       try {
-        console.log('\n', chalk.bgGreen(' START '), chalk.green('Testing in', chalk.yellow(fixture.folder), '...'))
+        log('success', 'START')('Testing in', chalk.yellow(fixture.folder), '...')
         const APP = fixture.folder
         const SERVE = App.builders[fixture.stack].getStaticPath(fixture.folder)
         const playwrightFolder = dirname(require.resolve('playwright'))
@@ -97,9 +98,9 @@ program
           ...(options.updateSnapshots ? ['--update-snapshots'] : []),
           ...(options.grep ? ['--grep', options.grep] : [])
         ], { env: { APP, SERVE }, stdio: 'inherit' })
-        console.log('\n', chalk.bgGreen(' DONE '), chalk.green('Testing for', chalk.yellow(fixture.folder), 'done'))
+        log('success', 'DONE')('Testing for', chalk.yellow(fixture.folder), 'done')
       } catch (err) {
-        console.log('\n', chalk.black.bgRgb(220,50,50)(' FAIL '), chalk.red('Tests in', fixture.folder, 'failed.', err))
+        log('fail', 'FAIL')('Tests in', fixture.folder, 'failed.', err)
       }
     }
   })
