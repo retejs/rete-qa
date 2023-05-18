@@ -19,7 +19,7 @@ const targets: { stack: App.AppStack, versions: number[] }[] = [
   { stack: 'angular', versions: [12, 14, 16] }
 ]
 const fixtures = targets
-  .map(({ stack, versions }) => versions.map(version => ({ stack, version, folder:`${stack}${version}` as const })))
+  .map(({ stack, versions }) => versions.map(version => ({ stack, version, folder: `${stack}${version}` as const })))
   .flat()
   .map(({ stack, version, folder }) => ({
     stack,
@@ -107,4 +107,4 @@ program
 
 program.parse(process.argv)
 
-export {}
+export { }
