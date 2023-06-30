@@ -18,6 +18,8 @@ const targets: { stack: App.AppStack, versions: number[] }[] = [
   { stack: 'vue', versions: [2, 3] },
   { stack: 'angular', versions: [12, 14, 16] }
 ]
+const stackNames = targets.map(t => t.stack)
+
 const fixtures = targets
   .map(({ stack, versions }) => versions.map(version => ({ stack, version, folder: `${stack}${version}` as const })))
   .flat()
@@ -47,7 +49,8 @@ program
   .description(`Initialize testing tool`)
   .option('-d --deps-alias <deps-alias>')
   .option('-n --next')
-  .action(async (options: { depsAlias: string, next?: boolean }) => {
+  .option('-s --stack <stack>', `Stacks to test, comma-separated (${stackNames.join(',')})`)
+  .action(async (options: { depsAlias: string, stack?: string, next?: boolean }) => {
     if (!process.version.startsWith('v16')) console.info(chalk.yellow('---\nWe recommend using Node.js 16 to avoid any potential issues\n---'))
     if (!options.next) {
       console.error(chalk.red('--next option is required since v2 is still in Beta'))
@@ -57,12 +60,15 @@ program
     const next = options.next || false
     const cwd = process.cwd()
     const depsAlias = options.depsAlias ? resolve(cwd, options.depsAlias) : undefined
+    const stacks = options.stack ? options.stack.split(',') : null
 
     await fs.promises.mkdir(join(cwd, appsCachePath), { recursive: true })
 
     for (const fixture of fixtures) {
       const features = getFeatures(fixture, next)
       const { folder, stack, version } = fixture
+
+      if (stacks && !stacks.includes(stack)) continue
 
       log('success')('Start creating', chalk.yellow(stack, `v${version}`), 'application in ', folder)
 
@@ -84,12 +90,19 @@ program
   .description(`Run tests for previously initialized apps`)
   .option('-u --update-snapshots', 'Update snapshots')
   .option('-g --grep <regex>', 'Match tests by name')
-  .action(async (options: { updateSnapshots?: boolean, grep?: string }) => {
+  .option('-s --stack <stack>', `Stacks to test, comma-separated (${stackNames.join(',')})`)
+  .action(async (options: { updateSnapshots?: boolean, stack?: string, grep?: string }) => {
+    const stacks = options.stack ? options.stack.split(',') : null
+
     for (const fixture of fixtures) {
+      const { folder, stack } = fixture
+
+      if (stacks && !stacks.includes(stack)) continue
+
       try {
-        log('success', 'START')('Testing in', chalk.yellow(fixture.folder), '...')
-        const APP = fixture.folder
-        const SERVE = App.builders[fixture.stack].getStaticPath(fixture.folder)
+        log('success', 'START')('Testing in', chalk.yellow(folder), '...')
+        const APP = folder
+        const SERVE = App.builders[stack].getStaticPath(folder)
         const playwrightFolder = dirname(require.resolve('playwright'))
 
         await execa(`${playwrightFolder}/cli.js`, [
@@ -98,9 +111,9 @@ program
           ...(options.updateSnapshots ? ['--update-snapshots'] : []),
           ...(options.grep ? ['--grep', options.grep] : [])
         ], { env: { APP, SERVE }, stdio: 'inherit' })
-        log('success', 'DONE')('Testing for', chalk.yellow(fixture.folder), 'done')
+        log('success', 'DONE')('Testing for', chalk.yellow(folder), 'done')
       } catch (err) {
-        log('fail', 'FAIL')('Tests in', fixture.folder, 'failed.', err)
+        log('fail', 'FAIL')('Tests in', folder, 'failed.', err)
       }
     }
   })
