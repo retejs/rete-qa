@@ -16,7 +16,8 @@ program.version(require('../package.json').version)
 const targets: { stack: App.AppStack, versions: number[] }[] = [
   { stack: 'react', versions: [16, 18] },
   { stack: 'vue', versions: [2, 3] },
-  { stack: 'angular', versions: [12, 14, 16] }
+  { stack: 'angular', versions: [12, 14, 16] },
+  { stack: 'svelte', versions: [3, 4] }
 ]
 const stackNames = targets.map(t => t.stack)
 
@@ -34,6 +35,7 @@ function getFeatures({ stack, version }: (typeof fixtures)[0], next: boolean) {
     stack === 'angular' && new App.Features.Angular(version as 12 | 13 | 14 | 15, next),
     stack === 'react' && new App.Features.React(version, stack, next),
     stack === 'vue' && new App.Features.Vue(version as 2 | 3, next),
+    stack === 'svelte' && new App.Features.Svelte(version as 3 | 4, next),
     new App.Features.ZoomAt(),
     new App.Features.OrderNodes(),
     new App.Features.Dataflow(next),
