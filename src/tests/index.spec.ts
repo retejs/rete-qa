@@ -4,7 +4,7 @@ import { getBackgroundColor, getGraphView, move, pickNode, setInputValue, takeBe
 
 const { getContainer } = takeBeforeEach('', 500, 500)
 
-test('has nodes', async ({}) => {
+test('has nodes', async ({ }) => {
   const { findNodes } = await getGraphView(getContainer())
 
   expect(await findNodes('Add')).toHaveLength(1)
@@ -62,7 +62,7 @@ test('disconnect', async ({ page }) => {
   const el = await addNode.$('[data-testid="input-a"] [data-testid="input-socket"]')
   const box = await el?.boundingBox()
 
-  if (!box) throw 'box'
+  if (!box) throw 'Cannot find bounding box for input socket'
 
   const socketCenter = {
     x: box.x + box.width / 2,
@@ -89,7 +89,7 @@ test('disconnect with clicks', async ({ page }) => {
   const el = await addNode.$('[data-testid="input-a"] [data-testid="input-socket"]')
   const box = await el?.boundingBox()
 
-  if (!box) throw 'box'
+  if (!box) throw 'Cannot find bounding box for input socket'
 
   const socketCenter = {
     x: box.x + box.width / 2,
