@@ -54,10 +54,6 @@ program
   .option('-s --stack <stack>', `Stacks to test, comma-separated (${stackNames.join(',')})`)
   .action(async (options: { depsAlias: string, stack?: string, next?: boolean }) => {
     if (!process.version.startsWith('v16')) console.info(chalk.yellow('---\nWe recommend using Node.js 16 to avoid any potential issues\n---'))
-    if (!options.next) {
-      console.error(chalk.red('--next option is required since v2 is still in Beta'))
-      process.exit(1)
-    }
 
     const next = options.next || false
     const cwd = process.cwd()
