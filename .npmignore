@@ -1,9 +1,0 @@
-node_modules/
-/test-results/
-/playwright-report/
-/playwright/.cache/
-/.rete-qa
-/src
-.github
-CODE_OF_CONDUCT.md
-CONTRIBUTING.md
