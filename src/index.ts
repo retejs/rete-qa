@@ -52,13 +52,15 @@ program
   .option('-d --deps-alias <deps-alias>')
   .option('-n --next')
   .option('-s --stack <stack>', `Stacks to test, comma-separated (${stackNames.join(',')})`)
-  .action(async (options: { depsAlias: string, stack?: string, next?: boolean }) => {
+  .option('-sv --stack-versions <stack-version>', `Versions to test, comma-separated`)
+  .action(async (options: { depsAlias: string, stack?: string, stackVersions?: string, next?: boolean }) => {
     if (!process.version.startsWith('v16')) console.info(chalk.yellow('---\nWe recommend using Node.js 16 to avoid any potential issues\n---'))
 
     const next = options.next || false
     const cwd = process.cwd()
     const depsAlias = options.depsAlias ? resolve(cwd, options.depsAlias) : undefined
     const stacks = options.stack ? options.stack.split(',') : null
+    const stackVersions = options.stackVersions ? options.stackVersions.split(',') : null
 
     await fs.promises.mkdir(join(cwd, appsCachePath), { recursive: true })
 
@@ -67,6 +69,7 @@ program
       const { folder, stack, version } = fixture
 
       if (stacks && !stacks.includes(stack)) continue
+      if (stackVersions && !stackVersions.includes(String(version))) continue
 
       log('success')('Start creating', chalk.yellow(stack, `v${version}`), 'application in ', folder)
 
