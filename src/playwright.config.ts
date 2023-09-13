@@ -1,6 +1,6 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 import { join } from 'path';
-import { appsCachePath }  from './consts'
+import { appsCachePath, projects } from './consts'
 
 const { APP, SERVE } = process.env
 
@@ -21,7 +21,7 @@ export default defineConfig({
   expect: {
     timeout: 5000,
     toMatchSnapshot: {
-      maxDiffPixelRatio: 0.002,
+      maxDiffPixelRatio: 0.001,
       threshold: 0.1
     }
   },
@@ -36,20 +36,7 @@ export default defineConfig({
     actionTimeout: 4000,
     trace: 'on-first-retry',
   },
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    }
-  ],
+  projects,
   outputDir: join(cwd, 'test-results', APP),
   webServer: {
     command: getServeCommand(),

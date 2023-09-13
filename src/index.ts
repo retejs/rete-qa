@@ -6,7 +6,7 @@ import chalk from 'chalk'
 import fs from 'fs'
 import { join, dirname, resolve } from 'path'
 import { App } from 'rete-kit'
-import { appsCachePath } from './consts'
+import { appsCachePath, projects } from './consts'
 import { log } from './ui'
 
 const program = createCommand()
@@ -89,23 +89,28 @@ program
   .option('-u --update-snapshots', 'Update snapshots')
   .option('-g --grep <regex>', 'Match tests by name')
   .option('-s --stack <stack>', `Stacks to test, comma-separated (${stackNames.join(',')})`)
-  .action(async (options: { updateSnapshots?: boolean, stack?: string, grep?: string }) => {
+  .option('-sv --stack-versions <stack-version>', `Versions to test, comma-separated`)
+  .option('-p --project <project>', `Project (${projects.map(p => p.name)})`)
+  .action(async (options: { updateSnapshots?: boolean, stack?: string, stackVersions?: string, project?: string, grep?: string }) => {
     const stacks = options.stack ? options.stack.split(',') : null
+    const stackVersions = options.stackVersions ? options.stackVersions.split(',') : null
 
     for (const fixture of fixtures) {
-      const { folder, stack } = fixture
+      const { folder, stack, version } = fixture
 
       if (stacks && !stacks.includes(stack)) continue
+      if (stackVersions && !stackVersions.includes(String(version))) continue
 
       try {
         log('success', 'START')('Testing in', chalk.yellow(folder), '...')
         const APP = folder
         const SERVE = App.builders[stack].getStaticPath(folder)
-        const playwrightFolder = dirname(require.resolve('playwright'))
+        const playwrightFolder = dirname(require.resolve('@playwright/test'))
 
         await execa(`${playwrightFolder}/cli.js`, [
           'test',
           '--config', join(__dirname, './playwright.config.js'),
+          ...(options.project ? ['--project', options.project] : []),
           ...(options.updateSnapshots ? ['--update-snapshots'] : []),
           ...(options.grep ? ['--grep', options.grep] : [])
         ], { env: { APP, SERVE }, stdio: 'inherit' })
