@@ -162,7 +162,7 @@ export function isInside(inner: Rect, outer: Rect) {
     inner.top >= outer.top &&
     inner.right <= outer.right &&
     inner.bottom <= outer.bottom
-  );
+  )
 }
 
 export function isOutside(inner: Rect, outer: Rect) {

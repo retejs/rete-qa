@@ -1,0 +1,29 @@
+{
+  "extends": [
+    "./node_modules/rete-cli/.eslintrc"
+  ],
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "env": {
+    "node": true,
+    "browser": true
+  },
+  "ignorePatterns": [
+    "assets"
+  ],
+  "rules": {
+    "@typescript-eslint/naming-convention": "off",
+    "global-require": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "no-console": "off",
+    "no-empty-pattern": "off",
+    "init-declarations": "off",
+    "semi": "off",
+    "@typescript-eslint/semi": "off",
+    "newline-after-var": "off",
+    "no-undefined": "off",
+    "comma-dangle": "off",
+    "complexity": "off"
+  }
+}

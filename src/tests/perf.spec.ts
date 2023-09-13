@@ -3,7 +3,7 @@ import { getGraphView, takeBeforeEach } from './helper'
 
 test.describe('Perf', () => {
   test.beforeEach(({ browserName }) => {
-    test.skip(browserName === 'webkit' && String(process.env.APP).startsWith('angular'), 'WebKit has problems running Angular apps with a lot of elements (at least in WSL2 environment)');
+    test.skip(browserName === 'webkit' && String(process.env.APP).startsWith('angular'), 'WebKit has problems running Angular apps with a lot of elements (at least in WSL2 environment)')
   })
   const { getContainer } = takeBeforeEach('?template=perf&rows=10&cols=10', 500, 500)
 
