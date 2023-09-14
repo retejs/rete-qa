@@ -1,3 +1,11 @@
+## [1.1.2](https://github.com/retejs/rete-qa/compare/v1.1.1...v1.1.2) (2023-09-14)
+
+
+### Bug Fixes
+
+* snapshots for FF ([dbe6dc7](https://github.com/retejs/rete-qa/commit/dbe6dc75a76ab369ceddc5471ed7696ce925ef6b))
+* update snapshots ([6c71ac8](https://github.com/retejs/rete-qa/commit/6c71ac8f12e5bcdf4bb3e911d5ec0459767b8e5a))
+
 ## [1.1.1](https://github.com/retejs/rete-qa/compare/v1.1.0...v1.1.1) (2023-09-13)
 
 
