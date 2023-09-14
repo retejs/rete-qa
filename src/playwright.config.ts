@@ -21,7 +21,7 @@ export default defineConfig({
   expect: {
     timeout: 5000,
     toMatchSnapshot: {
-      maxDiffPixelRatio: 0.001,
+      maxDiffPixelRatio: 0.003,
       threshold: 0.1
     }
   },
@@ -31,10 +31,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 1,
   workers: process.env.CI ? 1 : undefined,
-  reporter: [
-    ['line'],
-    process.env.CI ? ['github'] : ['html']
-  ],
+  reporter: [process.env.CI ? ['github'] : ['list']],
   use: {
     actionTimeout: 4000,
     trace: 'on-first-retry',

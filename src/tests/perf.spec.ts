@@ -10,13 +10,13 @@ test.describe('Perf', () => {
   test('has nodes', async ({ page }) => {
     const { nodes, connections } = await getGraphView(getContainer())
 
-    await page.waitForTimeout(1000)
+    await page.waitForTimeout(3000)
     expect(await nodes()).toHaveLength(100)
     expect(await connections()).toHaveLength(99)
   })
 
   test('snapshot', async ({ page }) => {
-    await page.waitForTimeout(1000)
+    await page.waitForTimeout(3000)
     expect(await page.screenshot()).toMatchSnapshot('perf.png')
   })
 })

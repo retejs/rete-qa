@@ -25,7 +25,7 @@ test.describe('Minimap', () => {
 
     const before = await getPositions(page, '[data-testid="minimap-node"]')
 
-    await move(page, numberNode1, -500, 100)
+    await move(page, numberNode1, -420, 100)
 
     const after = await getPositions(page, '[data-testid="minimap-node"]')
 
@@ -44,7 +44,7 @@ test.describe('Minimap', () => {
 
     expect(isInside(nodesBefore, viewportBefore)).toBeTruthy()
 
-    await move(page, area, 1000, 0)
+    await move(page, area, 900, 0, 'corner')
 
     const nodesAfter = await getPositions(page, '[data-testid="minimap-node"]')
     const viewportAfter = await getPositions(page, '[data-testid="minimap-viewport"]')
