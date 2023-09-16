@@ -48,3 +48,5 @@ RUN npm --version
 RUN npx playwright@1.20 install
 RUN npx playwright@1.20 install --with-deps
 ```
+
+Note! The recommended OS is Ubuntu 20.04 because the actual version of Playwright supports a minimum of 20.04, but the Ubuntu 22.04 version has issues rendering fonts in Firefox and WebKit.
