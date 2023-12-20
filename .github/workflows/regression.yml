@@ -36,14 +36,11 @@ jobs:
           fonts-freefont-ttf
         sudo rm -rf /var/lib/apt/lists/*
         sudo apt-get -qyy clean
-    - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
       with:
         node-version: 16
-    - name: Install dependencies
-      run: npm ci
-    - name: Build tool
-      run: npm run build
+    - name: Install Rete QA
+      run: npm i -g rete-qa rete-kit
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Init application
