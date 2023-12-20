@@ -14,9 +14,9 @@ const program = createCommand()
 program.version(require('../package.json').version)
 
 const targets: { stack: App.AppStack, versions: number[] }[] = [
-  { stack: 'react', versions: [16, 18] },
+  { stack: 'react', versions: [16, 17, 18] },
   { stack: 'vue', versions: [2, 3] },
-  { stack: 'angular', versions: [12, 14, 16] },
+  { stack: 'angular', versions: [12, 13, 14, 15, 16, 17] },
   { stack: 'svelte', versions: [3, 4] }
 ]
 const stackNames = targets.map(t => t.stack)
