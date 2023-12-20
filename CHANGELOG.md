@@ -1,3 +1,11 @@
+# [1.2.0](https://github.com/retejs/rete-qa/compare/v1.1.2...v1.2.0) (2023-12-20)
+
+
+### Features
+
+* include missing versions of react and angular ([c6e91e3](https://github.com/retejs/rete-qa/commit/c6e91e32fbdcfdb4a9e7e10d7226dbe476ce823e))
+
+
 ## [1.1.2](https://github.com/retejs/rete-qa/compare/v1.1.1...v1.1.2) (2023-09-14)
 
 
