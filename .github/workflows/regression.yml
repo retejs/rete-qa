@@ -44,11 +44,11 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Init application
-      run: node ./dist/index.js init -s ${{ github.event.inputs.name }} -sv ${{ github.event.inputs.version }}
+      run: rete-qa init -s ${{ github.event.inputs.name }} -sv ${{ github.event.inputs.version }}
       env:
         CI: ""
     - name: Run Playwright tests
-      run: node ./dist/index.js test -s ${{ github.event.inputs.name }} -sv ${{ github.event.inputs.version }}
+      run: rete-qa test -s ${{ github.event.inputs.name }} -sv ${{ github.event.inputs.version }}
     - uses: actions/upload-artifact@v3
       if: always()
       with:
