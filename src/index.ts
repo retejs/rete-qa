@@ -27,8 +27,15 @@ program
     const next = options.next || false
     const cwd = process.cwd()
     const depsAlias = options.depsAlias ? resolve(cwd, options.depsAlias) : undefined
-    const stacks = options.stack ? options.stack.split(',') : null
+    const stacks = options.stack ? options.stack.split(',') : stackNames
     const stackVersions = options.stackVersions ? options.stackVersions.split(',') : null
+
+    const { error } = validate(stacks, stackVersions)
+
+    if (error) {
+      log('fail', 'FAIL')(chalk.red(error))
+      process.exit(1)
+    }
 
     await fs.promises.mkdir(join(cwd, appsCachePath), { recursive: true })
 
@@ -36,7 +43,7 @@ program
       const features = getFeatures(fixture, next)
       const { folder, stack, version } = fixture
 
-      if (stacks && !stacks.includes(stack)) continue
+      if (!stacks.includes(stack)) continue
       if (stackVersions && !stackVersions.includes(String(version))) continue
 
       log('success')('Start creating', chalk.yellow(stack, `v${version}`), 'application in ', folder)

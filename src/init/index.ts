@@ -32,3 +32,24 @@ export function getFeatures({ stack, version }: (typeof fixtures)[0], next: bool
   ]
 }
 
+export function validate(stacks: string[], stackVersions: string[] | null): { error: string | null } {
+  const unknownStacks = stacks.filter(name => !stackNames.includes(name as App.AppStack))
+
+  if (unknownStacks.length > 0) {
+    return { error: `Unknown stack names: ${unknownStacks.join(', ')}` }
+  }
+
+  if (stacks.length > 1 && stackVersions && stackVersions.length > 0) {
+    return { error: `You can't specify versions for multiple stacks` }
+  }
+
+  if (stacks.length === 1 && stackVersions && stackVersions.length > 0) {
+    const unknownVersions = stackVersions.filter(v => !targets.find(t => t.stack === stacks[0])?.versions.includes(Number(v)))
+
+    if (unknownVersions.length > 0) {
+      return { error: `Unknown stack versions: ${unknownVersions.join(', ')}` }
+    }
+  }
+
+  return { error: null }
+}
