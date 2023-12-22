@@ -1,0 +1,28 @@
+name: Daily Rete QA Regression
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'
+
+
+jobs:
+  run-tests:
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - stack: angular
+            version: 17
+          - stack: react
+            version: 18
+          - stack: vue
+            version: 3
+          - stack: svelte
+            version: 4
+    uses: ./.github/workflows/regression.yml
+    with:
+      name: ${{ matrix.stack }}
+      version: ${{ matrix.version }}
+  
