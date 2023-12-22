@@ -2,6 +2,12 @@ name: Rete QA Regression
 run-name: Rete QA for ${{ inputs.name }} v${{ inputs.version }}
 
 on:
+  workflow_call:
+    inputs:
+      name:
+        type: string
+      version:
+        type: number
   workflow_dispatch:
     inputs:
       name:
