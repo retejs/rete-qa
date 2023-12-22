@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/retejs/rete-qa/compare/v1.2.0...v1.3.0) (2023-12-22)
+
+
+### Features
+
+* **init:** validate stacks and versions ([c50dd36](https://github.com/retejs/rete-qa/commit/c50dd36e9ba1fb9c3d2ed3fc122ccf109ef954f8))
+
 # [1.2.0](https://github.com/retejs/rete-qa/compare/v1.1.2...v1.2.0) (2023-12-20)
 
 
