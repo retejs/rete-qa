@@ -12,17 +12,19 @@ jobs:
       fail-fast: false
       max-parallel: 3
       matrix:
-        node: [16]
         include:
           - stack: angular
             version: 17
             node: 18
           - stack: react
             version: 18
+            node: 16
           - stack: vue
             version: 3
+            node: 16
           - stack: svelte
             version: 4
+            node: 16
     uses: ./.github/workflows/regression.yml
     with:
       name: ${{ matrix.stack }}
