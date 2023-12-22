@@ -10,6 +10,8 @@ on:
       version:
         required: true
         type: number
+      node:
+        type: number
   workflow_dispatch:
     inputs:
       name:
@@ -25,6 +27,9 @@ on:
         required: true
         type: number
         description: Stack version
+      node:
+        type: number
+        description: 'Node.js version (default: 16)'
 
 jobs:
   test:
@@ -48,7 +53,7 @@ jobs:
         sudo apt-get -qyy clean
     - uses: actions/setup-node@v3
       with:
-        node-version: 16
+        node-version: ${{ github.event.inputs.node || inputs.node || 16 }}
     - name: Install Rete QA
       run: npm i -g rete-qa rete-kit
     - name: Install Playwright Browsers
