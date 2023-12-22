@@ -15,6 +15,7 @@ jobs:
         include:
           - stack: angular
             version: 17
+            node: 18
           - stack: react
             version: 18
           - stack: vue
@@ -25,4 +26,5 @@ jobs:
     with:
       name: ${{ matrix.stack }}
       version: ${{ matrix.version }}
+      node: ${{ matrix.node }}
   
