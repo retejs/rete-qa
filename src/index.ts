@@ -82,7 +82,7 @@ program
       try {
         log('success', 'START')('Testing in', chalk.yellow(folder), '...')
         const APP = folder
-        const SERVE = App.builders[stack].getStaticPath(folder)
+        const SERVE = App.builders[stack].getStaticPath(folder, version)
         const playwrightFolder = dirname(require.resolve('@playwright/test'))
 
         await execa(`${playwrightFolder}/cli.js`, [
