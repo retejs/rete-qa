@@ -8,7 +8,8 @@ import { join, dirname, resolve } from 'path'
 import { App } from 'rete-kit'
 import { appsCachePath, projects } from './consts'
 import { log } from './ui'
-import { fixtures, getFeatures, stackNames, validate } from './init'
+import { fixtures, getFeatures, stackNames, validate } from './commands/init'
+import { validateTestRun } from './commands/test'
 
 const program = createCommand()
 
@@ -29,6 +30,7 @@ program
     const depsAlias = options.depsAlias ? resolve(cwd, options.depsAlias) : undefined
     const stacks = options.stack ? options.stack.split(',') : stackNames
     const stackVersions = options.stackVersions ? options.stackVersions.split(',') : null
+    let exitCode = 0
 
     const { error } = validate(stacks, stackVersions)
 
@@ -48,16 +50,25 @@ program
 
       log('success')('Start creating', chalk.yellow(stack, `v${version}`), 'application in ', folder)
 
-      process.chdir(join(cwd, appsCachePath))
-      await App.createApp({
-        name: folder,
-        stack,
-        version,
-        features: features.map(f => f && f.name).filter(Boolean) as string[],
-        depsAlias,
-        next
-      })
-      await execa('npm', ['run', 'build'], { cwd: join(cwd, appsCachePath, folder) })
+      try {
+        process.chdir(join(cwd, appsCachePath))
+        await App.createApp({
+          name: folder,
+          stack,
+          version,
+          features: features.map(f => f && f.name).filter(Boolean) as string[],
+          depsAlias,
+          next
+        })
+        await execa('npm', ['run', 'build'], { cwd: join(cwd, appsCachePath, folder) })
+      } catch (err) {
+        console.error(err)
+        log('fail', 'FAIL')('Initialization of', folder, 'failed.')
+        exitCode = 1
+      }
+    }
+    if (exitCode) {
+      process.exit(exitCode)
     }
   })
 
@@ -72,6 +83,7 @@ program
   .action(async (options: { updateSnapshots?: boolean, stack?: string, stackVersions?: string, project?: string, grep?: string }) => {
     const stacks = options.stack ? options.stack.split(',') : null
     const stackVersions = options.stackVersions ? options.stackVersions.split(',') : null
+    let exitCode = 0
 
     for (const fixture of fixtures) {
       const { folder, stack, version } = fixture
@@ -82,8 +94,16 @@ program
       try {
         log('success', 'START')('Testing in', chalk.yellow(folder), '...')
         const APP = folder
-        const SERVE = App.builders[stack].getStaticPath(folder)
+        const SERVE = App.builders[stack].getStaticPath(folder, version)
         const playwrightFolder = dirname(require.resolve('@playwright/test'))
+
+        const { error } = await validateTestRun(APP, SERVE)
+
+        if (error) {
+          log('fail', 'FAIL')(chalk.red(error))
+          exitCode = 1
+          continue
+        }
 
         await execa(`${playwrightFolder}/cli.js`, [
           'test',
@@ -94,8 +114,13 @@ program
         ], { env: { APP, SERVE }, stdio: 'inherit' })
         log('success', 'DONE')('Testing for', chalk.yellow(folder), 'done')
       } catch (err) {
-        log('fail', 'FAIL')('Tests in', folder, 'failed.', err)
+        console.error(err)
+        log('fail', 'FAIL')('Tests in', folder, 'failed.')
+        exitCode = 1
       }
+    }
+    if (exitCode) {
+      process.exit(exitCode)
     }
   })
 
