@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/retejs/rete-qa/compare/v1.3.0...v1.4.0) (2023-12-23)
+
+
+### Bug Fixes
+
+* angular static path ([0709fb7](https://github.com/retejs/rete-qa/commit/0709fb7507f45f9da28e9113e3a4c9288ae9dec9))
+
+
+### Features
+
+* correct exit code on init/test fail ([7c176d7](https://github.com/retejs/rete-qa/commit/7c176d73a3dd7298487ae5eb304de8f1d1497c9f))
+
 # [1.3.0](https://github.com/retejs/rete-qa/compare/v1.2.0...v1.3.0) (2023-12-22)
 
 
