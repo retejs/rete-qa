@@ -1,0 +1,67 @@
+name: Update snaphots
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        required: true
+        type: choice
+        description: Stack
+        options:
+        - react
+        - vue
+        - angular
+        - svelte
+      version:
+        required: true
+        type: number
+        description: Stack version
+      node:
+        type: number
+        description: 'Node.js version (default: 16)'
+
+
+jobs:
+  test:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    # TODO reuse steps from regression.yml
+    steps:
+    - name: Install fonts
+      run: |
+        sudo apt-get -qqy update
+        sudo apt-get -qqy --no-install-recommends install \
+          libfontconfig \
+          libfreetype6 \
+          xfonts-cyrillic \
+          xfonts-scalable \
+          fonts-liberation \
+          fonts-ipafont-gothic \
+          fonts-wqy-zenhei \
+          fonts-tlwg-loma-otf \
+          fonts-freefont-ttf
+        sudo rm -rf /var/lib/apt/lists/*
+        sudo apt-get -qyy clean
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ github.event.inputs.node || 16 }}
+    - name: Install Rete QA
+      run: npm i -g rete-qa rete-kit
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Init application
+      run: rete-qa init -s ${{ github.event.inputs.name }} -sv ${{ github.event.inputs.version }}
+      env:
+        CI: ""
+    - name: Update snapshots
+      run: rete-qa test -s ${{ github.event.inputs.name }} -sv ${{ github.event.inputs.version }} -u
+    - name: Get path to snapshots
+      id: get_snapshots
+      run: echo "::set-output name=path::$(npm root -g)/rete-qa/snapshots/${{ github.event.inputs.name }}${{ github.event.inputs.version }}"
+    - uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: snapshots
+        path: ${{ steps.get_snapshots.outputs.path }}
+        retention-days: 7
+    
