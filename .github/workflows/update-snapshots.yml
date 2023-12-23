@@ -1,4 +1,5 @@
 name: Update snaphots
+run-name: Update snaphots for ${{ inputs.name }} v${{ inputs.version }}
 
 on:
   workflow_dispatch:
@@ -22,7 +23,7 @@ on:
 
 
 jobs:
-  test:
+  update:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     # TODO reuse steps from regression.yml
@@ -57,11 +58,54 @@ jobs:
       run: rete-qa test -s ${{ github.event.inputs.name }} -sv ${{ github.event.inputs.version }} -u
     - name: Get path to snapshots
       id: get_snapshots
-      run: echo "::set-output name=path::$(npm root -g)/rete-qa/snapshots/${{ github.event.inputs.name }}${{ github.event.inputs.version }}"
+      run: echo "path=$(npm root -g)/rete-qa/snapshots/${{ github.event.inputs.name }}${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
     - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: snapshots
         path: ${{ steps.get_snapshots.outputs.path }}
         retention-days: 7
+  
+  send:
+    runs-on: ubuntu-latest
+    needs: update
+    if: success('generate-docs')
+    steps:
+      # TODO reuse with update-docs.yml
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Checkout rete-qa repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ steps.generate_token.outputs.token }}
+          repository: retejs/rete-qa
+      - name: Get path to snapshots
+        id: snapshots_folder
+        run: echo "path=./snapshots/${{ github.event.inputs.name }}${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          
+      - name: Clear old snapshots
+        run: rm -rf ${{ steps.snapshots_folder.path }}
+        
+      - uses: actions/download-artifact@v3
+        with:
+          name: snapshots
+          path: ${{ steps.snapshots_folder.path }}
+      
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ steps.generate_token.outputs.token }}
+          author: rete-js[bot] <rete-js[bot]@users.noreply.github.com>
+          commit-message: "fix(snaphots): update snapshots for ${{ github.event.inputs.name }} v${{ github.event.inputs.version }}"
+          title: Update snapshots for ${{ github.event.inputs.name }} v${{ github.event.inputs.version }}
+          branch: update-snapshots-${{ github.event.inputs.name }}-v${{ github.event.inputs.version }}
+          body: "Snapshots update for ${{ github.event.inputs.name }} v${{ github.event.inputs.version }}"
+          reviewers: Ni55aN
+    
     
