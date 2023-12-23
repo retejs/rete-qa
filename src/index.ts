@@ -8,7 +8,7 @@ import { join, dirname, resolve } from 'path'
 import { App } from 'rete-kit'
 import { appsCachePath, projects } from './consts'
 import { log } from './ui'
-import { fixtures, getFeatures, stackNames, validate } from './init'
+import { fixtures, getFeatures, stackNames, validate } from './commands/init'
 
 const program = createCommand()
 
