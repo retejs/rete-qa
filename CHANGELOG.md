@@ -1,3 +1,13 @@
+## [1.4.1](https://github.com/retejs/rete-qa/compare/v1.4.0...v1.4.1) (2023-12-23)
+
+
+### Bug Fixes
+
+* **snaphots:** update snapshots for angular v13 ([ce9b2aa](https://github.com/retejs/rete-qa/commit/ce9b2aa19e9fb30736d3e48291304a84f529ed76))
+* **snaphots:** update snapshots for angular v15 ([cadb15d](https://github.com/retejs/rete-qa/commit/cadb15d8e6b5afb3a73e3c40ef57fa7a37e5713f))
+* **snaphots:** update snapshots for angular v17 ([16612a8](https://github.com/retejs/rete-qa/commit/16612a8b544b04168f7457c89ecd516444da935c))
+* **snaphots:** update snapshots for react v17 ([662f24f](https://github.com/retejs/rete-qa/commit/662f24f19f79273b5fd7fbdb46f3ce0c042ca39f))
+
 # [1.4.0](https://github.com/retejs/rete-qa/compare/v1.3.0...v1.4.0) (2023-12-23)
 
 
