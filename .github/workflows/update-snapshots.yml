@@ -90,12 +90,12 @@ jobs:
         run: echo "path=./snapshots/${{ github.event.inputs.name }}${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
           
       - name: Clear old snapshots
-        run: rm -rf ${{ steps.snapshots_folder.path }}
+        run: rm -rf ${{ steps.snapshots_folder.outputs.path }}
         
       - uses: actions/download-artifact@v3
         with:
           name: snapshots
-          path: ${{ steps.snapshots_folder.path }}
+          path: ${{ steps.snapshots_folder.outputs.path }}
       
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
