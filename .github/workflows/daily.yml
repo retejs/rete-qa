@@ -5,29 +5,51 @@ on:
   schedule:
     - cron: '0 3 * * *'
 
-
 jobs:
-  run-tests:
+  angular:
     strategy:
       fail-fast: false
-      max-parallel: 3
+      max-parallel: 1
       matrix:
-        include:
-          - stack: angular
-            version: 17
-            node: 18
-          - stack: react
-            version: 18
-            node: 16
-          - stack: vue
-            version: 3
-            node: 16
-          - stack: svelte
-            version: 4
-            node: 16
+        version: [17,16,15,14,13,12]
     uses: ./.github/workflows/regression.yml
     with:
-      name: ${{ matrix.stack }}
+      name: angular
       version: ${{ matrix.version }}
-      node: ${{ matrix.node }}
+      node: ${{ matrix.version < 14 && 14 || (matrix.version >=17 && 18 || 16) }}
+
+  react:
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        version: [18,17,16]
+    uses: ./.github/workflows/regression.yml
+    with:
+      name: react
+      version: ${{ matrix.version }}
+      node: 18
+      
+  vue:
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        version: [3,2]
+    uses: ./.github/workflows/regression.yml
+    with:
+      name: vue
+      version: ${{ matrix.version }}
+      node: 18
   
+  svelte:
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        version: [4,3]
+    uses: ./.github/workflows/regression.yml
+    with:
+      name: svelte
+      version: ${{ matrix.version }}
+      node: 18
