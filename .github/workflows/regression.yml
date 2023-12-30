@@ -39,6 +39,8 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: ${{ inputs.node || 16 }}
+    - name: Install Rete QA
+      run: npm i -g rete-qa rete-kit
     - name: Init application
       run: rete-qa init -s ${{ inputs.name }} -sv ${{ inputs.version }}
       env:
