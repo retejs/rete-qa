@@ -50,7 +50,7 @@ jobs:
       working-directory: .rete-qa
     - uses: actions/upload-artifact@v4
       with:
-        name: rete-qa
+        name: rete-qa-${{ inputs.name }}-v${{ inputs.version }}
         path: .rete-qa
         retention-days: 3
   test:
@@ -79,7 +79,7 @@ jobs:
         sudo apt-get -qyy clean
     - uses: actions/download-artifact@v4
       with:
-        name: rete-qa
+        name: rete-qa-${{ inputs.name }}-v${{ inputs.version }}
         path: .rete-qa
     - uses: actions/setup-node@v3
       with:
