@@ -32,9 +32,32 @@ on:
         description: 'Node.js version (default: 16)'
 
 jobs:
+  init:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node || 16 }}
+    - name: Init application
+      run: rete-qa init -s ${{ inputs.name }} -sv ${{ inputs.version }}
+      env:
+        CI: ""
+    - name: Prune node_modules
+      run: npx rimraf --glob **/node_modules
+      working-directory: .rete-qa
+    - uses: actions/upload-artifact@v3
+      with:
+        name: rete-qa
+        path: .rete-qa
+        retention-days: 3
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    needs: [init]
+    strategy:
+      matrix:
+        browser: [chromium,firefox,webkit]
     steps:
     - name: Install fonts
       run: |
@@ -51,19 +74,19 @@ jobs:
           fonts-freefont-ttf
         sudo rm -rf /var/lib/apt/lists/*
         sudo apt-get -qyy clean
+    - uses: actions/download-artifact@v4
+      with:
+        name: rete-qa
+        path: .rete-qa
     - uses: actions/setup-node@v3
       with:
-        node-version: ${{ github.event.inputs.node || inputs.node || 16 }}
+        node-version: ${{ inputs.node || 16 }}
     - name: Install Rete QA
       run: npm i -g rete-qa rete-kit
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Init application
-      run: rete-qa init -s ${{ github.event.inputs.name || inputs.name }} -sv ${{ github.event.inputs.version || inputs.version }}
-      env:
-        CI: ""
     - name: Run Playwright tests
-      run: rete-qa test -s ${{ github.event.inputs.name || inputs.name }} -sv ${{ github.event.inputs.version || inputs.version }}
+      run: rete-qa test -s ${{ inputs.name }} -sv ${{  inputs.version }} --project ${{ matrix.browser }}
     - uses: actions/upload-artifact@v3
       if: always()
       with:
