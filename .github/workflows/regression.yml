@@ -87,7 +87,7 @@ jobs:
     - name: Install Rete QA
       run: npm i -g rete-qa rete-kit
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      run: npx playwright install --with-deps ${{ matrix.browser }}
     - name: Run Playwright tests
       run: rete-qa test -s ${{ inputs.name }} -sv ${{  inputs.version }} --project ${{ matrix.browser }}
     - uses: actions/upload-artifact@v3
