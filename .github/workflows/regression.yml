@@ -46,7 +46,6 @@ jobs:
         path: ~/.npm
         key: ${{ runner.os }}-cache-global-node-modules
     - name: Install Rete QA
-      if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
       run: npm i -g rete-qa rete-kit
     - name: Init application
       run: rete-qa init -s ${{ inputs.name }} -sv ${{ inputs.version }}
@@ -98,7 +97,6 @@ jobs:
         path: ~/.npm
         key: ${{ runner.os }}-cache-global-node-modules
     - name: Install Rete QA
-      if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
       run: npm i -g rete-qa rete-kit
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps ${{ matrix.browser }}
