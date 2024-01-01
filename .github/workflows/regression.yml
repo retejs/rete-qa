@@ -39,7 +39,14 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: ${{ inputs.node || 16 }}
+    - name: Cache global node modules
+      id: cache-npm
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-cache-global-node-modules
     - name: Install Rete QA
+      if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
       run: npm i -g rete-qa rete-kit
     - name: Init application
       run: rete-qa init -s ${{ inputs.name }} -sv ${{ inputs.version }}
@@ -84,7 +91,14 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: ${{ inputs.node || 16 }}
+    - name: Cache global node modules
+      id: cache-npm
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-cache-global-node-modules
     - name: Install Rete QA
+      if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
       run: npm i -g rete-qa rete-kit
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps ${{ matrix.browser }}
