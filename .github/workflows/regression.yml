@@ -44,7 +44,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.npm
-        key: ${{ runner.os }}-cache-global-node-modules
+        key: ${{ runner.os }}-${{ inputs.node || 16 }}-cache-global-node-modules
     - name: Install Rete QA
       run: npm i -g rete-qa rete-kit
     - name: Init application
@@ -95,7 +95,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.npm
-        key: ${{ runner.os }}-cache-global-node-modules
+        key: ${{ runner.os }}-${{ inputs.node || 16 }}-cache-global-node-modules
     - name: Install Rete QA
       run: npm i -g rete-qa rete-kit
     - name: Install Playwright Browsers
