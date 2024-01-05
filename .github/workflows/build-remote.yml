@@ -2,6 +2,20 @@ name: Build remote branch
 run-name: "Build remote branch: ${{ inputs.repo }}#${{ inputs.branch }}"
 
 on:
+  workflow_call:
+    inputs:
+      repo:
+        description: 'Repository'
+        type: string
+        required: true
+      branch:
+        description: 'Branch'
+        type: string
+        required: true
+    outputs:
+      artifact:
+        description: "Artifact name"
+        value: ${{ jobs.build.outputs.name }}
   workflow_dispatch:
     inputs:
       repo:
@@ -14,6 +28,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      name: ${{ steps.package-info.outputs.name }}
     steps:
       - name: Info
         run: |
@@ -34,7 +50,7 @@ jobs:
         id: package-info
         working-directory: dist
         run: |
-          echo "::set-output name=name::$(node -p "require('./package.json').name")"
+          echo "name=$(node -p "require('./package.json').name")" >> $GITHUB_OUTPUT
       - name: Print package info
         run: echo ${{ steps.package-info.outputs.name }}
       - name: Upload artifact
