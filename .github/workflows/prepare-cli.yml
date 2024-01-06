@@ -15,22 +15,20 @@ on:
         type: string
         required: true
     outputs:
-      name:
-        description: "Package name"
-        value: ${{ jobs.pack.outputs.name }}
+      artifact:
+        description: "Artifact name"
+        value: ${{ jobs.pack.outputs.artifact }}
       path:
         description: "Path to package"
-        value: ${{ jobs.pack.outputs.source == 'github' && jobs.pack.outputs.tarball || jobs.pack.outputs.name }}
-      artifact:
-        description: "Tarball path"
-        value: ${{ jobs.pack.outputs.tarball }}
+        value: ${{ jobs.pack.outputs.path }}
+
 jobs:
   pack:
     runs-on: ubuntu-latest
     outputs:
-      name: ${{ steps.build.outputs.name }}
-      source: ${{ steps.detect-source.outputs.type }}
-      tarball: ${{ steps.tgz.outputs.path }}
+      artifact: ${{ steps.build.outputs.name }}
+      path: ${{ steps.result.outputs.path }}
+
     steps:
     - name: Detect source type
       id: detect-source
@@ -50,6 +48,11 @@ jobs:
     - name: Print source type
       run: |
         echo "Source: ${{ steps.detect-source.outputs.type }}"
+
+    - name: Check NPM Package Version
+      if: steps.detect-source.outputs.type == 'npm'
+      run: |
+        npm show ${{ inputs.package }} version || exit
 
     - name: Extract repo and branch
       if: steps.detect-source.outputs.type == 'github'
@@ -97,3 +100,9 @@ jobs:
       if: steps.detect-source.outputs.type == 'github'
       run: |
         echo "${{ steps.tgz.outputs.path }}"
+
+    - name: Output path
+      id: result
+      run: |
+        echo "path=${{ steps.detect-source.outputs.type == 'github' && steps.tgz.outputs.path || inputs.package }}" >> "$GITHUB_OUTPUT"
+
