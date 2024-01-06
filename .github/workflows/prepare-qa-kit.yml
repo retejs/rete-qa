@@ -47,11 +47,15 @@ jobs:
     uses: ./.github/workflows/prepare-cli.yml
     with:
       package: ${{ inputs.qa }}
+    secrets:
+      RETE_QA_PUBLIC_PULL: ${{ secrets.RETE_QA_PUBLIC_PULL }}
   pack-kit:
     needs: print
     uses: ./.github/workflows/prepare-cli.yml
     with:
       package: ${{ inputs.kit }}
+    secrets:
+      RETE_QA_PUBLIC_PULL: ${{ secrets.RETE_QA_PUBLIC_PULL }}
   summary:
     needs: [pack-qa, pack-kit]
     runs-on: ubuntu-latest
