@@ -52,14 +52,14 @@ jobs:
         echo "Source: ${{ steps.detect-source.outputs.type }}"
 
     - name: Extract repo and branch
-      if: ${{ steps.source-type.outputs.type }} == 'github'
+      if: ${{ steps.detect-source.outputs.type }} == 'github'
       id: repo
       run: |
         echo "path=$(echo ${{ inputs.package }} | cut -d'#' -f1)" >> "$GITHUB_OUTPUT"
         echo "branch=$(echo ${{ inputs.package }} | cut -d'#' -f2)" >> "$GITHUB_OUTPUT"
 
     - name: Clone from GitHub
-      if: ${{ steps.source-type.outputs.type }} == 'github'
+      if: ${{ steps.detect-source.outputs.type }} == 'github'
       uses: actions/checkout@v2
       with:
         repository: ${{ steps.repo.outputs.path }}
@@ -68,11 +68,11 @@ jobs:
         fetch-depth: 0
 
     - name: Setup Node.js
-      if: ${{ steps.source-type.outputs.type }} == 'github'
+      if: ${{ steps.detect-source.outputs.type }} == 'github'
       uses: actions/setup-node@v4
 
     - name: Build
-      if: ${{ steps.source-type.outputs.type }} == 'github'
+      if: ${{ steps.detect-source.outputs.type }} == 'github'
       id: build
       run: |
         npm install
@@ -81,19 +81,19 @@ jobs:
         echo "name=$(node -p "require('./package.json').name")" >> "$GITHUB_OUTPUT"
 
     - name: Upload *.tgz
-      if: ${{ steps.source-type.outputs.type }} == 'github'
+      if: ${{ steps.detect-source.outputs.type }} == 'github'
       uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.build.outputs.name }}
         path: ./*.tgz
 
     - name: Extract tgz path
-      if: ${{ steps.source-type.outputs.type }} == 'github'
+      if: ${{ steps.detect-source.outputs.type }} == 'github'
       id: tgz
       run: |
         echo "path=$(ls ./*.tgz)" >> "$GITHUB_OUTPUT"
 
     - name: Print tgz path
-      if: ${{ steps.source-type.outputs.type }} == 'github'
+      if: ${{ steps.detect-source.outputs.type }} == 'github'
       run: |
         echo "Artifact: ${{ steps.tgz.outputs.path }}"
