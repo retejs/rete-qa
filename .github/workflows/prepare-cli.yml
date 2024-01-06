@@ -21,6 +21,10 @@ on:
       path:
         description: "Path to package"
         value: ${{ jobs.pack.outputs.path }}
+    secrets:
+      RETE_QA_PUBLIC_PULL:
+        description: 'GitHub Personal access token'
+        required: true
 
 jobs:
   pack:
