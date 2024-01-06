@@ -13,11 +13,9 @@ on:
       node:
         type: number
       qa:
-        description: 'Rete QA (<name>@<version> or <owner>/<repo>#<version>)'
         type: string
         default: 'rete-qa@latest'
       kit:
-        description: 'Rete Kit (<name>@<version> or <owner>/<repo>#<version>)'
         type: string
         default: 'rete-kit@latest'
   workflow_dispatch:
@@ -38,6 +36,14 @@ on:
       node:
         type: number
         description: 'Node.js version (default: 16)'
+      qa:
+        description: 'Rete QA (<name>@<version> or <owner>/<repo>#<version>)'
+        type: string
+        default: 'rete-qa@latest'
+      kit:
+        description: 'Rete Kit (<name>@<version> or <owner>/<repo>#<version>)'
+        type: string
+        default: 'rete-kit@latest'
 
 jobs:
   prepare:
