@@ -44,12 +44,12 @@ jobs:
         echo "Package: ${{ inputs.qa }} ${{ inputs.kit }}"
   pack-qa:
     needs: print
-    uses: ./.github/workflows/prepare.yml
+    uses: ./.github/workflows/prepare-cli.yml
     with:
       package: ${{ inputs.qa }}
   pack-kit:
     needs: print
-    uses: ./.github/workflows/prepare.yml
+    uses: ./.github/workflows/prepare-cli.yml
     with:
       package: ${{ inputs.kit }}
   summary:
