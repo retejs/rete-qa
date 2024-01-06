@@ -32,9 +32,13 @@ on:
         description: 'Node.js version (default: 16)'
 
 jobs:
+  prepare:
+    uses: ./.github/workflows/prepare-qa-kit.yml
+    secrets: inherit
   init:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    needs: [prepare]
     steps:
     - uses: actions/setup-node@v3
       with:
@@ -45,8 +49,20 @@ jobs:
       with:
         path: ~/.npm
         key: ${{ runner.os }}-${{ inputs.node || 16 }}-cache-global-node-modules
+    - name: Download artifact with Rete QA
+      uses: actions/download-artifact@v4
+      if: needs.prepare.outputs.qa-artifact
+      with:
+        name: ${{ needs.prepare.outputs.qa-artifact }}
+        path: .
+    - name: Download artifact with Rete Kit
+      uses: actions/download-artifact@v4
+      if: needs.prepare.outputs.kit-artifact
+      with:
+        name: ${{ needs.prepare.outputs.kit-artifact }}
+        path: .
     - name: Install Rete QA
-      run: npm i -g rete-qa rete-kit
+      run: npm i -g ${{ needs.prepare.outputs.qa-path }} ${{ needs.prepare.outputs.kit-path }}
     - name: Init application
       run: rete-qa init -s ${{ inputs.name }} -sv ${{ inputs.version }}
       env:
@@ -96,8 +112,20 @@ jobs:
       with:
         path: ~/.npm
         key: ${{ runner.os }}-${{ inputs.node || 16 }}-cache-global-node-modules
+    - name: Download artifact with Rete QA
+      uses: actions/download-artifact@v4
+      if: needs.prepare.outputs.qa-artifact
+      with:
+        name: ${{ needs.prepare.outputs.qa-artifact }}
+        path: .
+    - name: Download artifact with Rete Kit
+      uses: actions/download-artifact@v4
+      if: needs.prepare.outputs.kit-artifact
+      with:
+        name: ${{ needs.prepare.outputs.kit-artifact }}
+        path: .
     - name: Install Rete QA
-      run: npm i -g rete-qa rete-kit
+      run: npm i -g ${{ needs.prepare.outputs.qa-path }} ${{ needs.prepare.outputs.kit-path }}
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps ${{ matrix.browser }}
     - name: Run Playwright tests
