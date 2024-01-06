@@ -1,0 +1,99 @@
+name: Prepare CLI tool
+run-name: "Prepare CLI tool: ${{ inputs.package }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: '<name>@<version> or <owner>/<repo>#<version>'
+        type: string
+        required: true
+  workflow_call:
+    inputs:
+      package:
+        description: '<name>@<version> or <owner>/<repo>#<version>'
+        type: string
+        required: true
+    outputs:
+      name:
+        description: "Package name"
+        value: ${{ jobs.pack.outputs.name }}
+      path:
+        description: "Path to package"
+        value: ${{ jobs.pack.outputs.source === 'github' && jobs.pack.outputs.tarball || jobs.pack.outputs.name }}
+      artifact:
+        description: "Tarball path"
+        value: ${{ jobs.pack.outputs.tarball }}
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+    outputs:
+      name: ${{ steps.build.outputs.name }}
+      source: ${{ steps.detect-source.outputs.type }}
+      tarball: ${{ steps.tgz.outputs.path }}
+    steps:
+    - name: Detect source type
+      id: detect-source
+      run: |
+        regex_github='^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[A-Za-z0-9_.-]+$'
+        regex_npm='^(@[a-zA-Z0-9_-]+\/)?[a-zA-Z0-9_-]+(@[a-zA-Z0-9_.-]+)?$'
+
+        if [[ ${{ inputs.package }} =~ $regex_github ]]; then
+          echo "type=github" >> "$GITHUB_OUTPUT"
+        elif [[ ${{ inputs.package }} =~ $regex_npm ]]; then
+          echo "type=npm" >> "$GITHUB_OUTPUT"
+        else
+          echo 'Cannot determine source type'
+          exit 1
+        fi
+
+    - name: Print source type
+      run: |
+        echo "Source: ${{ steps.detect-source.outputs.type }}"
+
+    - name: Extract repo and branch
+      if: ${{ steps.source-type.outputs.type }} == 'github'
+      id: repo
+      run: |
+        echo "path=$(echo ${{ inputs.package }} | cut -d'#' -f1)" >> "$GITHUB_OUTPUT"
+        echo "branch=$(echo ${{ inputs.package }} | cut -d'#' -f2)" >> "$GITHUB_OUTPUT"
+
+    - name: Clone from GitHub
+      if: ${{ steps.source-type.outputs.type }} == 'github'
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ steps.repo.outputs.path }}
+        ref: ${{ steps.repo.outputs.branch }}
+        token: ${{ secrets.RETE_QA_PUBLIC_PULL }}
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      if: ${{ steps.source-type.outputs.type }} == 'github'
+      uses: actions/setup-node@v4
+
+    - name: Build
+      if: ${{ steps.source-type.outputs.type }} == 'github'
+      id: build
+      run: |
+        npm install
+        npm run build
+        npm pack
+        echo "name=$(node -p "require('./package.json').name")" >> "$GITHUB_OUTPUT"
+
+    - name: Upload *.tgz
+      if: ${{ steps.source-type.outputs.type }} == 'github'
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ steps.build.outputs.name }}
+        path: ./*.tgz
+
+    - name: Extract tgz path
+      if: ${{ steps.source-type.outputs.type }} == 'github'
+      id: tgz
+      run: |
+        echo "path=$(ls ./*.tgz)" >> "$GITHUB_OUTPUT"
+
+    - name: Print tgz path
+      if: ${{ steps.source-type.outputs.type }} == 'github'
+      run: |
+        echo "Artifact: ${{ steps.tgz.outputs.path }}"
