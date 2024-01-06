@@ -1,0 +1,69 @@
+name: Prepare Rete QA & Kit
+
+on:
+  workflow_dispatch:
+    inputs:
+      qa:
+        description: 'Rete QA <name>@<version> or <owner>/<repo>#<version>'
+        type: string
+        default: 'rete-qa@latest'
+      kit:
+        description: 'Rete Kit <name>@<version> or <owner>/<repo>#<version>'
+        type: string
+        default: 'rete-kit@latest'
+  workflow_call:
+    inputs:
+      qa:
+        description: 'Rete QA <name>@<version> or <owner>/<repo>#<version>'
+        type: string
+        default: 'rete-qa@latest'
+      kit:
+        description: 'Rete Kit <name>@<version> or <owner>/<repo>#<version>'
+        type: string
+        default: 'rete-kit@latest'
+    outputs:
+      qa-path:
+        description: 'Path to Rete QA package'
+        value: ${{ jobs.pack-qa.outputs.path }}
+      qa-artifact:
+        description: 'Artifact name with Rete QA'
+        value: ${{ jobs.pack-qa.outputs.artifact }}
+      kit-path:
+        description: 'Path to Rete Kit package'
+        value: ${{ jobs.pack-kit.outputs.path }}
+      kit-artifact:
+        description: 'Artifact name with Rete Kit'
+        value: ${{ jobs.pack-kit.outputs.artifact }}
+
+jobs:
+  print:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Inputs
+      run: |
+        echo "Package: ${{ inputs.qa }} ${{ inputs.kit }}"
+  pack-qa:
+    needs: print
+    uses: ./.github/workflows/prepare.yml
+    with:
+      package: ${{ inputs.qa }}
+  pack-kit:
+    needs: print
+    uses: ./.github/workflows/prepare.yml
+    with:
+      package: ${{ inputs.kit }}
+  summary:
+    needs: [pack-qa, pack-kit]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+        - { name: 'Rete QA', needs: 'pack-qa' }
+        - { name: 'Rete Kit', needs: 'pack-kit' }
+    steps:
+    - name: ${{ matrix.target.name }}
+      run: |
+        path=${{ needs[matrix.target.needs].outputs.path }}
+        artifact=${{ needs[matrix.target.needs].outputs.artifact }}
+
+        echo "${{ matrix.target.name }} available at $path $([ $artifact ] && echo "in artifact $artifact" || echo "")"
