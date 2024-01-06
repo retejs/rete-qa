@@ -82,7 +82,7 @@ jobs:
 
     - name: Upload *.tgz
       if: steps.detect-source.outputs.type == 'github'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.build.outputs.name }}
         path: ./*.tgz
@@ -96,4 +96,4 @@ jobs:
     - name: Print tgz path
       if: steps.detect-source.outputs.type == 'github'
       run: |
-        echo "Artifact: ${{ steps.tgz.outputs.path }}"
+        echo "${{ steps.tgz.outputs.path }}"
