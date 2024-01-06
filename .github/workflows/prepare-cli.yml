@@ -20,7 +20,7 @@ on:
         value: ${{ jobs.pack.outputs.name }}
       path:
         description: "Path to package"
-        value: ${{ jobs.pack.outputs.source === 'github' && jobs.pack.outputs.tarball || jobs.pack.outputs.name }}
+        value: ${{ jobs.pack.outputs.source == 'github' && jobs.pack.outputs.tarball || jobs.pack.outputs.name }}
       artifact:
         description: "Tarball path"
         value: ${{ jobs.pack.outputs.tarball }}
