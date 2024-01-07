@@ -119,7 +119,7 @@ jobs:
         path: .rete-qa
         retention-days: 3
   test:
-    name: Perform tests
+    name: ${{ matrix.browser }}
     timeout-minutes: 60
     runs-on: ubuntu-latest
     needs: [init,tools]
