@@ -54,18 +54,21 @@ on:
 
 jobs:
   tools:
+    name: Prepare tools
     uses: ./.github/workflows/prepare-qa-kit.yml
     secrets: inherit
     with:
       qa: ${{ inputs.qa }}
       kit: ${{ inputs.kit }}
   deps:
+    name: Prepare alias deps
     if: inputs.deps
     uses: ./.github/workflows/prepare-deps.yml
     secrets: inherit
     with:
       repos: ${{ inputs.deps }}
   init:
+    name: Initialize ${{ inputs.name }} v${{ inputs.version }} app
     runs-on: ubuntu-latest
     timeout-minutes: 5
     needs: [tools,deps] 
@@ -116,6 +119,7 @@ jobs:
         path: .rete-qa
         retention-days: 3
   test:
+    name: Perform tests
     timeout-minutes: 60
     runs-on: ubuntu-latest
     needs: [init,tools]
