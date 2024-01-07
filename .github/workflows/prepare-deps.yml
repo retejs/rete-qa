@@ -40,7 +40,7 @@ jobs:
         echo $list
 
   extract-repos:
-    name: Build repos
+    name: ${{ matrix.repo.path }}#${{ matrix.repo.branch }}
     needs: [extract-list]
     strategy:
       matrix:
