@@ -39,6 +39,8 @@ jobs:
       matrix:
         repo: ${{ fromJson(needs.extract-list.outputs.array) }}
     uses: ./.github/workflows/build-remote.yml
+    secrets:
+      RETE_QA_PUBLIC_PULL: ${{ secrets.RETE_QA_PUBLIC_PULL }}
     with:
       repo: ${{ matrix.repo.path }}
       branch: ${{ matrix.repo.branch }}
