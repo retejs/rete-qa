@@ -37,19 +37,21 @@ on:
 
 jobs:
   pack-qa:
+    name: Rete QA
     uses: ./.github/workflows/prepare-cli.yml
     with:
       package: ${{ inputs.qa }}
     secrets:
       RETE_QA_PUBLIC_PULL: ${{ secrets.RETE_QA_PUBLIC_PULL }}
   pack-kit:
+    name: Rete Kit
     uses: ./.github/workflows/prepare-cli.yml
     with:
       package: ${{ inputs.kit }}
     secrets:
       RETE_QA_PUBLIC_PULL: ${{ secrets.RETE_QA_PUBLIC_PULL }}
   summary:
-    name: ${{ matrix.target.name }}
+    name: Summary: ${{ matrix.target.name }}
     needs: [pack-qa, pack-kit]
     runs-on: ubuntu-latest
     strategy:
