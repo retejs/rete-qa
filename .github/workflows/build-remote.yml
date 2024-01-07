@@ -16,6 +16,10 @@ on:
       artifact:
         description: "Artifact name"
         value: ${{ jobs.build.outputs.name }}
+    secrets:
+      RETE_QA_PUBLIC_PULL:
+        description: 'GitHub Personal access token'
+        required: true
   workflow_dispatch:
     inputs:
       repo:
