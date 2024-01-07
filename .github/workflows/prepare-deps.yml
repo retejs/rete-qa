@@ -1,0 +1,86 @@
+name: Prepare deps
+run-name: "Prepare deps: ${{ inputs.repos }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      repos:
+        description: 'list of <owner>/<repo>#<version> (comma separated)'
+        type: string
+
+jobs:
+  extract-list:
+    runs-on: ubuntu-latest
+    outputs:
+      array: ${{ steps.extract.outputs.list }}
+    steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+    - name: Extract list
+      id: extract
+      run: |
+        list=$(node -e "
+          const list = '${{ inputs.repos }}'.split(',')
+          const objects = list.map(item => {
+            const [path, branch] = item.split('#')
+            if (!path) throw new Error('Invalid path in item: ' + item)
+            if (!branch) throw new Error('Invalid branch in item: ' + item)
+            return { path, branch }
+          })
+          console.log(JSON.stringify(objects))
+        ")
+
+        echo "list=$list" >> "$GITHUB_OUTPUT"
+        echo $list
+
+  extract-repos:
+    needs: [extract-list]
+    strategy:
+      matrix:
+        repo: ${{ fromJson(needs.extract-list.outputs.array) }}
+    uses: ./.github/workflows/build-remote.yml
+    with:
+      repo: ${{ matrix.repo.path }}
+      branch: ${{ matrix.repo.branch }}
+
+  print:
+    needs: [extract-repos]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download artifacts with prebuilt packages
+      uses: actions/download-artifact@v4
+      with:
+        path: .
+    - uses: actions/setup-node@v4
+    - run: |
+        folders=()
+        tarballs=()
+
+        for folder in *; do
+          if [ -d "$folder" ]; then
+            cd $folder
+            tarball=$(npm pack)
+            mv $tarball ../
+            folders+=("$folder")
+            tarballs+=("$tarball")
+            cd ..
+            rm -rf $folder
+          fi
+        done
+        f=${folders[@]}
+        t=${tarballs[@]}
+
+        deps=$(node -e "
+          const folders = '$f'.split(' ')
+          const tarballs = '$t'.split(' ')
+
+          const entries = folders.map((folder, i) => [folder, tarballs[i]])
+
+          console.log(JSON.stringify(Object.fromEntries(entries)))
+        ")
+        echo $deps >> deps.json
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: deps
+        path: .
