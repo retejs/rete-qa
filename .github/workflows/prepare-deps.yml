@@ -15,6 +15,7 @@ on:
 
 jobs:
   extract-list:
+    name: Extract repos and branches from input
     runs-on: ubuntu-latest
     outputs:
       array: ${{ steps.extract.outputs.list }}
@@ -39,6 +40,7 @@ jobs:
         echo $list
 
   extract-repos:
+    name: Build repos
     needs: [extract-list]
     strategy:
       matrix:
@@ -50,7 +52,8 @@ jobs:
       repo: ${{ matrix.repo.path }}
       branch: ${{ matrix.repo.branch }}
 
-  print:
+  pack:
+    name: Pack dependencies and deps.json
     needs: [extract-repos]
     runs-on: ubuntu-latest
     steps:
@@ -64,9 +67,11 @@ jobs:
       run: |
         folders=()
         tarballs=()
+        ignore=("rete-qa" "rete-kit")
 
         for folder in *; do
-          if [ -d "$folder" ]; then
+          if [ -d "$folder" ] && [[ ! "${ignore[*]}" =~ "$folder" ]]; then
+             
             echo "Enter $folder"
             cd $folder
             tarball=$(npm pack)
