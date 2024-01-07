@@ -89,10 +89,11 @@ jobs:
         t=${tarballs[@]}
 
         deps=$(node -e "
+          const { } = require('path')
           const folders = '$f'.split(' ')
           const tarballs = '$t'.split(' ')
 
-          const entries = folders.filter(Boolean).map((folder, i) => [folder, tarballs[i]])
+          const entries = folders.filter(Boolean).map((folder, i) => [folder, `./${tarballs[i]}`])
 
           console.log(JSON.stringify(Object.fromEntries(entries)))
         ")
