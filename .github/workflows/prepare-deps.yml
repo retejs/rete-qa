@@ -61,16 +61,19 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         path: .
+    - name: Remove unurelated packages
+      run: |
+        rm -rf rete-qa
+        rm -rf rete-kit
     - name: Setup Node.js
       uses: actions/setup-node@v4
     - name: Pack the packages and create deps.json
       run: |
         folders=()
         tarballs=()
-        ignore=("rete-qa" "rete-kit")
 
         for folder in *; do
-          if [ -d "$folder" ] && [[ ! "${ignore[*]}" =~ "$folder" ]]; then
+          if [ -d "$folder" ]; then
              
             echo "Enter $folder"
             cd $folder
@@ -89,7 +92,7 @@ jobs:
           const folders = '$f'.split(' ')
           const tarballs = '$t'.split(' ')
 
-          const entries = folders.map((folder, i) => [folder, tarballs[i]])
+          const entries = folders.filter(Boolean).map((folder, i) => [folder, tarballs[i]])
 
           console.log(JSON.stringify(Object.fromEntries(entries)))
         ")
