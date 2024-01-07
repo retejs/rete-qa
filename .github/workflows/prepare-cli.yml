@@ -38,7 +38,7 @@ jobs:
     - name: Detect source type
       id: detect-source
       run: |
-        regex_github='^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[A-Za-z0-9_.-]+$'
+        regex_github='^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#.+$'
         regex_npm='^(@[a-zA-Z0-9_-]+\/)?[a-zA-Z0-9_-]+(@[a-zA-Z0-9_.-]+)?$'
 
         if [[ ${{ inputs.package }} =~ $regex_github ]]; then
