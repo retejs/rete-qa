@@ -68,7 +68,11 @@ jobs:
   init:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    needs: [tools,deps]
+    needs: [tools,deps] 
+    if: |
+      always() &&
+      !contains(needs.*.result, 'failure') &&
+      !contains(needs.*.result, 'cancelled')
     steps:
     - uses: actions/setup-node@v3
       with:
