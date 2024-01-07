@@ -31,6 +31,7 @@ on:
 
 jobs:
   build:
+    name: Build ${{ inputs.repo }}#${{ inputs.branch }}
     runs-on: ubuntu-latest
     outputs:
       name: ${{ steps.package-info.outputs.name }}
