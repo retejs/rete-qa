@@ -37,14 +37,12 @@ on:
 
 jobs:
   pack-qa:
-    needs: print
     uses: ./.github/workflows/prepare-cli.yml
     with:
       package: ${{ inputs.qa }}
     secrets:
       RETE_QA_PUBLIC_PULL: ${{ secrets.RETE_QA_PUBLIC_PULL }}
   pack-kit:
-    needs: print
     uses: ./.github/workflows/prepare-cli.yml
     with:
       package: ${{ inputs.kit }}
