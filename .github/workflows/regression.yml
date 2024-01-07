@@ -1,5 +1,5 @@
 name: Rete QA Regression
-run-name: Rete QA for ${{ inputs.name }} v${{ inputs.version }}
+run-name: Rete QA for ${{ inputs.name }} v${{ inputs.version }} (${{ inputs.qa }}, ${{ inputs.kit }}${{ inputs.deps && ' deps: '+inputs.deps || ''}})
 
 on:
   workflow_call:
