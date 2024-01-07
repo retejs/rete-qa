@@ -58,13 +58,16 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         path: .
-    - uses: actions/setup-node@v4
-    - run: |
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+    - name: Pack the packages and create deps.json
+      run: |
         folders=()
         tarballs=()
 
         for folder in *; do
           if [ -d "$folder" ]; then
+            echo "Enter $folder"
             cd $folder
             tarball=$(npm pack)
             mv $tarball ../
