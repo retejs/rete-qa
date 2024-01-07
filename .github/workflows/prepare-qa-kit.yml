@@ -51,7 +51,7 @@ jobs:
     secrets:
       RETE_QA_PUBLIC_PULL: ${{ secrets.RETE_QA_PUBLIC_PULL }}
   summary:
-    name: Summary: ${{ matrix.target.name }}
+    name: 'Summary: ${{ matrix.target.name }}'
     needs: [pack-qa, pack-kit]
     runs-on: ubuntu-latest
     strategy:
