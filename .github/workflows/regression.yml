@@ -70,7 +70,6 @@ jobs:
   init:
     name: Initialize ${{ inputs.name }} v${{ inputs.version }} app
     runs-on: ubuntu-latest
-    container: retejs/rete-qa:main
     timeout-minutes: 5
     needs: [tools,deps] 
     if: |
@@ -123,6 +122,7 @@ jobs:
     name: ${{ matrix.browser }}
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container: retejs/rete-qa:main
     needs: [init,tools]
     if: |
       always() &&
@@ -133,21 +133,6 @@ jobs:
       matrix:
         browser: [chromium,firefox,webkit]
     steps:
-    - name: Install fonts
-      run: |
-        sudo apt-get -qqy update
-        sudo apt-get -qqy --no-install-recommends install \
-          libfontconfig \
-          libfreetype6 \
-          xfonts-cyrillic \
-          xfonts-scalable \
-          fonts-liberation \
-          fonts-ipafont-gothic \
-          fonts-wqy-zenhei \
-          fonts-tlwg-loma-otf \
-          fonts-freefont-ttf
-        sudo rm -rf /var/lib/apt/lists/*
-        sudo apt-get -qyy clean
     - uses: actions/download-artifact@v4
       with:
         name: rete-qa-${{ inputs.name }}-v${{ inputs.version }}
