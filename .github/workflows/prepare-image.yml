@@ -20,8 +20,8 @@ jobs:
           cat <<EOL > Dockerfile
           FROM node:16
 
-          sudo apt-get -qqy update
-          sudo apt-get -qqy --no-install-recommends install \
+          apt-get -qqy update
+          apt-get -qqy --no-install-recommends install \
             libfontconfig \
             libfreetype6 \
             xfonts-cyrillic \
@@ -31,8 +31,8 @@ jobs:
             fonts-wqy-zenhei \
             fonts-tlwg-loma-otf \
             fonts-freefont-ttf
-          sudo rm -rf /var/lib/apt/lists/*
-          sudo apt-get -qyy clean
+          rm -rf /var/lib/apt/lists/*
+          apt-get -qyy clean
           
           EOL
       - name: Log in to the Container registry
