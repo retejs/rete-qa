@@ -70,6 +70,7 @@ jobs:
   init:
     name: Initialize ${{ inputs.name }} v${{ inputs.version }} app
     runs-on: ubuntu-latest
+    container: retejs/rete-qa:main
     timeout-minutes: 5
     needs: [tools,deps] 
     if: |
