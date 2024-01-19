@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/retejs/rete-qa/compare/v1.5.0...v1.5.1) (2024-01-19)
+
+
+### Bug Fixes
+
+* **config:** record video on retry ([1975eb2](https://github.com/retejs/rete-qa/commit/1975eb2844e64fa1dd6f2faf22693146b5e81bac))
+
 # [1.5.0](https://github.com/retejs/rete-qa/compare/v1.4.1...v1.5.0) (2024-01-19)
 
 
