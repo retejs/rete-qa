@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/retejs/rete-qa/compare/v1.4.1...v1.5.0) (2024-01-19)
+
+
+### Features
+
+* **report:** REPORTER env ([e13fe8c](https://github.com/retejs/rete-qa/commit/e13fe8c7b172e5511af736010f988e4f964b94aa))
+
 ## [1.4.1](https://github.com/retejs/rete-qa/compare/v1.4.0...v1.4.1) (2023-12-23)
 
 
