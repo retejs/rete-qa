@@ -37,6 +37,7 @@ export default defineConfig({
   use: {
     actionTimeout: 4000,
     trace: 'on-first-retry',
+    video: 'on-first-retry',
   },
   projects,
   outputDir: join(cwd, 'test-results', APP),
