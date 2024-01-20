@@ -183,12 +183,12 @@ jobs:
     - uses: actions/upload-artifact@v3
       if: always()
       with:
-        name: test-results-${{ inputs.name }}-v${{ inputs.version }}
+        name: test-results-${{ inputs.name }}-v${{ inputs.version }}-${{ matrix.browser }}
         path: test-results/
         retention-days: 7
     - uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: report-${{ inputs.name }}-v${{ inputs.version }}
+        name: report-${{ inputs.name }}-v${{ inputs.version }}-${{ matrix.browser }}
         path: ${{ github.workspace }}/report
         retention-days: 7
