@@ -178,9 +178,17 @@ jobs:
       run: npx playwright install --with-deps ${{ matrix.browser }}
     - name: Run Playwright tests
       run: rete-qa test -s ${{ inputs.name }} -sv ${{  inputs.version }} --project ${{ matrix.browser }}
+      env:
+        REPORTER: '[["github"], ["html", { "open": "never", "outputFolder": "${{ github.workspace }}/report" }]]'
     - uses: actions/upload-artifact@v3
       if: always()
       with:
-        name: test-results
+        name: test-results-${{ inputs.name }}-v${{ inputs.version }}
         path: test-results/
+        retention-days: 7
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: report-${{ inputs.name }}-v${{ inputs.version }}
+        path: ${{ github.workspace }}/report
         retention-days: 7
