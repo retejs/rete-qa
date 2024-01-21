@@ -15,12 +15,19 @@ jobs:
       contents: read
       packages: write
     steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+      - name: Get tools latest version
+        id: npm_version
+        run: |
+          echo "qa-version=$(npm show rete-qa version)" >> "$GITHUB_OUTPUT"
+          echo "kit-version=$(npm show rete-kit version)" >> "$GITHUB_OUTPUT"
       - name: Create Multiline File
         run: |
           cat <<EOL > Dockerfile
           FROM node:18
 
-          RUN npm i -g rete-qa@latest rete-kit@latest
+          RUN npm i -g rete-qa@${{ steps.npm_version.outputs.qa-version }} rete-kit@${{ steps.npm_version.outputs.kit-version }}
           RUN npx playwright install --with-deps
           EOL
       - name: Log in to the Container registry
@@ -34,6 +41,8 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=qa-${{ steps.npm_version.outputs.qa-version }}-kit-${{ steps.npm_version.outputs.kit-version }}
       - name: Build and push Docker image
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
