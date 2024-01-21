@@ -22,6 +22,21 @@ jobs:
         run: |
           echo "qa-version=$(npm show rete-qa version)" >> "$GITHUB_OUTPUT"
           echo "kit-version=$(npm show rete-kit version)" >> "$GITHUB_OUTPUT"
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tag
+        id: tag
+        run: echo "value=qa-${{ steps.npm_version.outputs.qa-version }}-kit-${{ steps.npm_version.outputs.kit-version }}" >> "$GITHUB_OUTPUT"
+      - name: Check if image with tag exists
+        uses: tyriis/docker-image-tag-exists@v2.0.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          repository: ${{ env.IMAGE_NAME }}
+          tag: ${{ steps.tag.outputs.value }}
       - name: Create Multiline File
         run: |
           cat <<EOL > Dockerfile
@@ -30,19 +45,13 @@ jobs:
           RUN npm i -g rete-qa@${{ steps.npm_version.outputs.qa-version }} rete-kit@${{ steps.npm_version.outputs.kit-version }}
           RUN npx playwright install --with-deps
           EOL
-      - name: Log in to the Container registry
-        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=qa-${{ steps.npm_version.outputs.qa-version }}-kit-${{ steps.npm_version.outputs.kit-version }}
+            type=raw,value=${{ steps.tag.outputs.value }}
       - name: Build and push Docker image
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
