@@ -5,7 +5,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
     
 jobs:
   build-push:
@@ -18,32 +17,8 @@ jobs:
       - name: Create Multiline File
         run: |
           cat <<EOL > Dockerfile
-          FROM ubuntu:latest
-          
-          # Update the package lists and install necessary dependencies
-          RUN apt-get update \
-              && apt-get install -y curl \
-              && rm -rf /var/lib/apt/lists/*
-          
-          # Install Node.js 18.x
-          RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-              && apt-get install -y nodejs \
-              && rm -rf /var/lib/apt/lists/*
-          
-          RUN apt-get -qqy update
-          RUN apt-get -qqy --no-install-recommends install \
-            libfontconfig \
-            libfreetype6 \
-            xfonts-cyrillic \
-            xfonts-scalable \
-            fonts-liberation \
-            fonts-ipafont-gothic \
-            fonts-wqy-zenhei \
-            fonts-tlwg-loma-otf \
-            fonts-freefont-ttf
-          RUN rm -rf /var/lib/apt/lists/*
-          RUN apt-get -qyy clean
-          
+          FROM node:18
+
           RUN npm i -g rete-qa@latest rete-kit@latest
           RUN npx playwright install --with-deps
           EOL
@@ -57,7 +32,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/rete-qa
       - name: Build and push Docker image
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
