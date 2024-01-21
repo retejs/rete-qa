@@ -32,7 +32,8 @@ jobs:
         id: tag
         run: echo "value=qa-${{ steps.npm_version.outputs.qa-version }}-kit-${{ steps.npm_version.outputs.kit-version }}" >> "$GITHUB_OUTPUT"
       - name: Check if image with tag exists
-        uses: tyriis/docker-image-tag-exists@v2.0.0
+        id: exists
+        uses: tyriis/docker-image-tag-exists@v2.0.1
         with:
           registry: ${{ env.REGISTRY }}
           repository: ${{ env.IMAGE_NAME }}
@@ -47,12 +48,14 @@ jobs:
           EOL
       - name: Extract metadata (tags, labels) for Docker
         id: meta
+        if: steps.exists.outputs.tag == 'not-found'
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=${{ steps.tag.outputs.value }}
       - name: Build and push Docker image
+        if: steps.exists.outputs.tag == 'not-found'
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           context: .
