@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/retejs/rete-qa/compare/v1.5.1...v1.5.2) (2024-01-27)
+
+
+### Bug Fixes
+
+* **build:** source maps ([b42f8e4](https://github.com/retejs/rete-qa/commit/b42f8e46a968ff9c32ad72d92a95b901785a0a12))
+
 ## [1.5.1](https://github.com/retejs/rete-qa/compare/v1.5.0...v1.5.1) (2024-01-19)
 
 
