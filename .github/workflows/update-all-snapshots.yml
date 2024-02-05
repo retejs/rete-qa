@@ -22,8 +22,8 @@ jobs:
     uses: ./.github/workflows/prepare-qa-kit.yml
     secrets: inherit
     with:
-      qa: ${{ needs.tools.outputs.qa-artifact }}
-      kit: ${{ needs.tools.outputs.kit-artifact }}
+      qa: ${{ inputs.qa }}
+      kit: ${{ inputs.kit }}
 
   angular:
     needs: tools
