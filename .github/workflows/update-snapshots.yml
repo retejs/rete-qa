@@ -2,6 +2,19 @@ name: Update snaphots
 run-name: Update snaphots for ${{ inputs.name }} v${{ inputs.version }}
 
 on:
+  workflow_call:
+    inputs:
+      name:
+        required: true
+        type: string
+        description: Stack
+      version:
+        required: true
+        type: number
+        description: Stack version
+      node:
+        type: number
+        description: 'Node.js version (default: 16)'
   workflow_dispatch:
     inputs:
       name:
