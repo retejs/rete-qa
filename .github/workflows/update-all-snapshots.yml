@@ -24,6 +24,7 @@ jobs:
       matrix:
         version: [17,16,15,14,13,12]
     uses: ./.github/workflows/update-snapshots.yml
+    secrets: inherit
     with:
       name: angular
       version: ${{ matrix.version }}
@@ -39,6 +40,7 @@ jobs:
       matrix:
         version: [18,17,16]
     uses: ./.github/workflows/update-snapshots.yml
+    secrets: inherit
     with:
       name: react
       version: ${{ matrix.version }}
@@ -54,6 +56,7 @@ jobs:
       matrix:
         version: [3,2]
     uses: ./.github/workflows/update-snapshots.yml
+    secrets: inherit
     with:
       name: vue
       version: ${{ matrix.version }}
@@ -69,6 +72,7 @@ jobs:
       matrix:
         version: [4,3]
     uses: ./.github/workflows/update-snapshots.yml
+    secrets: inherit
     with:
       name: svelte
       version: ${{ matrix.version }}
