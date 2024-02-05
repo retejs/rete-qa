@@ -82,13 +82,13 @@ jobs:
       uses: actions/download-artifact@v4
       if: needs.tools.outputs.qa-artifact
       with:
-        name: ${{ needs.tools.outputs.qa-artifact }}
+        name: ${{ needs.tools.outputs.qa-artifact || inputs.qa }}
         path: .
     - name: Download artifact with Rete Kit
       uses: actions/download-artifact@v4
       if: needs.tools.outputs.kit-artifact
       with:
-        name: ${{ needs.tools.outputs.kit-artifact }}
+        name: ${{ needs.tools.outputs.kit-artifact || inputs.kit }}
         path: .
     - name: Install fonts
       run: |
