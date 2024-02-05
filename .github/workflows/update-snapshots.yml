@@ -18,6 +18,10 @@ on:
       skip-tools:
         description: 'Skip tools build'
         type: boolean
+      qa-path:
+        type: string
+      kit-path:
+        type: string
       branch:
         description: 'Branch'
         type: string
@@ -109,7 +113,7 @@ jobs:
       with:
         node-version: ${{ inputs.node || 16 }}
     - name: Install Rete QA
-      run: npm i -g ${{ needs.tools.outputs.qa-path }} ${{ needs.tools.outputs.kit-path }}
+      run: npm i -g ${{ inputs.qa-path || needs.tools.outputs.qa-path }} ${{ inputs.kit-path || needs.tools.outputs.kit-path }}
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Init application
