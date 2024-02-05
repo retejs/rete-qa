@@ -1,0 +1,78 @@
+name: Update all snaphots
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch'
+        default: main
+      qa:
+        description: 'Rete QA (<name>@<version> or <owner>/<repo>#<version>)'
+        type: string
+        default: 'rete-qa@latest'
+      kit:
+        description: 'Rete Kit (<name>@<version> or <owner>/<repo>#<version>)'
+        type: string
+        default: 'rete-kit@latest'
+
+
+jobs:
+  angular:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        version: [17,16,15,14,13,12]
+    uses: ./.github/workflows/update-snapshots.yml
+    with:
+      name: angular
+      version: ${{ matrix.version }}
+      node: ${{ matrix.version < 14 && 14 || (matrix.version >=17 && 18 || 16) }}
+      branch: ${{ inputs.branch }}
+      qa: ${{ inputs.qa }}
+      kit: ${{ inputs.kit }}
+
+  react:
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        version: [18,17,16]
+    uses: ./.github/workflows/update-snapshots.yml
+    with:
+      name: react
+      version: ${{ matrix.version }}
+      node: 18
+      branch: ${{ inputs.branch }}
+      qa: ${{ inputs.qa }}
+      kit: ${{ inputs.kit }}
+      
+  vue:
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        version: [3,2]
+    uses: ./.github/workflows/update-snapshots.yml
+    with:
+      name: vue
+      version: ${{ matrix.version }}
+      node: 18
+      branch: ${{ inputs.branch }}
+      qa: ${{ inputs.qa }}
+      kit: ${{ inputs.kit }}
+  
+  svelte:
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        version: [4,3]
+    uses: ./.github/workflows/update-snapshots.yml
+    with:
+      name: svelte
+      version: ${{ matrix.version }}
+      node: 18
+      branch: ${{ inputs.branch }}
+      qa: ${{ inputs.qa }}
+      kit: ${{ inputs.kit }}
