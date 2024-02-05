@@ -22,8 +22,8 @@ jobs:
     uses: ./.github/workflows/prepare-qa-kit.yml
     secrets: inherit
     with:
-      qa: ${{ inputs.qa }}
-      kit: ${{ inputs.kit }}
+      qa: ${{ needs.tools.outputs.qa-artifact }}
+      kit: ${{ needs.tools.outputs.kit-artifact }}
 
   angular:
     needs: tools
@@ -39,8 +39,8 @@ jobs:
       version: ${{ matrix.version }}
       node: ${{ matrix.version < 14 && 14 || (matrix.version >=17 && 18 || 16) }}
       branch: ${{ inputs.branch }}
-      qa: ${{ inputs.qa }}
-      kit: ${{ inputs.kit }}
+      qa: ${{ needs.tools.outputs.qa-artifact }}
+      kit: ${{ needs.tools.outputs.kit-artifact }}
       skip-tools: true
 
   react:
@@ -57,8 +57,8 @@ jobs:
       version: ${{ matrix.version }}
       node: 18
       branch: ${{ inputs.branch }}
-      qa: ${{ inputs.qa }}
-      kit: ${{ inputs.kit }}
+      qa: ${{ needs.tools.outputs.qa-artifact }}
+      kit: ${{ needs.tools.outputs.kit-artifact }}
       skip-tools: true
       
   vue:
@@ -75,8 +75,8 @@ jobs:
       version: ${{ matrix.version }}
       node: 18
       branch: ${{ inputs.branch }}
-      qa: ${{ inputs.qa }}
-      kit: ${{ inputs.kit }}
+      qa: ${{ needs.tools.outputs.qa-artifact }}
+      kit: ${{ needs.tools.outputs.kit-artifact }}
       skip-tools: true
   
   svelte:
@@ -93,6 +93,6 @@ jobs:
       version: ${{ matrix.version }}
       node: 18
       branch: ${{ inputs.branch }}
-      qa: ${{ inputs.qa }}
-      kit: ${{ inputs.kit }}
+      qa: ${{ needs.tools.outputs.qa-artifact }}
+      kit: ${{ needs.tools.outputs.kit-artifact }}
       skip-tools: true
