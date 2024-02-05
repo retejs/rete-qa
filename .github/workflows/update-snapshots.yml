@@ -128,7 +128,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       if: always()
       with:
-        name: snapshots
+        name: snapshots-${{ inputs.name }}-v${{ inputs.version }}
         path: ${{ steps.get_snapshots.outputs.path }}
         retention-days: 7
   
@@ -161,7 +161,7 @@ jobs:
         
       - uses: actions/download-artifact@v3
         with:
-          name: snapshots
+          name: snapshots-${{ inputs.name }}-v${{ inputs.version }}
           path: ${{ steps.snapshots_folder.outputs.path }}
       
       - name: Create Pull Request
