@@ -15,6 +15,9 @@ on:
       node:
         type: number
         description: 'Node.js version (default: 16)'
+      skip-tools:
+        description: 'Skip tools build'
+        type: boolean
       branch:
         description: 'Branch'
         type: string
@@ -61,6 +64,7 @@ on:
 jobs:
   tools:
     name: Prepare tools
+    if: ${{ !inputs.skip-tools }}
     uses: ./.github/workflows/prepare-qa-kit.yml
     secrets: inherit
     with:
@@ -70,6 +74,7 @@ jobs:
   update:
     timeout-minutes: 30
     runs-on: ubuntu-latest
+    if: ${{ always() }}
     needs: tools
     # TODO reuse steps from regression.yml
     steps:
