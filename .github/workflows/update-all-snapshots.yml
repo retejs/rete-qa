@@ -42,6 +42,8 @@ jobs:
       qa: ${{ needs.tools.outputs.qa-artifact }}
       kit: ${{ needs.tools.outputs.kit-artifact }}
       skip-tools: true
+      qa-path: ${{ needs.tools.outputs.qa-path }}
+      kit-path: ${{ needs.tools.outputs.kit-path }}
 
   react:
     needs: tools
@@ -60,6 +62,8 @@ jobs:
       qa: ${{ needs.tools.outputs.qa-artifact }}
       kit: ${{ needs.tools.outputs.kit-artifact }}
       skip-tools: true
+      qa-path: ${{ needs.tools.outputs.qa-path }}
+      kit-path: ${{ needs.tools.outputs.kit-path }}
       
   vue:
     needs: tools
@@ -78,6 +82,8 @@ jobs:
       qa: ${{ needs.tools.outputs.qa-artifact }}
       kit: ${{ needs.tools.outputs.kit-artifact }}
       skip-tools: true
+      qa-path: ${{ needs.tools.outputs.qa-path }}
+      kit-path: ${{ needs.tools.outputs.kit-path }}
   
   svelte:
     needs: tools
@@ -96,3 +102,5 @@ jobs:
       qa: ${{ needs.tools.outputs.qa-artifact }}
       kit: ${{ needs.tools.outputs.kit-artifact }}
       skip-tools: true
+      qa-path: ${{ needs.tools.outputs.qa-path }}
+      kit-path: ${{ needs.tools.outputs.kit-path }}
