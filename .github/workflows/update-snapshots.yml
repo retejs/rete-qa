@@ -20,6 +20,10 @@ on:
       node:
         type: number
         description: 'Node.js version (default: 16)'
+      branch:
+        type: string
+        description: 'Branch'
+        default: main
 
 
 jobs:
@@ -45,20 +49,20 @@ jobs:
         sudo apt-get -qyy clean
     - uses: actions/setup-node@v3
       with:
-        node-version: ${{ github.event.inputs.node || 16 }}
+        node-version: ${{ inputs.node || 16 }}
     - name: Install Rete QA
       run: npm i -g rete-qa rete-kit
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Init application
-      run: rete-qa init -s ${{ github.event.inputs.name }} -sv ${{ github.event.inputs.version }}
+      run: rete-qa init -s ${{ inputs.name }} -sv ${{ inputs.version }}
       env:
         CI: ""
     - name: Update snapshots
-      run: rete-qa test -s ${{ github.event.inputs.name }} -sv ${{ github.event.inputs.version }} -u
+      run: rete-qa test -s ${{ inputs.name }} -sv ${{ inputs.version }} -u
     - name: Get path to snapshots
       id: get_snapshots
-      run: echo "path=$(npm root -g)/rete-qa/snapshots/${{ github.event.inputs.name }}${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+      run: echo "path=$(npm root -g)/rete-qa/snapshots/${{ inputs.name }}${{ inputs.version }}" >> $GITHUB_OUTPUT
     - uses: actions/upload-artifact@v3
       if: always()
       with:
@@ -85,9 +89,10 @@ jobs:
           fetch-depth: 0
           token: ${{ steps.generate_token.outputs.token }}
           repository: retejs/rete-qa
+          ref: ${{ inputs.branch }}
       - name: Get path to snapshots
         id: snapshots_folder
-        run: echo "path=./snapshots/${{ github.event.inputs.name }}${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+        run: echo "path=./snapshots/${{ inputs.name }}${{ inputs.version }}" >> $GITHUB_OUTPUT
           
       - name: Clear old snapshots
         run: rm -rf ${{ steps.snapshots_folder.outputs.path }}
@@ -101,11 +106,12 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ steps.generate_token.outputs.token }}
+          base: ${{ inputs.branch }}
           author: rete-js[bot] <rete-js[bot]@users.noreply.github.com>
-          commit-message: "fix(snaphots): update snapshots for ${{ github.event.inputs.name }} v${{ github.event.inputs.version }}"
-          title: Update snapshots for ${{ github.event.inputs.name }} v${{ github.event.inputs.version }}
-          branch: update-snapshots-${{ github.event.inputs.name }}-v${{ github.event.inputs.version }}
-          body: "Snapshots update for ${{ github.event.inputs.name }} v${{ github.event.inputs.version }}"
+          commit-message: "fix(snaphots): update snapshots for ${{ inputs.name }} v${{ inputs.version }}"
+          title: Update snapshots for ${{ inputs.name }} v${{ inputs.version }}
+          branch: update-snapshots-${{ inputs.name }}-v${{ inputs.version }}-${{ inputs.branch }}
+          body: "Snapshots update for ${{ inputs.name }} v${{ inputs.version }}"
           reviewers: Ni55aN
     
     
