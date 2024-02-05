@@ -17,7 +17,16 @@ on:
 
 
 jobs:
+  tools:
+    name: Prepare tools
+    uses: ./.github/workflows/prepare-qa-kit.yml
+    secrets: inherit
+    with:
+      qa: ${{ inputs.qa }}
+      kit: ${{ inputs.kit }}
+
   angular:
+    needs: tools
     strategy:
       fail-fast: false
       max-parallel: 2
@@ -32,8 +41,10 @@ jobs:
       branch: ${{ inputs.branch }}
       qa: ${{ inputs.qa }}
       kit: ${{ inputs.kit }}
+      skip-tools: true
 
   react:
+    needs: tools
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -48,8 +59,10 @@ jobs:
       branch: ${{ inputs.branch }}
       qa: ${{ inputs.qa }}
       kit: ${{ inputs.kit }}
+      skip-tools: true
       
   vue:
+    needs: tools
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -64,8 +77,10 @@ jobs:
       branch: ${{ inputs.branch }}
       qa: ${{ inputs.qa }}
       kit: ${{ inputs.kit }}
+      skip-tools: true
   
   svelte:
+    needs: tools
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -80,3 +95,4 @@ jobs:
       branch: ${{ inputs.branch }}
       qa: ${{ inputs.qa }}
       kit: ${{ inputs.kit }}
+      skip-tools: true
