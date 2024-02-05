@@ -20,18 +20,43 @@ on:
       node:
         type: number
         description: 'Node.js version (default: 16)'
-      branch:
+      qa:
+        description: 'Rete QA (<name>@<version> or <owner>/<repo>#<version>)'
         type: string
-        description: 'Branch'
-        default: main
+        default: 'rete-qa@latest'
+      kit:
+        description: 'Rete Kit (<name>@<version> or <owner>/<repo>#<version>)'
+        type: string
+        default: 'rete-kit@latest'
 
 
 jobs:
+  tools:
+    name: Prepare tools
+    uses: ./.github/workflows/prepare-qa-kit.yml
+    secrets: inherit
+    with:
+      qa: ${{ inputs.qa }}
+      kit: ${{ inputs.kit }}
+
   update:
     timeout-minutes: 30
     runs-on: ubuntu-latest
+    needs: tools
     # TODO reuse steps from regression.yml
     steps:
+    - name: Download artifact with Rete QA
+      uses: actions/download-artifact@v4
+      if: needs.tools.outputs.qa-artifact
+      with:
+        name: ${{ needs.tools.outputs.qa-artifact }}
+        path: .
+    - name: Download artifact with Rete Kit
+      uses: actions/download-artifact@v4
+      if: needs.tools.outputs.kit-artifact
+      with:
+        name: ${{ needs.tools.outputs.kit-artifact }}
+        path: .
     - name: Install fonts
       run: |
         sudo apt-get -qqy update
@@ -51,7 +76,7 @@ jobs:
       with:
         node-version: ${{ inputs.node || 16 }}
     - name: Install Rete QA
-      run: npm i -g rete-qa rete-kit
+      run: npm i -g ${{ needs.tools.outputs.qa-path }} ${{ needs.tools.outputs.kit-path }}
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Init application
