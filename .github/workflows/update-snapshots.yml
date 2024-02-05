@@ -80,13 +80,13 @@ jobs:
     steps:
     - name: Download artifact with Rete QA
       uses: actions/download-artifact@v4
-      if: needs.tools.outputs.qa-artifact
+      if: ${{ needs.tools.outputs.qa-artifact || inputs.qa }}
       with:
         name: ${{ needs.tools.outputs.qa-artifact || inputs.qa }}
         path: .
     - name: Download artifact with Rete Kit
       uses: actions/download-artifact@v4
-      if: needs.tools.outputs.kit-artifact
+      if: ${{ needs.tools.outputs.kit-artifact || inputs.kit }}
       with:
         name: ${{ needs.tools.outputs.kit-artifact || inputs.kit }}
         path: .
