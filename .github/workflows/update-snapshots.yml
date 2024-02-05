@@ -15,6 +15,18 @@ on:
       node:
         type: number
         description: 'Node.js version (default: 16)'
+      branch:
+        description: 'Branch'
+        type: string
+        default: main
+      qa:
+        description: 'Rete QA (<name>@<version> or <owner>/<repo>#<version>)'
+        type: string
+        default: 'rete-qa@latest'
+      kit:
+        description: 'Rete Kit (<name>@<version> or <owner>/<repo>#<version>)'
+        type: string
+        default: 'rete-kit@latest'
   workflow_dispatch:
     inputs:
       name:
