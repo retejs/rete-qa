@@ -1,3 +1,10 @@
+## [1.5.3](https://github.com/retejs/rete-qa/compare/v1.5.2...v1.5.3) (2024-02-06)
+
+
+### Bug Fixes
+
+* **svelte:** scroll ([#27](https://github.com/retejs/rete-qa/issues/27)) ([338c2e8](https://github.com/retejs/rete-qa/commit/338c2e8a977b20528125eac2953ca96c9c6d65f3))
+
 ## [1.5.2](https://github.com/retejs/rete-qa/compare/v1.5.1...v1.5.2) (2024-01-27)
 
 
