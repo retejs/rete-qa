@@ -43,7 +43,7 @@ test('change input values', async ({ page }) => {
 test('translate', async ({ page }) => {
   const { findNodes } = await getGraphView(getContainer())
   const translateX = -100
-  const translateY = -50
+  const translateY = 30
 
   const [numberNode1] = await findNodes('Number')
 
