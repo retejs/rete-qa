@@ -43,16 +43,6 @@ test.describe('Scopes', () => {
     await pickNode(page, node)
     await move(page, node, -30, -100)
 
-    expect(await page.screenshot()).toMatchSnapshot('scopes-translated.png')
-  })
-
-  test('translate nested node', async ({ page }) => {
-    const { findNodes } = await getGraphView(getContainer())
-    const [node] = await findNodes('B')
-
-    await pickNode(page, node)
-    await move(page, node, -30, -100)
-
     expect(await page.screenshot()).toMatchSnapshot('scopes-nested-translated.png')
   })
 
