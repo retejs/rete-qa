@@ -19,7 +19,7 @@ export async function getGraphView(container: ElementHandle<HTMLElement | SVGEle
       const list: Node[] = []
 
       for (const node of await nodes()) {
-        const titleElement = await node.$(`[data-testid="title"]:text("${title}")`)
+        const titleElement = await node.$(`[data-testid="title"]:text-is("${title}")`)
 
         if (titleElement) list.push(node)
       }
@@ -61,6 +61,15 @@ export async function boundingBox(node: Node) {
   if (!box) throw 'box'
 
   return box
+}
+
+export function toRect(box: { x: number, y: number, width: number, height: number }) {
+  return {
+    left: box.x,
+    right: box.x + box.width,
+    top: box.y,
+    bottom: box.y + box.height
+  }
 }
 
 export function takeBeforeEach(path: string, timeoutBefore: number, timeoutAfter: number) {
@@ -112,14 +121,25 @@ export async function clickCenter(page: Page, selector: ElementHandle<HTMLElemen
   await page.mouse.up({ button })
 }
 
-export async function move(page: Page, node: ElementHandle<HTMLElement | SVGElement>, dx: number, dy: number, handlerPosition: 'corner' | 'center' = 'corner') {
+export async function move(page: Page, node: ElementHandle<HTMLElement | SVGElement>, dx: number, dy: number, handlerPosition: 'corner' | 'center' = 'corner', options?: {
+  down?: () => Promise<void>,
+  up?: () => Promise<void>
+}) {
   const beforeBox = await boundingBox(node)
   const pickOffset = handlerPosition === 'corner' ? { x: 20, y: 20 } : { x: beforeBox.width / 2, y: beforeBox.height / 2 }
 
   await page.mouse.move(beforeBox.x + pickOffset.x, beforeBox.y + pickOffset.y)
-  await page.mouse.down({ button: 'left' })
+  if (options?.down) {
+    await options.down()
+  } else {
+    await page.mouse.down({ button: 'left' })
+  }
   await page.mouse.move(beforeBox.x + pickOffset.x + dx, beforeBox.y + pickOffset.y + dy)
-  await page.mouse.up({ button: 'left' })
+  if (options?.up) {
+    await options.up()
+  } else {
+    await page.mouse.up({ button: 'left' })
+  }
 
   const afterBox = await boundingBox(node)
 
