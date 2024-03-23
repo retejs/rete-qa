@@ -1,3 +1,29 @@
+# [1.6.0](https://github.com/retejs/rete-qa/compare/v1.5.3...v1.6.0) (2024-03-23)
+
+
+### Bug Fixes
+
+* find nodes by title exact match ([21a5783](https://github.com/retejs/rete-qa/commit/21a578348e229a6a556ec58c4ea62ed441295558))
+* **snaphots:** update snapshots for angular v12 ([6479ab7](https://github.com/retejs/rete-qa/commit/6479ab744a537e2464de2bf8f04572737f5b2c02))
+* **snaphots:** update snapshots for angular v13 ([ae30cd2](https://github.com/retejs/rete-qa/commit/ae30cd21c2339bbba900c3d5739bded1189709c5))
+* **snaphots:** update snapshots for angular v14 ([0e7cdab](https://github.com/retejs/rete-qa/commit/0e7cdabcdf05acd915d138e96f2be76679980565))
+* **snaphots:** update snapshots for angular v15 ([3e5eb8a](https://github.com/retejs/rete-qa/commit/3e5eb8a98026cadbaeac7f25205315be733403d7))
+* **snaphots:** update snapshots for angular v16 ([d5f48aa](https://github.com/retejs/rete-qa/commit/d5f48aa9b70921a27bf6c50c92d4259222fdd893))
+* **snaphots:** update snapshots for angular v17 ([0899501](https://github.com/retejs/rete-qa/commit/0899501a8fb1bbb108ee23bc0f1b2d6790f849d8))
+* **snaphots:** update snapshots for react v16 ([1f26e20](https://github.com/retejs/rete-qa/commit/1f26e203606ebb9397911bacc01a5888f871ea77))
+* **snaphots:** update snapshots for react v17 ([ed4b27a](https://github.com/retejs/rete-qa/commit/ed4b27a3c342b6feea1c9825e178c11266b07d78))
+* **snaphots:** update snapshots for react v18 ([a9c794c](https://github.com/retejs/rete-qa/commit/a9c794cc98e5b54adc468832be806f535a4fb057))
+* **snaphots:** update snapshots for svelte v3 ([5e101f7](https://github.com/retejs/rete-qa/commit/5e101f7580dcb312a73bb3929739d253fc6dc2eb))
+* **snaphots:** update snapshots for svelte v4 ([3743767](https://github.com/retejs/rete-qa/commit/374376713a5a384ef4b08e3ed0871ecf69623eb6))
+* **snaphots:** update snapshots for vue v2 ([ec29162](https://github.com/retejs/rete-qa/commit/ec2916223679e7d66c3ad00fa64222614aa32f2d))
+* **snaphots:** update snapshots for vue v3 ([c6cdedc](https://github.com/retejs/rete-qa/commit/c6cdedc533ccaa318e2b76a3cccb1ebbb66cf8b9))
+* test duplicate ([9d0c1ef](https://github.com/retejs/rete-qa/commit/9d0c1ef12b12de34153ee5a5487e672d48a64834))
+
+
+### Features
+
+* add tests for scopes template ([b96b3b0](https://github.com/retejs/rete-qa/commit/b96b3b0f74d794684f4eef00b925b0f9906b05f7))
+
 ## [1.5.3](https://github.com/retejs/rete-qa/compare/v1.5.2...v1.5.3) (2024-02-06)
 
 
