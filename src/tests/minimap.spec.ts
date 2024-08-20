@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
+
 import { getGraphView, getPositions, isInside, isOutside, move, takeBeforeEach } from './helper'
 
 test.describe('Minimap', () => {
@@ -55,7 +56,9 @@ test.describe('Minimap', () => {
   })
 
   test('translate mini viewport', async ({ page }) => {
-    test.skip(String(process.env.APP).startsWith('react16'), 'React.js v16 has problems with minimap viewport translation')
+    const shouldSkip = String(process.env.APP).startsWith('react16')
+
+    test.skip(shouldSkip, 'React.js v16 has problems with minimap viewport translation')
 
     await page.waitForSelector('[data-testid="minimap-viewport"]')
 

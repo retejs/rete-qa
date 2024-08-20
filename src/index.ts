@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 
+import chalk from 'chalk'
 import { createCommand } from 'commander'
 import execa from 'execa'
-import chalk from 'chalk'
 import fs from 'fs'
-import { join, dirname, resolve } from 'path'
+import { dirname, join, resolve } from 'path'
 import { App } from 'rete-kit'
-import { appsCachePath, projects } from './consts'
-import { log } from './ui'
+
 import { fixtures, getFeatures, stackNames, validate } from './commands/init'
 import { validateTestRun } from './commands/test'
+import { appsCachePath, projects } from './consts'
+import { log } from './ui'
 
 const program = createCommand()
 
@@ -72,6 +73,14 @@ program
     }
   })
 
+interface TestOptions {
+  updateSnapshots?: boolean
+  stack?: string
+  stackVersions?: string
+  project?: string
+  grep?: string
+}
+
 program
   .command('test')
   .description(`Run tests for previously initialized apps`)
@@ -80,7 +89,7 @@ program
   .option('-s --stack <stack>', `Stacks to test, comma-separated (${stackNames.join(',')})`)
   .option('-sv --stack-versions <stack-version>', `Versions to test, comma-separated`)
   .option('-p --project <project>', `Project (${projects.map(p => p.name)})`)
-  .action(async (options: { updateSnapshots?: boolean, stack?: string, stackVersions?: string, project?: string, grep?: string }) => {
+  .action(async (options: TestOptions) => {
     const stacks = options.stack ? options.stack.split(',') : null
     const stackVersions = options.stackVersions ? options.stackVersions.split(',') : null
     let exitCode = 0

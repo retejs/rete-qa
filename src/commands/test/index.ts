@@ -1,5 +1,6 @@
-import { join } from 'path'
 import fs from 'fs'
+import { join } from 'path'
+
 import { appsCachePath } from '../../consts'
 
 export async function validateTestRun(app: string, dist: string): Promise<{ error: string | null }> {
