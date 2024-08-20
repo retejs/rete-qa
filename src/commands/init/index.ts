@@ -17,7 +17,7 @@ export const fixtures = targets
     folder
   }))
 
-export function getFeatures({ stack, version }: (typeof fixtures)[0], next: boolean) {
+export function getFeatures({ stack, version }: Pick<(typeof fixtures)[0], 'stack' | 'version'>, next: boolean) {
   return [
     stack === 'angular' && new App.Features.Angular(version as 12 | 13 | 14 | 15, next),
     stack === 'react' && new App.Features.React(version, stack, next),
@@ -44,7 +44,12 @@ export function validate(stacks: string[], stackVersions: string[] | null): { er
   }
 
   if (stacks.length === 1 && stackVersions && stackVersions.length > 0) {
-    const unknownVersions = stackVersions.filter(v => !targets.find(t => t.stack === stacks[0])?.versions.includes(Number(v)))
+    const [stack] = stacks
+    const unknownVersions = stackVersions.filter(v => {
+      const target = targets.find(t => t.stack === stack)
+
+      return !target?.versions?.includes(Number(v))
+    })
 
     if (unknownVersions.length > 0) {
       return { error: `Unknown stack versions: ${unknownVersions.join(', ')}` }

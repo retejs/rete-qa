@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
+
 import { boundingBox, getGraphView, isInside, move, pickNode, takeBeforeEach, toRect } from './helper'
 
 test.describe('Scopes', () => {
@@ -16,7 +17,6 @@ test.describe('Scopes', () => {
     expect(await page.screenshot()).toMatchSnapshot('scopes.png')
   })
 
-  // eslint-disable-next-line max-statements
   test('has correct sizes', async () => {
     const { findNodes } = await getGraphView(getContainer())
 

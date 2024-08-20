@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
+
 import { getGraphView, takeBeforeEach } from './helper'
 
 const { getContainer } = takeBeforeEach('?template=customization', 1000, 500)

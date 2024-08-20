@@ -24,6 +24,7 @@
     "newline-after-var": "off",
     "no-undefined": "off",
     "comma-dangle": "off",
-    "complexity": "off"
+    "complexity": "off",
+    "max-statements": ["warn", 16]
   }
 }

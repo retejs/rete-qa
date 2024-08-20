@@ -1,5 +1,6 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 import tinycolor from 'tinycolor2'
+
 import { getBackgroundColor, getGraphView, move, pickNode, setInputValue, takeBeforeEach } from './helper'
 
 const { getContainer } = takeBeforeEach('', 500, 500)

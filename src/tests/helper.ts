@@ -1,9 +1,13 @@
-import { test, expect, ElementHandle, Page } from '@playwright/test'
+import { ElementHandle, expect, Page, test } from '@playwright/test'
 
-type Node = ElementHandle<HTMLElement | SVGElement>
-type Connection = ElementHandle<HTMLElement | SVGElement>
+type Element = ElementHandle<HTMLElement | SVGElement>
+type Node = Element
+type Connection = Element
+type Side = 'right' | 'left'
+type HandlerPosition = 'corner' | 'center'
+type Selector = Element
 
-export async function getGraphView(container: ElementHandle<HTMLElement | SVGElement>) {
+export async function getGraphView(container: Element) {
   const area = await container?.$('> div')
 
   if (!area) throw 'area'
@@ -73,7 +77,7 @@ export function toRect(box: { x: number, y: number, width: number, height: numbe
 }
 
 export function takeBeforeEach(path: string, timeoutBefore: number, timeoutAfter: number) {
-  let container!: ElementHandle<HTMLElement | SVGElement>
+  let container!: Element
 
   test.beforeEach(async ({ page }) => {
     await page.goto(`http://localhost:3000/${path}`)
@@ -101,7 +105,7 @@ export function takeBeforeEach(path: string, timeoutBefore: number, timeoutAfter
   }
 }
 
-export async function pickNode(page: Page, node: ElementHandle<HTMLElement | SVGElement>) {
+export async function pickNode(page: Page, node: Selector) {
   const beforeBox = await boundingBox(node)
   const pickOffset = { x: 20, y: 20 }
 
@@ -110,7 +114,7 @@ export async function pickNode(page: Page, node: ElementHandle<HTMLElement | SVG
   await page.mouse.up({ button: 'left' })
 }
 
-export async function clickCenter(page: Page, selector: ElementHandle<HTMLElement | SVGElement> | string, button: 'right' | 'left' = 'left') {
+export async function clickCenter(page: Page, selector: Selector | string, button: Side = 'left') {
   const element = typeof selector === 'string' ? await page.$(selector) : selector
   if (!element) throw new Error('cannot find element')
   const beforeBox = await boundingBox(element)
@@ -121,12 +125,14 @@ export async function clickCenter(page: Page, selector: ElementHandle<HTMLElemen
   await page.mouse.up({ button })
 }
 
-export async function move(page: Page, node: ElementHandle<HTMLElement | SVGElement>, dx: number, dy: number, handlerPosition: 'corner' | 'center' = 'corner', options?: {
+export async function move(page: Page, node: Selector, dx: number, dy: number, handlerPosition: HandlerPosition = 'corner', options?: {
   down?: () => Promise<void>,
   up?: () => Promise<void>
 }) {
   const beforeBox = await boundingBox(node)
-  const pickOffset = handlerPosition === 'corner' ? { x: 20, y: 20 } : { x: beforeBox.width / 2, y: beforeBox.height / 2 }
+  const pickOffset = handlerPosition === 'corner'
+    ? { x: 20, y: 20 }
+    : { x: beforeBox.width / 2, y: beforeBox.height / 2 }
 
   await page.mouse.move(beforeBox.x + pickOffset.x, beforeBox.y + pickOffset.y)
   if (options?.down) {

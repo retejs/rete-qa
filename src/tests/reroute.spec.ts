@@ -1,5 +1,6 @@
-import { test, expect, ElementHandle } from '@playwright/test'
-import { getGraphView, move, clickCenter, takeBeforeEach } from './helper'
+import { ElementHandle, expect, test } from '@playwright/test'
+
+import { clickCenter, getGraphView, move, takeBeforeEach } from './helper'
 
 async function getConnectionPath(connection: ElementHandle<HTMLElement | SVGElement>) {
   const path = await connection.$('path')
@@ -25,7 +26,6 @@ test.describe('Reroute', () => {
     await expect(page.getByTestId('pin')).toHaveCount(1)
     expect(await page.screenshot()).toMatchSnapshot('added-pin.png')
   })
-
 
   test('add pin and translate node', async ({ page }) => {
     const { nodes, connections } = await getGraphView(getContainer())

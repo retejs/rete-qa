@@ -1,5 +1,6 @@
 import { defineConfig } from '@playwright/test';
 import { join } from 'path';
+
 import { appsCachePath, projects } from './consts'
 
 const { APP, SERVE } = process.env
