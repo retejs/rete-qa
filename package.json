@@ -30,11 +30,11 @@
   "devDependencies": {
     "@types/tinycolor2": "^1.4.3",
     "nodemon": "^2.0.20",
-    "rete-kit": "^1.8.1",
+    "rete-kit": "^1.8.3",
     "typescript": "^4.9.5"
   },
   "peerDependencies": {
-    "rete-kit": "^1.8.0"
+    "rete-kit": "^1.8.3"
   },
   "dependencies": {
     "@playwright/test": "^1.37.1",
