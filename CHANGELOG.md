@@ -1,3 +1,16 @@
+# [1.7.0](https://github.com/retejs/rete-qa/compare/v1.6.0...v1.7.0) (2024-08-20)
+
+
+### Bug Fixes
+
+* **snaphots:** update snapshots for lit-vite v3 ([2f747a9](https://github.com/retejs/rete-qa/commit/2f747a96d0d8f3e1a0cff455a8a690dd45337bba))
+
+
+### Features
+
+* add lit stack ([89eee17](https://github.com/retejs/rete-qa/commit/89eee174ef054300ca0399fe78f3a63fbcd93fc7))
+* add lit-vite stack ([94531ee](https://github.com/retejs/rete-qa/commit/94531ee9ee152ec389a4e04fbccc551788e883a3))
+
 # [1.6.0](https://github.com/retejs/rete-qa/compare/v1.5.3...v1.6.0) (2024-03-23)
 
 
