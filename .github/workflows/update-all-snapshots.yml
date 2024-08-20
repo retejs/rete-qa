@@ -64,7 +64,7 @@ jobs:
       skip-tools: true
       qa-path: ${{ needs.tools.outputs.qa-path }}
       kit-path: ${{ needs.tools.outputs.kit-path }}
-      
+
   vue:
     needs: tools
     strategy:
@@ -84,7 +84,7 @@ jobs:
       skip-tools: true
       qa-path: ${{ needs.tools.outputs.qa-path }}
       kit-path: ${{ needs.tools.outputs.kit-path }}
-  
+
   svelte:
     needs: tools
     strategy:
@@ -98,6 +98,26 @@ jobs:
       name: svelte
       version: ${{ matrix.version }}
       node: 18
+      branch: ${{ inputs.branch }}
+      qa: ${{ needs.tools.outputs.qa-artifact }}
+      kit: ${{ needs.tools.outputs.kit-artifact }}
+      skip-tools: true
+      qa-path: ${{ needs.tools.outputs.qa-path }}
+      kit-path: ${{ needs.tools.outputs.kit-path }}
+
+  lit:
+    needs: tools
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        version: [3]
+    uses: ./.github/workflows/update-snapshots.yml
+    secrets: inherit
+    with:
+      name: lit-vite
+      version: ${{ matrix.version }}
+      node: 20
       branch: ${{ inputs.branch }}
       qa: ${{ needs.tools.outputs.qa-artifact }}
       kit: ${{ needs.tools.outputs.kit-artifact }}

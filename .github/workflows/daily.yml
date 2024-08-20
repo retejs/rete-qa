@@ -29,7 +29,7 @@ jobs:
       name: react
       version: ${{ matrix.version }}
       node: 18
-      
+
   vue:
     strategy:
       fail-fast: false
@@ -41,7 +41,7 @@ jobs:
       name: vue
       version: ${{ matrix.version }}
       node: 18
-  
+
   svelte:
     strategy:
       fail-fast: false
@@ -53,3 +53,15 @@ jobs:
       name: svelte
       version: ${{ matrix.version }}
       node: 18
+
+  lit:
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        version: [3]
+    uses: ./.github/workflows/regression.yml
+    with:
+      name: lit-vite
+      version: ${{ matrix.version }}
+      node: 20
