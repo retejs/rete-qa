@@ -8,7 +8,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "lint": "rete lint"
+    "lint": "rete lint",
+    "test": "rete test"
   },
   "author": "Vitaliy Stoliarov",
   "license": "MIT",
@@ -29,11 +30,11 @@
   "devDependencies": {
     "@types/tinycolor2": "^1.4.3",
     "nodemon": "^2.0.20",
-    "rete-kit": "^1.7.0",
+    "rete-kit": "^1.8.3",
     "typescript": "^4.9.5"
   },
   "peerDependencies": {
-    "rete-kit": "^1.7.0"
+    "rete-kit": "^1.8.3"
   },
   "dependencies": {
     "@playwright/test": "^1.37.1",
