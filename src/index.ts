@@ -8,7 +8,7 @@ import { dirname, join, resolve } from 'path'
 import { App } from 'rete-kit'
 
 import { fixtures, getFeatures, stackNames, validate } from './commands/init'
-import { validateTestRun } from './commands/test'
+import { validateSnapshotsUpdate, validateTestRun } from './commands/test'
 import { appsCachePath, projects } from './consts'
 import { log } from './ui'
 
@@ -101,6 +101,15 @@ program
 
     if (targetFixtures.length === 0) {
       log('fail', 'FAIL')('No fixtures found for specified stacks and versions')
+      process.exit(1)
+    }
+
+    const { error: snapshotsError } = options.updateSnapshots
+      ? validateSnapshotsUpdate(targetFixtures)
+      : { error: null }
+
+    if (snapshotsError) {
+      log('fail', 'FAIL')(snapshotsError)
       process.exit(1)
     }
 

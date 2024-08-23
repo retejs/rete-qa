@@ -26,7 +26,7 @@ export default defineConfig({
       threshold: 0.1
     }
   },
-  snapshotPathTemplate: join(root, `snapshots/${APP}/{/projectName}/{arg}{ext}`),
+  snapshotPathTemplate: join(root, `snapshots/{/projectName}/{arg}{ext}`),
   updateSnapshots: 'none',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
