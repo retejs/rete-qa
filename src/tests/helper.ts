@@ -78,9 +78,10 @@ export function toRect(box: { x: number, y: number, width: number, height: numbe
 
 export function takeBeforeEach(path: string, timeoutBefore: number, timeoutAfter: number) {
   let container!: Element
+  const headlessQuery = path.includes('?') ? '&headless=true' : '?headless=true'
 
   test.beforeEach(async ({ page }) => {
-    await page.goto(`http://localhost:3000/${path}`)
+    await page.goto(`http://localhost:3000/${path}${headlessQuery}`)
 
     await page.waitForSelector('.rete', { timeout: 6000 })
     const _container = await page.$('.rete')
