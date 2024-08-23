@@ -92,13 +92,20 @@ program
   .action(async (options: TestOptions) => {
     const stacks = options.stack ? options.stack.split(',') : null
     const stackVersions = options.stackVersions ? options.stackVersions.split(',') : null
+    const targetFixtures = fixtures.filter(({ stack, version }) => {
+      if (stacks && !stacks.includes(stack)) return false
+      if (stackVersions && !stackVersions.includes(String(version))) return false
+      return true
+    })
     let exitCode = 0
 
-    for (const fixture of fixtures) {
-      const { folder, stack, version } = fixture
+    if (targetFixtures.length === 0) {
+      log('fail', 'FAIL')('No fixtures found for specified stacks and versions')
+      process.exit(1)
+    }
 
-      if (stacks && !stacks.includes(stack)) continue
-      if (stackVersions && !stackVersions.includes(String(version))) continue
+    for (const fixture of targetFixtures) {
+      const { folder, stack, version } = fixture
 
       try {
         log('success', 'START')('Testing in', chalk.yellow(folder), '...')
