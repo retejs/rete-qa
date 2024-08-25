@@ -37,15 +37,22 @@ test.describe('Minimap', () => {
   test('translate area', async ({ page }) => {
     const container = getContainer()
     const area = await container.$('div')
+    const viewportWidth = page.viewportSize()?.width
 
     if (!area) throw new Error('area not found')
+    if (!viewportWidth) throw new Error('viewportWidth not found')
+
+    const body = await page.$('body')
+
+    if (!body) throw new Error('body not found')
 
     const nodesBefore = await getPositions(page, '[data-testid="minimap-node"]')
     const viewportBefore = await getPositions(page, '[data-testid="minimap-viewport"]')
 
     expect(isInside(nodesBefore, viewportBefore)).toBeTruthy()
 
-    await move(page, area, 900, 0, 'corner')
+    await move(page, body, viewportWidth / 2, 0, 'corner')
+    await move(page, body, viewportWidth / 2, 0, 'corner')
 
     const nodesAfter = await getPositions(page, '[data-testid="minimap-node"]')
     const viewportAfter = await getPositions(page, '[data-testid="minimap-viewport"]')

@@ -8,10 +8,12 @@ on:
         required: true
         type: string
         description: Stack
+        default: react
       version:
         required: true
         type: number
         description: Stack version
+        default: 18
       node:
         type: number
         description: 'Node.js version (default: 16)'
@@ -46,10 +48,12 @@ on:
         - angular
         - svelte
         - lit-vite
+        default: react
       version:
         required: true
         type: number
         description: Stack version
+        default: 18
       node:
         type: number
         description: 'Node.js version (default: 16)'
@@ -125,7 +129,7 @@ jobs:
       run: rete-qa test -s ${{ inputs.name }} -sv ${{ inputs.version }} -u
     - name: Get path to snapshots
       id: get_snapshots
-      run: echo "path=$(npm root -g)/rete-qa/snapshots/${{ inputs.name }}${{ inputs.version }}" >> $GITHUB_OUTPUT
+      run: echo "path=$(npm root -g)/rete-qa/snapshots" >> $GITHUB_OUTPUT
     - uses: actions/upload-artifact@v3
       if: always()
       with:
@@ -155,7 +159,7 @@ jobs:
           ref: ${{ inputs.branch }}
       - name: Get path to snapshots
         id: snapshots_folder
-        run: echo "path=./snapshots/${{ inputs.name }}${{ inputs.version }}" >> $GITHUB_OUTPUT
+        run: echo "path=./snapshots" >> $GITHUB_OUTPUT
 
       - name: Clear old snapshots
         run: rm -rf ${{ steps.snapshots_folder.outputs.path }}
