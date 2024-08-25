@@ -1,3 +1,21 @@
+# [1.8.0](https://github.com/retejs/rete-qa/compare/v1.7.0...v1.8.0) (2024-08-25)
+
+
+### Bug Fixes
+
+* increase maxDiffPixelRatio ([24cce2f](https://github.com/retejs/rete-qa/commit/24cce2f0b8c5190eb9e2adb349f0cf811ae0f5ed))
+* move area ([d4eefd1](https://github.com/retejs/rete-qa/commit/d4eefd185b8c7003d9470e823a8266cb63f34e07))
+* **snaphots:** update snapshots for react v18 ([e629226](https://github.com/retejs/rete-qa/commit/e629226c942ba374286af2961eca9f13a05113c0))
+* **snaphots:** update snapshots for react v18 ([2ed090f](https://github.com/retejs/rete-qa/commit/2ed090fc8c57947382c087af299aa1950dbfdaa5))
+* **snaphots:** update snapshots for react v18 ([208bbb9](https://github.com/retejs/rete-qa/commit/208bbb9338556e296f64407451d23695e902b87d))
+
+
+### Features
+
+* fail if no test fixtures found ([7e7c4b6](https://github.com/retejs/rete-qa/commit/7e7c4b682e40dc5671615d38666926bcbaffc9be))
+* open headless apps ([0dde811](https://github.com/retejs/rete-qa/commit/0dde811b7e5985efd7f2597f39c0f60801d53803))
+* use latest react as ssot for snapshots ([83aa123](https://github.com/retejs/rete-qa/commit/83aa1239d7bbb6dcbda37c088ef5e3d775f81030))
+
 # [1.7.0](https://github.com/retejs/rete-qa/compare/v1.6.0...v1.7.0) (2024-08-20)
 
 
