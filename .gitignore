@@ -5,3 +5,5 @@ node_modules/
 /.rete-qa
 /dist
 /coverage
+.rete-cli
+.sonar

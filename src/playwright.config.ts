@@ -1,5 +1,5 @@
-import { defineConfig } from '@playwright/test';
-import { join } from 'path';
+import { defineConfig } from '@playwright/test'
+import { join } from 'path'
 
 import { appsCachePath, projects } from './consts'
 
@@ -30,15 +30,21 @@ export default defineConfig({
   updateSnapshots: 'none',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 1,
-  workers: process.env.CI ? 1 : undefined,
+  retries: process.env.CI
+    ? 2
+    : 1,
+  workers: process.env.CI
+    ? 1
+    : undefined,
   reporter: process.env.REPORTER
     ? JSON.parse(process.env.REPORTER)
-    : [process.env.CI ? ['github'] : ['list']],
+    : [process.env.CI
+      ? ['github']
+      : ['list']],
   use: {
     actionTimeout: 4000,
     trace: 'on-first-retry',
-    video: 'on-first-retry',
+    video: 'on-first-retry'
   },
   projects,
   outputDir: join(cwd, 'test-results', APP),
@@ -46,4 +52,4 @@ export default defineConfig({
     command: getServeCommand(),
     port: 3000
   }
-});
+})

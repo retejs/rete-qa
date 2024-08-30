@@ -65,7 +65,7 @@ test.describe('Reroute', () => {
 
     const pin = await page.$('[data-testid="pin"]')
 
-    await move(page, pin as ElementHandle<HTMLElement | SVGElement>, 0, -100, 'center')
+    await move(page, pin!, 0, -100, 'center')
 
     await expect(page.getByTestId('pin')).toHaveCount(1)
     expect(await page.screenshot()).toMatchSnapshot('moved-pin.png')

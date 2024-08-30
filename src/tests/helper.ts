@@ -8,9 +8,9 @@ type HandlerPosition = 'corner' | 'center'
 type Selector = Element
 
 export async function getGraphView(container: Element) {
-  const area = await container?.$('> div')
+  const area = await container.$('> div')
 
-  if (!area) throw 'area'
+  if (!area) throw new Error('area')
 
   const nodes = (): Promise<Node[]> => area.$$(`[data-testid="node"]`)
   const connections = (): Promise<Connection[]> => area.$$(`[data-testid="connection"]`)
@@ -34,12 +34,12 @@ export async function getGraphView(container: Element) {
 }
 
 export async function getBackgroundColor(node: Node) {
-  const color = await node.evaluate((el) => {
+  const color = await node.evaluate(el => {
     const styles = window.getComputedStyle(el)
     return styles.getPropertyValue('background-color')
   })
 
-  if (!color) throw 'color'
+  if (!color) throw new Error('color')
 
   return color
 }
@@ -47,7 +47,7 @@ export async function getBackgroundColor(node: Node) {
 export async function getInput(node: Node, controlKey: string) {
   const el = await node.$(`[data-testid="control-${controlKey}"] input`)
 
-  if (!el) throw `cannot find control's "${controlKey}" input`
+  if (!el) throw new Error(`cannot find control's "${controlKey}" input`)
 
   return el
 }
@@ -62,7 +62,7 @@ export async function setInputValue(page: Page, node: Node, controlKey: string, 
 export async function boundingBox(node: Node) {
   const box = await node.boundingBox()
 
-  if (!box) throw 'box'
+  if (!box) throw new Error('box')
 
   return box
 }
@@ -78,7 +78,9 @@ export function toRect(box: { x: number, y: number, width: number, height: numbe
 
 export function takeBeforeEach(path: string, timeoutBefore: number, timeoutAfter: number) {
   let container!: Element
-  const headlessQuery = path.includes('?') ? '&headless=true' : '?headless=true'
+  const headlessQuery = path.includes('?')
+    ? '&headless=true'
+    : '?headless=true'
 
   test.beforeEach(async ({ page }) => {
     await page.goto(`http://localhost:3000/${path}${headlessQuery}`)
@@ -88,7 +90,7 @@ export function takeBeforeEach(path: string, timeoutBefore: number, timeoutAfter
 
     expect(_container).toBeTruthy()
 
-    if (!_container) throw 'cannot find .rete element'
+    if (!_container) throw new Error('cannot find .rete element')
 
     container = _container
 
@@ -116,7 +118,9 @@ export async function pickNode(page: Page, node: Selector) {
 }
 
 export async function clickCenter(page: Page, selector: Selector | string, button: Side = 'left') {
-  const element = typeof selector === 'string' ? await page.$(selector) : selector
+  const element = typeof selector === 'string'
+    ? await page.$(selector)
+    : selector
   if (!element) throw new Error('cannot find element')
   const beforeBox = await boundingBox(element)
   const pickOffset = { x: beforeBox.width / 2, y: beforeBox.height / 2 }
@@ -127,7 +131,7 @@ export async function clickCenter(page: Page, selector: Selector | string, butto
 }
 
 export async function move(page: Page, node: Selector, dx: number, dy: number, handlerPosition: HandlerPosition = 'corner', options?: {
-  down?: () => Promise<void>,
+  down?: () => Promise<void>
   up?: () => Promise<void>
 }) {
   const beforeBox = await boundingBox(node)
@@ -185,18 +189,18 @@ export async function getPositions(page: Page, selector: string) {
 
 export function isInside(inner: Rect, outer: Rect) {
   return (
-    inner.left >= outer.left &&
-    inner.top >= outer.top &&
-    inner.right <= outer.right &&
-    inner.bottom <= outer.bottom
+    inner.left >= outer.left
+    && inner.top >= outer.top
+    && inner.right <= outer.right
+    && inner.bottom <= outer.bottom
   )
 }
 
 export function isOutside(inner: Rect, outer: Rect) {
   return (
-    inner.left >= outer.right ||
-    inner.top >= outer.bottom ||
-    inner.right <= outer.left ||
-    inner.bottom <= outer.top
-  );
+    inner.left >= outer.right
+    || inner.top >= outer.bottom
+    || inner.right <= outer.left
+    || inner.bottom <= outer.top
+  )
 }

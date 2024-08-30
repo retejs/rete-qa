@@ -63,7 +63,7 @@ test('disconnect', async ({ page }) => {
   const el = await addNode.$('[data-testid="input-a"] [data-testid="input-socket"]')
   const box = await el?.boundingBox()
 
-  if (!box) throw 'Cannot find bounding box for input socket'
+  if (!box) throw new Error('Cannot find bounding box for input socket')
 
   const socketCenter = {
     x: box.x + box.width / 2,
@@ -90,7 +90,7 @@ test('disconnect with clicks', async ({ page }) => {
   const el = await addNode.$('[data-testid="input-a"] [data-testid="input-socket"]')
   const box = await el?.boundingBox()
 
-  if (!box) throw 'Cannot find bounding box for input socket'
+  if (!box) throw new Error('Cannot find bounding box for input socket')
 
   const socketCenter = {
     x: box.x + box.width / 2,
