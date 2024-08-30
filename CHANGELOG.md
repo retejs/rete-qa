@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/retejs/rete-qa/compare/v1.8.0...v1.8.1) (2024-08-30)
+
+
+### Bug Fixes
+
+* update cli and fix linting errors ([44d38e0](https://github.com/retejs/rete-qa/commit/44d38e0aef6be14ffbfd02e479c4c633a2c516af))
+
 # [1.8.0](https://github.com/retejs/rete-qa/compare/v1.7.0...v1.8.0) (2024-08-25)
 
 

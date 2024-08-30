@@ -1,6 +1,6 @@
 {
   "name": "rete-qa",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "",
   "bin": {
     "rete-qa": "./dist/index.js"
