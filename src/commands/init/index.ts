@@ -50,7 +50,7 @@ export function validate(stacks: string[], stackVersions: string[] | null): { er
     const unknownVersions = stackVersions.filter(v => {
       const target = targets.find(t => t.stack === stack)
 
-      return !target?.versions?.includes(Number(v))
+      return !target?.versions.includes(Number(v))
     })
 
     if (unknownVersions.length > 0) {

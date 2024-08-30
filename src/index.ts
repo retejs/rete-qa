@@ -28,9 +28,15 @@ program
 
     const next = options.next || false
     const cwd = process.cwd()
-    const depsAlias = options.depsAlias ? resolve(cwd, options.depsAlias) : undefined
-    const stacks = options.stack ? options.stack.split(',') : stackNames
-    const stackVersions = options.stackVersions ? options.stackVersions.split(',') : null
+    const depsAlias = options.depsAlias
+      ? resolve(cwd, options.depsAlias)
+      : undefined
+    const stacks = options.stack
+      ? options.stack.split(',')
+      : stackNames
+    const stackVersions = options.stackVersions
+      ? options.stackVersions.split(',')
+      : null
     let exitCode = 0
 
     const { error } = validate(stacks, stackVersions)
@@ -88,10 +94,14 @@ program
   .option('-g --grep <regex>', 'Match tests by name')
   .option('-s --stack <stack>', `Stacks to test, comma-separated (${stackNames.join(',')})`)
   .option('-sv --stack-versions <stack-version>', `Versions to test, comma-separated`)
-  .option('-p --project <project>', `Project (${projects.map(p => p.name)})`)
+  .option('-p --project <project>', `Project (${projects.map(p => p.name).join(',')})`)
   .action(async (options: TestOptions) => {
-    const stacks = options.stack ? options.stack.split(',') : null
-    const stackVersions = options.stackVersions ? options.stackVersions.split(',') : null
+    const stacks = options.stack
+      ? options.stack.split(',')
+      : null
+    const stackVersions = options.stackVersions
+      ? options.stackVersions.split(',')
+      : null
     const targetFixtures = fixtures.filter(({ stack, version }) => {
       if (stacks && !stacks.includes(stack)) return false
       if (stackVersions && !stackVersions.includes(String(version))) return false
@@ -133,9 +143,15 @@ program
         await execa(`${playwrightFolder}/cli.js`, [
           'test',
           '--config', join(__dirname, './playwright.config.js'),
-          ...(options.project ? ['--project', options.project] : []),
-          ...(options.updateSnapshots ? ['--update-snapshots'] : []),
-          ...(options.grep ? ['--grep', options.grep] : [])
+          ...options.project
+            ? ['--project', options.project]
+            : [],
+          ...options.updateSnapshots
+            ? ['--update-snapshots']
+            : [],
+          ...options.grep
+            ? ['--grep', options.grep]
+            : []
         ], { env: { APP, SERVE }, stdio: 'inherit' })
         log('success', 'DONE')('Testing for', chalk.yellow(folder), 'done')
       } catch (err) {
