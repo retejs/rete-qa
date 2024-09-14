@@ -119,6 +119,7 @@ jobs:
         name: rete-qa-${{ inputs.name }}-v${{ inputs.version }}
         path: .rete-qa
         retention-days: 3
+        if-no-files-found: error
   test:
     name: ${{ matrix.browser }}
     timeout-minutes: 60
