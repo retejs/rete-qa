@@ -114,6 +114,8 @@ jobs:
     - name: Prune node_modules
       run: npx rimraf --glob **/node_modules
       working-directory: .rete-qa
+    - name: Available files
+      run: ls -R
     - uses: actions/upload-artifact@v4
       with:
         name: rete-qa-${{ inputs.name }}-v${{ inputs.version }}
