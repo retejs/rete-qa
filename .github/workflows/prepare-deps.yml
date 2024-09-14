@@ -82,7 +82,7 @@ jobs:
             folders+=("$folder")
             tarballs+=("$tarball")
             cd ..
-            rm -rf $folder
+            rm -rf -- $folder
           fi
         done
         f=${folders[@]}
