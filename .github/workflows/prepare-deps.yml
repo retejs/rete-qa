@@ -76,7 +76,7 @@ jobs:
           if [ -d "$folder" ]; then
              
             echo "Enter $folder"
-            cd $folder
+            cd -- $folder
             tarball=$(npm pack)
             mv $tarball ../
             folders+=("$folder")
