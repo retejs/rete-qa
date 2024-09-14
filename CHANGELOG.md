@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/retejs/rete-qa/compare/v1.8.1...v1.9.0) (2024-09-14)
+
+
+### Features
+
+* angular 18 ([b93872e](https://github.com/retejs/rete-qa/commit/b93872e4424aa454addd7b1f0a435f9a2cea6bcb))
+
 ## [1.8.1](https://github.com/retejs/rete-qa/compare/v1.8.0...v1.8.1) (2024-08-30)
 
 
