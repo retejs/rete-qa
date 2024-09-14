@@ -55,7 +55,9 @@ jobs:
         id: package-info
         working-directory: dist
         run: |
-          echo "name=$(node -p "require('./package.json').name")" >> $GITHUB_OUTPUT
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
+          SANITIZED_NAME=$(echo $PACKAGE_NAME | sed 's/[@/]/-/g')
+          echo "name=$SANITIZED_NAME" >> $GITHUB_OUTPUT
       - name: Print package info
         run: echo ${{ steps.package-info.outputs.name }}
       - name: Upload artifact
