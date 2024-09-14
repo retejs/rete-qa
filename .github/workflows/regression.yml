@@ -122,6 +122,7 @@ jobs:
         path: .rete-qa
         retention-days: 3
         if-no-files-found: error
+        include-hidden-files: true
   test:
     name: ${{ matrix.browser }}
     timeout-minutes: 60
