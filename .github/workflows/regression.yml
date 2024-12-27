@@ -29,6 +29,7 @@ on:
         description: Stack
         options:
         - react
+        - react-vite
         - vue
         - angular
         - svelte
