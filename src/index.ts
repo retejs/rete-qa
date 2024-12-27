@@ -24,8 +24,6 @@ program
   .option('-s --stack <stack>', `Stacks to test, comma-separated (${stackNames.join(',')})`)
   .option('-sv --stack-versions <stack-version>', `Versions to test, comma-separated`)
   .action(async (options: { depsAlias: string, stack?: string, stackVersions?: string, next?: boolean }) => {
-    if (!process.version.startsWith('v16')) console.info(chalk.yellow('---\nWe recommend using Node.js 16 to avoid any potential issues\n---'))
-
     const next = options.next || false
     const cwd = process.cwd()
     const depsAlias = options.depsAlias
@@ -130,6 +128,7 @@ program
         log('success', 'START')('Testing in', chalk.yellow(folder), '...')
         const APP = folder
         const SERVE = App.builders[stack].getStaticPath(folder, version)
+        console.log({ SERVE })
         const playwrightFolder = dirname(require.resolve('@playwright/test'))
 
         const { error } = await validateTestRun(APP, SERVE)
