@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/retejs/rete-qa/compare/v1.9.0...v1.10.0) (2024-12-27)
+
+
+### Features
+
+* remove warning ([8ea30ee](https://github.com/retejs/rete-qa/commit/8ea30eebbbf5941d023ae497ba24aaa56c7e2efa))
+
 # [1.9.0](https://github.com/retejs/rete-qa/compare/v1.8.1...v1.9.0) (2024-09-14)
 
 
