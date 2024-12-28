@@ -112,6 +112,7 @@ jobs:
       run: rete-qa init -s ${{ inputs.name }} -sv ${{ inputs.version }} ${{ inputs.deps && '--deps-alias deps.json' || '' }}
       env:
         CI: ""
+        VERBOSE: 1
     - name: Upload apps if initialization fails
       if: failure()
       uses: actions/upload-artifact@v4
