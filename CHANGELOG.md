@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/retejs/rete-qa/compare/v1.10.0...v1.11.0) (2024-12-28)
+
+
+### Features
+
+* add svelte 5 ([7d67690](https://github.com/retejs/rete-qa/commit/7d6769025dfa244abff481631553a524c14b8f9d))
+
 # [1.10.0](https://github.com/retejs/rete-qa/compare/v1.9.0...v1.10.0) (2024-12-27)
 
 
