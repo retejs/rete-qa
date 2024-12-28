@@ -112,6 +112,12 @@ jobs:
       run: rete-qa init -s ${{ inputs.name }} -sv ${{ inputs.version }} ${{ inputs.deps && '--deps-alias deps.json' || '' }}
       env:
         CI: ""
+    - name: Upload apps if initialization fails
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: rete-qa-${{ inputs.name }}-v${{ inputs.version }}
+        path: .rete-qa/apps
     - name: Prune node_modules
       run: npx rimraf --glob **/node_modules
       working-directory: .rete-qa
