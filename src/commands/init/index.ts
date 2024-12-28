@@ -5,7 +5,7 @@ export const targets: { stack: App.AppStack, versions: number[] }[] = [
   { stack: 'react-vite', versions: [16, 17, 18] },
   { stack: 'vue', versions: [2, 3] },
   { stack: 'angular', versions: [12, 13, 14, 15, 16, 17, 18] },
-  { stack: 'svelte', versions: [3, 4] },
+  { stack: 'svelte', versions: [3, 4, 5] },
   { stack: 'lit-vite', versions: [3] }
 ]
 export const stackNames = targets.map(t => t.stack)
@@ -24,7 +24,7 @@ export function getFeatures({ stack, version }: Pick<(typeof fixtures)[0], 'stac
     stack === 'angular' && new App.Features.Angular(version as 12 | 13 | 14 | 15 | 16 | 17 | 18, next),
     ['react', 'react-vite'].includes(stack) && new App.Features.React(version, stack, next),
     stack === 'vue' && new App.Features.Vue(version as 2 | 3, next),
-    stack === 'svelte' && new App.Features.Svelte(version as 3 | 4, next),
+    stack === 'svelte' && new App.Features.Svelte(version as 3 | 4 | 5, next),
     stack === 'lit-vite' && new App.Features.Lit(version as 3, next),
     new App.Features.ZoomAt(),
     new App.Features.OrderNodes(),

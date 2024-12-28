@@ -128,7 +128,7 @@ program
         log('success', 'START')('Testing in', chalk.yellow(folder), '...')
         const APP = folder
         const SERVE = App.builders[stack].getStaticPath(folder, version)
-        console.log({ SERVE })
+
         const playwrightFolder = dirname(require.resolve('@playwright/test'))
 
         const { error } = await validateTestRun(APP, SERVE)
