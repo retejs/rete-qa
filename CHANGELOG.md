@@ -1,3 +1,11 @@
+# [1.12.0](https://github.com/retejs/rete-qa/compare/v1.11.0...v1.12.0) (2024-12-30)
+
+
+### Features
+
+* add angular 19 ([b0b93c1](https://github.com/retejs/rete-qa/commit/b0b93c14a7dd9db153b940f5d65b00b7fd92d114))
+* add dependency check workflow for pull requests ([5a8e1a7](https://github.com/retejs/rete-qa/commit/5a8e1a7fc03e202644456c6c11f387d63b237bb0))
+
 # [1.11.0](https://github.com/retejs/rete-qa/compare/v1.10.0...v1.11.0) (2024-12-28)
 
 
