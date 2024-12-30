@@ -1,0 +1,10 @@
+name: Dependency Check
+
+on:
+  pull_request:
+    paths:
+      - 'package.json'
+
+jobs:
+  ci:
+    uses: retejs/.github/.github/workflows/dependency-check.yml@main
