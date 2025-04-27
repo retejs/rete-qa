@@ -130,7 +130,7 @@ jobs:
     - name: Get path to snapshots
       id: get_snapshots
       run: echo "path=$(npm root -g)/rete-qa/snapshots" >> $GITHUB_OUTPUT
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: always()
       with:
         name: snapshots-${{ inputs.name }}-v${{ inputs.version }}
