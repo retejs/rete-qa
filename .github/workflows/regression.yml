@@ -193,7 +193,7 @@ jobs:
       run: rete-qa test -s ${{ inputs.name }} -sv ${{  inputs.version }} --project ${{ matrix.browser }}
       env:
         REPORTER: '[["github"], ["html", { "open": "never", "outputFolder": "${{ github.workspace }}/report" }]]'
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: always()
       with:
         name: test-results-${{ inputs.name }}-v${{ inputs.version }}-${{ matrix.browser }}
