@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/retejs/rete-qa/compare/v1.12.0...v1.13.0) (2025-06-30)
+
+
+### Features
+
+* update angular version support to include 20 ([e62127b](https://github.com/retejs/rete-qa/commit/e62127bc6fc05fd23d14a341413ff9596b7d01d8))
+
 # [1.12.0](https://github.com/retejs/rete-qa/compare/v1.11.0...v1.12.0) (2024-12-30)
 
 
