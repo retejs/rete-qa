@@ -2,7 +2,7 @@ import { App } from 'rete-kit'
 
 export const targets: { stack: App.AppStack, versions: number[] }[] = [
   { stack: 'react', versions: [16, 17, 18] },
-  { stack: 'react-vite', versions: [16, 17, 18] },
+  { stack: 'react-vite', versions: [16, 17, 18, 19] },
   { stack: 'vue', versions: [2, 3] },
   { stack: 'angular', versions: [12, 13, 14, 15, 16, 17, 18, 19, 20] },
   { stack: 'svelte', versions: [3, 4, 5] },
