@@ -28,7 +28,7 @@ jobs:
     with:
       name: react-vite
       version: ${{ matrix.version }}
-      node: 18
+      node: 20
 
   vue:
     strategy:
