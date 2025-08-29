@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/retejs/rete-qa/compare/v1.13.0...v1.14.0) (2025-08-29)
+
+
+### Features
+
+* add support for react-vite version 19 ([7067f41](https://github.com/retejs/rete-qa/commit/7067f415f4e589c695c43763429cb373b0e4941c))
+
 # [1.13.0](https://github.com/retejs/rete-qa/compare/v1.12.0...v1.13.0) (2025-06-30)
 
 
