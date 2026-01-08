@@ -11,12 +11,12 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        version: [20,19,18,17,16,15,14,13,12]
+        version: [21,20,19,18,17,16,15,14,13,12]
     uses: ./.github/workflows/regression.yml
     with:
       name: angular
       version: ${{ matrix.version }}
-      node: ${{ (matrix.version < 14 && 14) || (matrix.version < 17 && 16) || (matrix.version < 20 && 18 || 20) }}
+      node: ${{ (matrix.version < 14 && 14) || (matrix.version < 17 && 16) || (matrix.version < 20 && 18) || 20 }}
 
   react:
     strategy:
