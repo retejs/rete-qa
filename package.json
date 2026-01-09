@@ -32,11 +32,11 @@
     "globals": "^15.9.0",
     "nodemon": "^2.0.20",
     "rete-cli": "~2.0.1",
-    "rete-kit": "^1.15.0",
+    "rete-kit": "github:retejs/rete-kit#dist/feat/angular-21",
     "typescript": "^4.9.5"
   },
   "peerDependencies": {
-    "rete-kit": "^1.15.0"
+    "rete-kit": "github:retejs/rete-kit#dist/feat/angular-21"
   },
   "dependencies": {
     "@playwright/test": "^1.37.1",
