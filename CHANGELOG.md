@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/retejs/rete-qa/compare/v1.14.0...v1.15.0) (2026-01-09)
+
+
+### Features
+
+* **angular:** add support for angular 21 ([98c856e](https://github.com/retejs/rete-qa/commit/98c856ee2b40e726bb456820454b4482c3d5fbb2))
+
 # [1.14.0](https://github.com/retejs/rete-qa/compare/v1.13.0...v1.14.0) (2025-08-29)
 
 
