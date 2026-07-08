@@ -12,6 +12,10 @@ on:
         type: number
       node:
         type: number
+      test-node:
+        type: number
+        default: 20
+        description: 'Node.js version for Playwright tests (default: 20)'
       qa:
         type: string
         default: 'rete-qa@latest'
@@ -40,7 +44,10 @@ on:
         description: Stack version
       node:
         type: number
-        description: 'Node.js version (default: 16)'
+        description: 'Node.js version for init/build (default: 16)'
+      test-node:
+        type: number
+        description: 'Node.js version for Playwright tests (default: 20)'
       qa:
         description: 'Rete QA (<name>@<version> or <owner>/<repo>#<version>)'
         type: string
@@ -166,13 +173,13 @@ jobs:
         path: .rete-qa
     - uses: actions/setup-node@v3
       with:
-        node-version: ${{ inputs.node || 16 }}
+        node-version: ${{ inputs.test-node || 20 }}
     - name: Cache global node modules
       id: cache-npm
       uses: actions/cache@v3
       with:
         path: ~/.npm
-        key: ${{ runner.os }}-${{ inputs.node || 16 }}-cache-global-node-modules
+        key: ${{ runner.os }}-${{ inputs.test-node || 20 }}-cache-global-node-modules
     - name: Download artifact with Rete QA
       uses: actions/download-artifact@v4
       if: needs.tools.outputs.qa-artifact

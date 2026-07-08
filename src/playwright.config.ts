@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test'
 import { join } from 'path'
 
-import { appsCachePath, projects } from './consts'
+import { appsCachePath, getProjects } from './consts'
 
 const { APP, SERVE } = process.env
 
@@ -46,7 +46,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     video: 'on-first-retry'
   },
-  projects,
+  projects: getProjects(),
   outputDir: join(cwd, 'test-results', APP),
   webServer: {
     command: getServeCommand(),

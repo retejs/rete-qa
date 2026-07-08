@@ -9,7 +9,7 @@ import { App } from 'rete-kit'
 
 import { fixtures, getFeatures, stackNames, validate } from './commands/init'
 import { validateSnapshotsUpdate, validateTestRun } from './commands/test'
-import { appsCachePath, projects } from './consts'
+import { appsCachePath, projectNames } from './consts'
 import { log } from './ui'
 
 const program = createCommand()
@@ -92,7 +92,7 @@ program
   .option('-g --grep <regex>', 'Match tests by name')
   .option('-s --stack <stack>', `Stacks to test, comma-separated (${stackNames.join(',')})`)
   .option('-sv --stack-versions <stack-version>', `Versions to test, comma-separated`)
-  .option('-p --project <project>', `Project (${projects.map(p => p.name).join(',')})`)
+  .option('-p --project <project>', `Project (${projectNames.join(',')})`)
   .action(async (options: TestOptions) => {
     const stacks = options.stack
       ? options.stack.split(',')
