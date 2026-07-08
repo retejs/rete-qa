@@ -1,3 +1,10 @@
+## [1.15.1](https://github.com/retejs/rete-qa/compare/v1.15.0...v1.15.1) (2026-07-08)
+
+
+### Bug Fixes
+
+* **ci:** decouple init Node from Playwright test Node ([8dd56df](https://github.com/retejs/rete-qa/commit/8dd56df28de8c61b8e4dba1eb4802adf7113bc8e))
+
 # [1.15.0](https://github.com/retejs/rete-qa/compare/v1.14.0...v1.15.0) (2026-01-09)
 
 
