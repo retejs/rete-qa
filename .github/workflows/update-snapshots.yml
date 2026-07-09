@@ -36,6 +36,10 @@ on:
         description: 'Rete Kit (<name>@<version> or <owner>/<repo>#<version>)'
         type: string
         default: 'rete-kit@latest'
+      deps:
+        description: 'List of dependencies (<owner>/<repo>#<branch>, comma separated)'
+        type: string
+        default: ''
   workflow_dispatch:
     inputs:
       name:
@@ -69,6 +73,10 @@ on:
         description: 'Rete Kit (<name>@<version> or <owner>/<repo>#<version>)'
         type: string
         default: 'rete-kit@latest'
+      deps:
+        description: 'List of dependencies (<owner>/<repo>#<branch>, comma separated)'
+        type: string
+        default: ''
 
 
 jobs:
@@ -81,11 +89,19 @@ jobs:
       qa: ${{ inputs.qa }}
       kit: ${{ inputs.kit }}
 
+  deps:
+    name: Prepare alias deps
+    if: inputs.deps
+    uses: ./.github/workflows/prepare-deps.yml
+    secrets: inherit
+    with:
+      repos: ${{ inputs.deps }}
+
   update:
     timeout-minutes: 30
     runs-on: ubuntu-latest
-    if: ${{ always() }}
-    needs: tools
+    if: ${{ always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
+    needs: [tools, deps]
     # TODO reuse steps from regression.yml
     steps:
     - name: Download artifact with Rete QA
@@ -99,6 +115,12 @@ jobs:
       if: ${{ needs.tools.outputs.kit-artifact || inputs.kit }}
       with:
         name: ${{ needs.tools.outputs.kit-artifact || inputs.kit }}
+        path: .
+    - name: Download deps
+      uses: actions/download-artifact@v4
+      if: inputs.deps
+      with:
+        name: deps
         path: .
     - name: Install fonts
       run: |
@@ -123,7 +145,7 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Init application
-      run: rete-qa init -s ${{ inputs.name }} -sv ${{ inputs.version }}
+      run: rete-qa init -s ${{ inputs.name }} -sv ${{ inputs.version }} ${{ inputs.deps && '--deps-alias deps.json' || '' }}
       env:
         CI: ""
     - name: Update snapshots
