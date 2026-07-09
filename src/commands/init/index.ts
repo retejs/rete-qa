@@ -33,7 +33,9 @@ export function getFeatures({ stack, version }: Pick<(typeof fixtures)[0], 'stac
     new App.Features.Dataflow(next),
     new App.Features.Selectable(),
     new App.Features.Minimap(next),
-    new App.Features.Reroute(next)
+    new App.Features.Reroute(next),
+    new App.Features.Comments(next),
+    new App.Features.History(next)
   ]
 }
 

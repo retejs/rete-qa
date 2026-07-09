@@ -32,11 +32,16 @@
     "globals": "^15.9.0",
     "nodemon": "^2.0.20",
     "rete-cli": "~2.0.1",
-    "rete-kit": "^1.19.0",
+    "rete-kit": "file:../rete-kit/rete-kit-1.19.0.tgz",
     "typescript": "^4.9.5"
   },
   "peerDependencies": {
     "rete-kit": "^1.19.0"
+  },
+  "peerDependenciesMeta": {
+    "rete-kit": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@playwright/test": "1.61.1",

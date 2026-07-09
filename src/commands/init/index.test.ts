@@ -21,6 +21,8 @@ describe('Features', () => {
         expect(features).toContainEqual(expect.any(App.Features.Selectable))
         expect(features).toContainEqual(expect.any(App.Features.Minimap))
         expect(features).toContainEqual(expect.any(App.Features.Reroute))
+        expect(features).toContainEqual(expect.any(App.Features.Comments))
+        expect(features).toContainEqual(expect.any(App.Features.History))
       })
 
       it('has stack specific features', () => {

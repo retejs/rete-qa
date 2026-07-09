@@ -204,3 +204,38 @@ export function isOutside(inner: Rect, outer: Rect) {
     || inner.bottom <= outer.top
   )
 }
+
+export async function findInlineComment(page: Page) {
+  const el = await page.$('.inline-comment')
+
+  if (!el) throw new Error('cannot find inline comment')
+
+  return el
+}
+
+export async function findFrameComment(page: Page) {
+  const el = await page.$('.frame-comment')
+
+  if (!el) throw new Error('cannot find frame comment')
+
+  return el
+}
+
+export async function getCommentText(comment: Selector) {
+  return comment.evaluate(el => el.textContent ?? '')
+}
+
+export async function editCommentViaContextMenu(page: Page, comment: Selector, text: string) {
+  page.once('dialog', async dialog => {
+    await dialog.accept(text)
+  })
+  await clickCenter(page, comment, 'right')
+}
+
+export async function undo(page: Page) {
+  await page.keyboard.press('Control+KeyZ')
+}
+
+export async function redo(page: Page) {
+  await page.keyboard.press('Control+KeyY')
+}
