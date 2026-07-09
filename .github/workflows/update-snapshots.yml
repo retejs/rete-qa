@@ -16,7 +16,7 @@ on:
         default: 18
       node:
         type: number
-        description: 'Node.js version (default: 16)'
+        description: 'Node.js version (default: 20)'
       skip-tools:
         description: 'Skip tools build'
         type: boolean
@@ -57,7 +57,7 @@ on:
         default: 18
       node:
         type: number
-        description: 'Node.js version (default: 16)'
+        description: 'Node.js version (default: 20)'
       branch:
         description: 'Branch'
         default: main
@@ -117,7 +117,7 @@ jobs:
         sudo apt-get -qyy clean
     - uses: actions/setup-node@v3
       with:
-        node-version: ${{ inputs.node || 16 }}
+        node-version: ${{ inputs.node || 20 }}
     - name: Install Rete QA
       run: npm i -g ${{ inputs.qa-path || needs.tools.outputs.qa-path }} ${{ inputs.kit-path || needs.tools.outputs.kit-path }}
     - name: Install Playwright Browsers
