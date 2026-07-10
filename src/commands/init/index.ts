@@ -56,6 +56,19 @@ export function getFeatures(
     readonly: {
       from: 'default',
       features: [...base, 'Readonly']
+    },
+    comments: {
+      from: 'default',
+      features: [...base, 'Comments']
+    },
+    history: {
+      from: 'default',
+      // Context menu provides Delete for nodes/connections in e2e
+      features: [...base, 'History', 'Context menu']
+    },
+    'comments-history': {
+      from: 'default',
+      features: [...base, 'Comments', 'History']
     }
   }
 }

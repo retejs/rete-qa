@@ -15,17 +15,24 @@ export async function validateTestRun(app: string, dist: string): Promise<{ erro
   return { error: null }
 }
 
+const snapshotStack = 'react-vite'
+
 export function validateSnapshotsUpdate(targetFixtures: typeof fixtures) {
   const fixture = targetFixtures[0]
   const numberOfFixtures = targetFixtures.length
-  const target = targets[0]
+  const target = targets.find(({ stack }) => stack === snapshotStack)
 
+  if (!target) {
+    return { error: `Snapshot stack "${snapshotStack}" is not configured` }
+  }
+
+  const latestVersion = target.versions[target.versions.length - 1]
   const canUpdateSnashots = numberOfFixtures === 1
-    && fixture.stack === target.stack
-    && fixture.version === target.versions[target.versions.length - 1]
+    && fixture.stack === snapshotStack
+    && fixture.version === latestVersion
 
   if (!canUpdateSnashots) {
-    return { error: 'You can update snapshots only for the latest version of React' }
+    return { error: `You can update snapshots only for the latest version of ${snapshotStack} (v${latestVersion})` }
   }
 
   return { error: null }

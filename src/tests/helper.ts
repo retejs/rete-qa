@@ -204,3 +204,99 @@ export function isOutside(inner: Rect, outer: Rect) {
     || inner.bottom <= outer.top
   )
 }
+
+export async function findInlineComment(page: Page) {
+  const el = await page.$('.inline-comment')
+
+  if (!el) throw new Error('cannot find inline comment')
+
+  return el
+}
+
+export async function findFrameComment(page: Page) {
+  const el = await page.$('.frame-comment')
+
+  if (!el) throw new Error('cannot find frame comment')
+
+  return el
+}
+
+export async function getCommentText(comment: Selector) {
+  return comment.evaluate(el => el.textContent ?? '')
+}
+
+export async function editCommentViaContextMenu(page: Page, comment: Selector, text: string) {
+  page.once('dialog', async dialog => {
+    await dialog.accept(text)
+  })
+  await clickCenter(page, comment, 'right')
+}
+
+export async function undo(page: Page) {
+  await page.keyboard.press('Control+KeyZ')
+}
+
+export async function redo(page: Page) {
+  await page.keyboard.press('Control+KeyY')
+}
+
+export async function deleteViaContextMenu(page: Page, target: Selector) {
+  await clickCenter(page, target, 'right')
+  const item = page.locator('[data-testid="context-menu-item"]', { hasText: 'Delete' })
+
+  await item.click()
+}
+
+export async function disconnectInput(page: Page, node: Node, inputKey: string) {
+  const el = await node.$(`[data-testid="input-${inputKey}"] [data-testid="input-socket"]`)
+  const box = await el?.boundingBox()
+
+  if (!box) throw new Error(`Cannot find bounding box for input socket "${inputKey}"`)
+
+  const socketCenter = {
+    x: box.x + box.width / 2,
+    y: box.y + box.height / 2
+  }
+
+  await page.mouse.move(socketCenter.x, socketCenter.y)
+  await page.mouse.down()
+  await page.mouse.move(socketCenter.x - 50, socketCenter.y - 30)
+  await page.mouse.up()
+}
+
+async function socketCenter(node: Node, side: 'input' | 'output', key: string) {
+  const el = await node.$(`[data-testid="${side}-${key}"] [data-testid="${side}-socket"]`)
+  const box = await el?.boundingBox()
+
+  if (!box) throw new Error(`Cannot find bounding box for ${side} socket "${key}"`)
+
+  return {
+    x: box.x + box.width / 2,
+    y: box.y + box.height / 2
+  }
+}
+
+export async function connectSockets(
+  page: Page,
+  source: Node,
+  outputKey: string,
+  target: Node,
+  inputKey: string
+) {
+  const from = await socketCenter(source, 'output', outputKey)
+  const to = await socketCenter(target, 'input', inputKey)
+
+  await page.mouse.move(from.x, from.y)
+  await page.mouse.down()
+  await page.mouse.move(to.x, to.y)
+  await page.mouse.up()
+}
+
+export async function addNodeViaContextMenu(page: Page, container: Element, label: string) {
+  const box = await boundingBox(container)
+
+  await page.mouse.click(box.x + 16, box.y + 16, { button: 'right' })
+  const item = page.locator('[data-testid="context-menu-item"]', { hasText: label })
+
+  await item.click()
+}
