@@ -11,7 +11,7 @@ async function getConnectionPath(connection: ElementHandle<HTMLElement | SVGElem
 }
 
 test.describe('Reroute', () => {
-  const { getContainer } = takeBeforeEach('', 500, 500)
+  const { getContainer } = takeBeforeEach('?template=reroute', 500, 500)
 
   test('has no pins', async ({ page }) => {
     await expect(page.getByTestId('pin')).toHaveCount(0)

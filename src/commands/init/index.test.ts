@@ -1,39 +1,81 @@
 import { beforeEach, describe, expect, it } from '@jest/globals'
 import { App } from 'rete-kit'
 
-import { fixtures, getFeatures, validate } from './index'
+import { fixtures, getBaseFeatures, getFeatures, validate } from './index'
 
 describe('Features', () => {
   fixtures.forEach(fixture => {
     describe(`Stack: ${fixture.stack}, Version: ${fixture.version}`, () => {
-      let features: ReturnType<typeof getFeatures> = []
+      let baseFeatures: ReturnType<typeof getBaseFeatures> = []
+      let features: ReturnType<typeof getFeatures>
 
       beforeEach(() => {
         const next = false
 
-        features = getFeatures(fixture, next).filter(Boolean)
+        baseFeatures = getBaseFeatures(fixture, next).filter(Boolean)
+        features = getFeatures(fixture, next)
       })
 
-      it('has common features', () => {
-        expect(features).toContainEqual(expect.any(App.Features.ZoomAt))
-        expect(features).toContainEqual(expect.any(App.Features.OrderNodes))
-        expect(features).toContainEqual(expect.any(App.Features.Dataflow))
-        expect(features).toContainEqual(expect.any(App.Features.Selectable))
-        expect(features).toContainEqual(expect.any(App.Features.Minimap))
-        expect(features).toContainEqual(expect.any(App.Features.Reroute))
-        expect(features).toContainEqual(expect.any(App.Features.Comments))
-        expect(features).toContainEqual(expect.any(App.Features.History))
+      it('has common base features', () => {
+        expect(baseFeatures).toContainEqual(expect.any(App.Features.ZoomAt))
+        expect(baseFeatures).toContainEqual(expect.any(App.Features.OrderNodes))
+        expect(baseFeatures).toContainEqual(expect.any(App.Features.Dataflow))
+        expect(baseFeatures).toContainEqual(expect.any(App.Features.Selectable))
+        expect(baseFeatures).not.toContainEqual(expect.any(App.Features.Minimap))
+        expect(baseFeatures).not.toContainEqual(expect.any(App.Features.Reroute))
+        expect(baseFeatures).not.toContainEqual(expect.any(App.Features.Readonly))
+        expect(baseFeatures).not.toContainEqual(expect.any(App.Features.Comments))
+        expect(baseFeatures).not.toContainEqual(expect.any(App.Features.History))
+      })
+
+      it('puts optional plugins into features object extras', () => {
+        expect(Array.isArray(features)).toBe(false)
+        if (Array.isArray(features)) return
+
+        expect(features.base).toEqual(expect.arrayContaining(['Zoom at', 'Selectable nodes']))
+        expect(features.minimap).toEqual({
+          from: 'default',
+          features: expect.arrayContaining(['Minimap'])
+        })
+        expect(features.reroute).toEqual({
+          from: 'default',
+          features: expect.arrayContaining(['Reroute'])
+        })
+        expect(features.readonly).toEqual({
+          from: 'default',
+          features: expect.arrayContaining(['Readonly'])
+        })
+        expect(features.comments).toEqual({
+          from: 'default',
+          features: expect.arrayContaining(['Comments'])
+        })
+        expect(features['comments-history']).toEqual({
+          from: 'default',
+          features: expect.arrayContaining(['Comments', 'History'])
+        })
+        if (typeof features.minimap === 'object' && !Array.isArray(features.minimap)) {
+          expect(features.minimap.features).not.toContain('Reroute')
+          expect(features.minimap.features).not.toContain('Readonly')
+        }
+        if (typeof features.reroute === 'object' && !Array.isArray(features.reroute)) {
+          expect(features.reroute.features).not.toContain('Minimap')
+          expect(features.reroute.features).not.toContain('Readonly')
+        }
+        if (typeof features.readonly === 'object' && !Array.isArray(features.readonly)) {
+          expect(features.readonly.features).not.toContain('Minimap')
+          expect(features.readonly.features).not.toContain('Reroute')
+        }
       })
 
       it('has stack specific features', () => {
         if (fixture.stack === 'angular') {
-          expect(features).toContainEqual(expect.any(App.Features.Angular))
+          expect(baseFeatures).toContainEqual(expect.any(App.Features.Angular))
         } else if (fixture.stack === 'react') {
-          expect(features).toContainEqual(expect.any(App.Features.React))
+          expect(baseFeatures).toContainEqual(expect.any(App.Features.React))
         } else if (fixture.stack === 'vue') {
-          expect(features).toContainEqual(expect.any(App.Features.Vue))
+          expect(baseFeatures).toContainEqual(expect.any(App.Features.Vue))
         } else if (fixture.stack === 'svelte') {
-          expect(features).toContainEqual(expect.any(App.Features.Svelte))
+          expect(baseFeatures).toContainEqual(expect.any(App.Features.Svelte))
         }
       })
     })

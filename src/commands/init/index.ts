@@ -21,7 +21,7 @@ export const fixtures = targets
     folder
   }))
 
-export function getFeatures({ stack, version }: Pick<(typeof fixtures)[0], 'stack' | 'version'>, next: boolean) {
+export function getBaseFeatures({ stack, version }: Pick<(typeof fixtures)[0], 'stack' | 'version'>, next: boolean) {
   return [
     stack === 'angular' && new App.Features.Angular(version as AngularInitVersion as never, next),
     ['react', 'react-vite'].includes(stack) && new App.Features.React(version, stack, next),
@@ -31,12 +31,41 @@ export function getFeatures({ stack, version }: Pick<(typeof fixtures)[0], 'stac
     new App.Features.ZoomAt(),
     new App.Features.OrderNodes(),
     new App.Features.Dataflow(next),
-    new App.Features.Selectable(),
-    new App.Features.Minimap(next),
-    new App.Features.Reroute(next),
-    new App.Features.Comments(next),
-    new App.Features.History(next)
+    new App.Features.Selectable()
   ]
+}
+
+export function getFeatures(
+  fixture: Pick<(typeof fixtures)[0], 'stack' | 'version'>,
+  next: boolean
+): App.FeaturesInput {
+  const base = getBaseFeatures(fixture, next)
+    .filter((feature): feature is Exclude<typeof feature, false> => Boolean(feature))
+    .map(feature => feature.name)
+
+  return {
+    base,
+    minimap: {
+      from: 'default',
+      features: [...base, 'Minimap']
+    },
+    reroute: {
+      from: 'default',
+      features: [...base, 'Reroute']
+    },
+    readonly: {
+      from: 'default',
+      features: [...base, 'Readonly']
+    },
+    comments: {
+      from: 'default',
+      features: [...base, 'Comments']
+    },
+    'comments-history': {
+      from: 'default',
+      features: [...base, 'Comments', 'History']
+    }
+  }
 }
 
 export function validate(stacks: string[], stackVersions: string[] | null): { error: string | null } {

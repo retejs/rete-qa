@@ -61,7 +61,7 @@ program
           name: folder,
           stack,
           version,
-          features: features.map(f => f && f.name).filter(Boolean) as string[],
+          features,
           depsAlias,
           next
         })

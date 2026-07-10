@@ -13,7 +13,7 @@ import {
 } from './helper'
 
 test.describe('Comments', () => {
-  const { getContainer } = takeBeforeEach('', 500, 500)
+  const { getContainer } = takeBeforeEach('?template=comments', 500, 500)
 
   test('seeded on load', async ({ page }) => {
     const frame = await findFrameComment(page)

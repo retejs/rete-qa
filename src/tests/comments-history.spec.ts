@@ -14,7 +14,7 @@ const INLINE_ORIGINAL = 'Inline comment — try Ctrl+Z after edit/delete'
 const INLINE_UPDATED = 'Updated inline comment'
 
 test.describe('Comments history', () => {
-  const { getContainer: _getContainer } = takeBeforeEach('', 500, 500)
+  const { getContainer: _getContainer } = takeBeforeEach('?template=comments-history', 500, 500)
 
   test('edit inline comment undo/redo', async ({ page }) => {
     const inline = await findInlineComment(page)
