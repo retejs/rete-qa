@@ -1,3 +1,17 @@
+# [1.17.0](https://github.com/retejs/rete-qa/compare/v1.16.0...v1.17.0) (2026-07-10)
+
+
+### Bug Fixes
+
+* **ci:** add react-vite to update-snapshots workflow options ([8302cc8](https://github.com/retejs/rete-qa/commit/8302cc841f79a353e212249a8b99f75b542adbd2))
+* **ci:** upgrade download-artifact to v4 in update-snapshots ([961a14e](https://github.com/retejs/rete-qa/commit/961a14ea90a1c95884e77a3033c08ff8aa9cf74f))
+* **snaphots:** update snapshots for react v18 ([abb4d6f](https://github.com/retejs/rete-qa/commit/abb4d6f528b9d84cd0746ada86bb9446b330cd10))
+
+
+### Features
+
+* isolate minimap, reroute and readonly as extra templates ([e256bb4](https://github.com/retejs/rete-qa/commit/e256bb41b671e04c14954e7d68958499e4af6bc9))
+
 # [1.16.0](https://github.com/retejs/rete-qa/compare/v1.15.1...v1.16.0) (2026-07-09)
 
 
