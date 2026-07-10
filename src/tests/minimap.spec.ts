@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 import { getGraphView, getPositions, isInside, isOutside, move, takeBeforeEach } from './helper'
 
 test.describe('Minimap', () => {
-  const { getContainer } = takeBeforeEach('', 500, 500)
+  const { getContainer } = takeBeforeEach('?template=minimap', 500, 500)
 
   test('has minimap', async ({ page }) => {
     await expect(page.getByTestId('minimap')).toBeVisible()
