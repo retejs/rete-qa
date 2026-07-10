@@ -49,10 +49,20 @@ describe('Features', () => {
           from: 'default',
           features: expect.arrayContaining(['Comments'])
         })
+        expect(features.history).toEqual({
+          from: 'default',
+          features: expect.arrayContaining(['History', 'Context menu'])
+        })
         expect(features['comments-history']).toEqual({
           from: 'default',
           features: expect.arrayContaining(['Comments', 'History'])
         })
+        if (typeof features.comments === 'object' && !Array.isArray(features.comments)) {
+          expect(features.comments.features).not.toContain('History')
+        }
+        if (typeof features.history === 'object' && !Array.isArray(features.history)) {
+          expect(features.history.features).not.toContain('Comments')
+        }
         if (typeof features.minimap === 'object' && !Array.isArray(features.minimap)) {
           expect(features.minimap.features).not.toContain('Reroute')
           expect(features.minimap.features).not.toContain('Readonly')

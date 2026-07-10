@@ -13,7 +13,8 @@ import {
 const INLINE_ORIGINAL = 'Inline comment — try Ctrl+Z after edit/delete'
 const INLINE_UPDATED = 'Updated inline comment'
 
-test.describe('Comments history', () => {
+// Integration: Comments + History (comment actions in the undo stack)
+test.describe('Comments + History', () => {
   const { getContainer: _getContainer } = takeBeforeEach('?template=comments-history', 500, 500)
 
   test('edit inline comment undo/redo', async ({ page }) => {
