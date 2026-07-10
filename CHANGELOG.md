@@ -1,3 +1,22 @@
+# [1.18.0](https://github.com/retejs/rete-qa/compare/v1.17.0...v1.18.0) (2026-07-10)
+
+
+### Bug Fixes
+
+* **ci:** add deps input to update-snapshots workflow ([3408d2a](https://github.com/retejs/rete-qa/commit/3408d2a6ec234ecf02584dbda88c7d649689f333))
+* **ci:** add react-vite to update-snapshots workflow options ([53cdd2b](https://github.com/retejs/rete-qa/commit/53cdd2be83ed010a1374fa58308385a12049df61))
+* **ci:** resolve rete-kit from npm registry in lockfile ([b6b715c](https://github.com/retejs/rete-qa/commit/b6b715ce29df84c83e7758c300bfcf346a03cda9))
+* **ci:** upgrade download-artifact to v4 in update-snapshots ([89b5f68](https://github.com/retejs/rete-qa/commit/89b5f68313f04ebd1a3074a785f77c327073951b))
+* **ci:** use Node 20 for update-snapshots workflow ([7340522](https://github.com/retejs/rete-qa/commit/7340522ce1ba4fcb5093fd77d39aa2221ee9e42a))
+* **ci:** use published rete-kit for devDependency install ([3a24ea8](https://github.com/retejs/rete-qa/commit/3a24ea8b18d2fdcc56dd7bc7927819223265e350))
+* **deps:** require rete-kit peer again ([9dc08b4](https://github.com/retejs/rete-qa/commit/9dc08b480f180a068f1d266115a80abca855f639))
+* **snaphots:** update snapshots for react-vite v19 ([326fb33](https://github.com/retejs/rete-qa/commit/326fb335ed0e5718bf249b778b268694a9877b7f))
+
+
+### Features
+
+* **tests:** add Comments and History E2E coverage ([50fe2ac](https://github.com/retejs/rete-qa/commit/50fe2acdc425225276e8e1a67bc6e0b966b27af5))
+
 # [1.17.0](https://github.com/retejs/rete-qa/compare/v1.16.0...v1.17.0) (2026-07-10)
 
 
