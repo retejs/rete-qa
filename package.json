@@ -38,11 +38,6 @@
   "peerDependencies": {
     "rete-kit": "^1.21.0"
   },
-  "peerDependenciesMeta": {
-    "rete-kit": {
-      "optional": true
-    }
-  },
   "dependencies": {
     "@playwright/test": "1.61.1",
     "chalk": "^4.1.1",
