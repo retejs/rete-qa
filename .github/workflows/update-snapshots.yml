@@ -44,6 +44,7 @@ on:
         description: Stack
         options:
         - react
+        - react-vite
         - vue
         - angular
         - svelte
@@ -164,7 +165,7 @@ jobs:
       - name: Clear old snapshots
         run: rm -rf ${{ steps.snapshots_folder.outputs.path }}
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: snapshots-${{ inputs.name }}-v${{ inputs.version }}
           path: ${{ steps.snapshots_folder.outputs.path }}
